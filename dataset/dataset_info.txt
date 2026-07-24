@@ -1,0 +1,20 @@
+Dataset Name:
+Child Malnutrition Dataset
+
+Sources:
+1. NutriAI Dataset
+2. WHO Child Growth Standards
+3. Kaggle
+4. UNICEF Open Data
+
+Image Classes:
+- Normal
+- Moderate
+- Severe
+
+Health Parameters:
+Age
+Height
+Weight
+MUAC
+Gender
