@@ -1,0 +1,4 @@
+Child ID,Age,Height,Weight,MUAC,Gender,Label
+001,2,82,10,12.5,Male,Normal
+002,3,78,8,10.5,Female,Moderate
+003,4,75,7,9.2,Male,Severe
