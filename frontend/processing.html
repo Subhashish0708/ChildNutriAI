@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ChildNutriAI — Analyzing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-ring"></div>
+      <div class="brand-name">ChildNutriAI</div>
+    </div>
+    <a class="nav-link" href="index.html">Home</a>
+    <a class="nav-link" href="register.html">① Register Child</a>
+    <a class="nav-link" href="upload.html">② Upload Images</a>
+    <a class="nav-link disabled" href="dashboard.html">③ Dashboard</a>
+    <a class="nav-link" href="about.html">About</a>
+    <a class="nav-link" href="contact.html">Contact</a>
+    <div class="nav-tag">Milestone 2 build</div>
+  </aside>
+
+  <main class="main">
+    <div class="processing-shell">
+      <div class="processing-mark">ChildNutri AI</div>
+
+      <div class="processing-spinner" role="status" aria-label="Analyzing"></div>
+
+      <h1 class="processing-title">Analyzing child…</h1>
+      <p class="processing-sub">Please wait — combining photos with growth measurements.</p>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="progressBar"></div>
+      </div>
+
+      <div class="processing-eta">
+        Estimated time: <span class="countdown-value" id="countdown">4</span> seconds
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
