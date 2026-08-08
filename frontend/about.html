@@ -26,14 +26,14 @@
   </aside>
 
   <main class="main">
-    <div class="page-eyebrow">Overview</div>
+    <div class="page-eyebrow">Project overview</div>
     <h1 class="page-title">About ChildNutriAI</h1>
-    <p class="page-sub">A quick overview of what the ChildNutriAI does, why it exists, and how it's built for anyone reviewing it for the first time.</p>
+    <p class="page-sub">A quick overview of what the project does, why it exists, and how it's built — for anyone reviewing it for the first time.</p>
 
     <div class="about-grid">
 
       <div class="card about-card">
-        <h3>Introduction</h3>
+        <h3>Project introduction</h3>
         <p>ChildNutriAI is an AI-assisted screening tool for child malnutrition. A health worker registers a child, uploads a face and full-body photo, and receives a nutritional-risk prediction with practical recommendations — designed for use in community health centers and field screening camps where lab-based diagnosis isn't always available.</p>
       </div>
 
@@ -53,20 +53,21 @@
           <span class="tag-pill">HTML / CSS / JS</span>
           <span class="tag-pill">Python</span>
           <span class="tag-pill">Flask / FastAPI</span>
-          <span class="tag-pill">TensorFlow / PyTorch</span>
-          <span class="tag-pill">OpenCV</span>
-          <span class="tag-pill">Pandas</span>
-          <span class="tag-pill">SQLite</span>
+          <span class="tag-pill">OpenCV + Pillow</span>
+          <span class="tag-pill">EfficientNet-B0</span>
+          <span class="tag-pill">XGBoost</span>
+          <span class="tag-pill">MongoDB</span>
         </div>
       </div>
 
       <div class="card about-card">
         <h3>Algorithms</h3>
         <ul>
-          <li>CNN (transfer-learned, e.g. MobileNet/EfficientNet) for visual assessment from photos.</li>
-          <li>Gradient boosting / shallow MLP on anthropometric data (age, height, weight, MUAC).</li>
-          <li>WHO growth-standard z-score calculations as engineered features.</li>
-          <li>Late-fusion ensemble combining the image and tabular models into one prediction.</li>
+          <li>EfficientNet-B0 (transfer-learned) extracts a visual feature vector from the child's photo.</li>
+          <li>XGBoost analyzes the anthropometric data (age, height, weight, MUAC) into a numerical feature vector.</li>
+          <li>Feature fusion concatenates the visual and numerical vectors into one representation.</li>
+          <li>A fully connected layer + softmax classifies the fused vector into Normal / Moderate / Severe.</li>
+          <li>Grad-CAM and SHAP explain the image-based and numerical contributions to each prediction.</li>
         </ul>
       </div>
 
