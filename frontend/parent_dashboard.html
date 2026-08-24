@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Parent Dashboard - ChildNutri AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="parent_dashboard.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+<body>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">&#127807;</div>
+    <div class="logo-text">ChildNutri <em>AI</em></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-label">My Child</div>
+    <a class="nav-item active" onclick="switchSection('overview',this)"><span class="ni">&#127968;</span> Overview</a>
+    <a class="nav-item" onclick="switchSection('growth',this)"><span class="ni">&#128200;</span> Growth Tracker</a>
+    <a class="nav-item" onclick="switchSection('assessment',this)"><span class="ni">&#129302;</span> AI Assessment</a>
+    <a class="nav-item" onclick="switchSection('photos',this)"><span class="ni">&#128247;</span> Child Photos</a>
+    <div class="nav-label">Health</div>
+    <a class="nav-item" onclick="switchSection('medical',this)"><span class="ni">&#128196;</span> Medical History</a>
+    <a class="nav-item" onclick="switchSection('nutrition',this)"><span class="ni">&#127857;</span> Diet &amp; Nutrition</a>
+    <a class="nav-item" onclick="switchSection('appointments',this)"><span class="ni">&#128197;</span> Appointments<span class="nb">2</span></a>
+    <div class="nav-label">Account</div>
+    <a class="nav-item" onclick="switchSection('profile',this)"><span class="ni">&#128100;</span> My Profile</a>
+    <a class="nav-item" onclick="doLogout()"><span class="ni">&#128682;</span> Logout</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sf-av">P</div>
+    <div class="sf-info"><div class="sf-name">Priya Sharma</div><div class="sf-role">Parent / Guardian</div></div>
+    <span class="sf-out" onclick="doLogout()">&#128682;</span>
+  </div>
+</aside>
+<div class="main">
+  <header class="topbar">
+    <div class="hamburger" onclick="openSidebar()"><span></span><span></span><span></span></div>
+    <div class="topbar-title" id="pageTitle">Overview</div>
+    <div class="topbar-right">
+      <div class="notif-btn" onclick="toggleNotifPanel()">&#128276;<span class="notif-badge">3</span></div>
+      <div class="topbar-user"><div class="tb-av">P</div><div><div class="tb-name">Priya Sharma</div><div class="tb-sub">Parent</div></div></div>
+    </div>
+  </header>
+  <div class="notif-panel" id="notifPanel">
+    <div class="np-header"><span>Notifications</span><a onclick="toggleNotifPanel()">&#10005;</a></div>
+    <div class="np-item unread"><div class="np-icon" style="background:rgba(231,76,60,.12);color:#c0392b">&#9888;</div><div class="np-body"><div class="np-text"><strong>AI Alert:</strong> Aarav's MUAC dropped below safe range</div><div class="np-ts">2 hours ago</div></div></div>
+    <div class="np-item unread"><div class="np-icon" style="background:rgba(244,168,39,.12);color:#b07a00">&#128197;</div><div class="np-body"><div class="np-text">Follow-up appointment tomorrow at 10:00 AM</div><div class="np-ts">5 hours ago</div></div></div>
+    <div class="np-item"><div class="np-icon" style="background:rgba(39,168,114,.12);color:#1a7f5a">&#127807;</div><div class="np-body"><div class="np-text">New diet plan added by Dr. Meena</div><div class="np-ts">Yesterday</div></div></div>
+  </div>
+  <div class="content">
+
+    <!-- OVERVIEW -->
+    <div id="sec-overview" class="section active">
+      <div class="child-hero-card">
+        <div class="chc-left">
+          <div class="child-avatar-lg"><span>&#128102;</span><div class="status-ring high"></div></div>
+          <div class="chc-info">
+            <div class="chc-name">Aarav Sharma</div>
+            <div class="chc-meta"><span class="meta-pill">&#128100; Male</span><span class="meta-pill">&#128337; 14 Months</span><span class="meta-pill">&#128197; Born Jun 2024</span></div>
+            <div class="chc-status"><div class="status-badge danger">&#9888; Stunted &mdash; High Risk</div><div class="last-check">Last assessed: 21 Aug 2025</div></div>
+          </div>
+        </div>
+        <div class="chc-right">
+          <div class="chc-stat"><div class="cs-val">7.2<span>kg</span></div><div class="cs-lbl">Weight</div></div>
+          <div class="chc-divider"></div>
+          <div class="chc-stat"><div class="cs-val">68<span>cm</span></div><div class="cs-lbl">Height</div></div>
+          <div class="chc-divider"></div>
+          <div class="chc-stat"><div class="cs-val">11.5<span>cm</span></div><div class="cs-lbl">MUAC</div></div>
+          <div class="chc-divider"></div>
+          <div class="chc-stat"><div class="cs-val red">82<span>%</span></div><div class="cs-lbl">Risk Score</div></div>
+        </div>
+      </div>
+      <div class="alert-banner danger">
+        <div class="ab-icon">&#128680;</div>
+        <div class="ab-body"><div class="ab-title">Immediate Attention Required</div><div class="ab-text">Aarav's MUAC (11.5 cm) is below the safe threshold of 12.5 cm. Please visit the nearest health center immediately or contact Dr. Meena.</div></div>
+        <button class="ab-btn" onclick="showToast('Contacting Dr. Meena...')">Contact Doctor</button>
+      </div>
+      <div class="mini-stats">
+        <div class="ms-card green"><div class="ms-icon">&#9989;</div><div class="ms-val">4</div><div class="ms-lbl">Visits Completed</div></div>
+        <div class="ms-card orange"><div class="ms-icon">&#128197;</div><div class="ms-val">2</div><div class="ms-lbl">Upcoming Appointments</div></div>
+        <div class="ms-card red"><div class="ms-icon">&#9888;</div><div class="ms-val">3</div><div class="ms-lbl">Active Alerts</div></div>
+        <div class="ms-card blue"><div class="ms-icon">&#129302;</div><div class="ms-val">82%</div><div class="ms-lbl">AI Risk Score</div></div>
+      </div>
+      <div class="row2">
+        <div class="card">
+          <div class="card-hdr"><div class="card-title">&#128203; Anthropometric Data</div><div class="card-sub">vs WHO Standard</div></div>
+          <div class="anthro-list">
+            <div class="anthro-item"><div class="ai-label"><span class="ai-icon">&#9878;</span><div><div class="ai-name">Weight</div><div class="ai-std">WHO: 9.0&ndash;11.5 kg for 14 mo</div></div></div><div class="ai-right"><div class="ai-val red">7.2 kg</div><div class="ai-bar"><div class="ai-fill danger" style="width:55%"></div><div class="who-marker" style="left:78%"></div></div><div class="ai-tag danger">Below Normal</div></div></div>
+            <div class="anthro-item"><div class="ai-label"><span class="ai-icon">&#8597;</span><div><div class="ai-name">Height / Length</div><div class="ai-std">WHO: 75&ndash;82 cm for 14 mo</div></div></div><div class="ai-right"><div class="ai-val orange">68 cm</div><div class="ai-bar"><div class="ai-fill warn" style="width:62%"></div><div class="who-marker" style="left:80%"></div></div><div class="ai-tag warn">Stunted</div></div></div>
+            <div class="anthro-item"><div class="ai-label"><span class="ai-icon">&#128070;</span><div><div class="ai-name">MUAC</div><div class="ai-std">Safe threshold: &ge; 12.5 cm</div></div></div><div class="ai-right"><div class="ai-val red">11.5 cm</div><div class="ai-bar"><div class="ai-fill danger" style="width:48%"></div><div class="who-marker" style="left:70%"></div></div><div class="ai-tag danger">Critical</div></div></div>
+            <div class="anthro-item"><div class="ai-label"><span class="ai-icon">&#128100;</span><div><div class="ai-name">Head Circumference</div><div class="ai-std">WHO: 44&ndash;48 cm for 14 mo</div></div></div><div class="ai-right"><div class="ai-val green">45.2 cm</div><div class="ai-bar"><div class="ai-fill normal" style="width:72%"></div><div class="who-marker" style="left:68%"></div></div><div class="ai-tag normal">Normal</div></div></div>
+          </div>
+        </div>
+        <div class="col-stack">
+          <div class="card">
+            <div class="card-hdr"><div class="card-title">&#129302; AI Risk Analysis</div></div>
+            <div class="risk-gauge-wrap"><div class="risk-gauge">
+              <svg viewBox="0 0 200 110" width="200"><path d="M20,100 A80,80 0 0,1 180,100" fill="none" stroke="#f0faf5" stroke-width="18" stroke-linecap="round"/><path d="M20,100 A80,80 0 0,1 180,100" fill="none" stroke="url(#grad)" stroke-width="18" stroke-linecap="round" stroke-dasharray="251" stroke-dashoffset="62"/><defs><linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#27a872"/><stop offset="50%" style="stop-color:#f4a827"/><stop offset="100%" style="stop-color:#e74c3c"/></linearGradient></defs></svg>
+              <div class="gauge-center"><div class="gauge-val">82%</div><div class="gauge-lbl">HIGH RISK</div></div>
+            </div></div>
+            <div class="risk-breakdown">
+              <div class="rb-item"><span class="rb-dot" style="background:#e74c3c"></span><span>Stunting</span><strong style="color:#c0392b">High</strong></div>
+              <div class="rb-item"><span class="rb-dot" style="background:#f4a827"></span><span>Wasting</span><strong style="color:#b07a00">Medium</strong></div>
+              <div class="rb-item"><span class="rb-dot" style="background:#e74c3c"></span><span>Underweight</span><strong style="color:#c0392b">High</strong></div>
+            </div>
+          </div>
+          <div class="card appt-card">
+            <div class="card-hdr"><div class="card-title">&#128197; Next Appointment</div></div>
+            <div class="appt-info"><div class="appt-date"><div class="appt-day">23</div><div class="appt-mon">AUG 2025</div></div><div class="appt-detail"><div class="appt-title">Monthly Follow-Up</div><div class="appt-meta">&#128337; 10:00 AM &bull; Dr. Meena Rao</div><div class="appt-meta">&#127968; PHC Andheri Centre</div></div></div>
+            <button type="button" class="btn-appt" onclick="openApptDetailsModal()">View Details</button>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">&#128203; Latest Doctor Notes</div><span class="card-date">21 Aug 2025 &bull; Dr. Meena Rao</span></div>
+        <div class="doctor-note">
+          <div class="dn-avatar">M</div>
+          <div class="dn-body">
+            <div class="dn-name">Dr. Meena Rao <span class="dn-badge">Pediatrician</span></div>
+            <div class="dn-text">Aarav presents with moderate stunting. Weight-for-age Z-score is -2.8 SD indicating severe underweight. MUAC critically low at 11.5 cm. Immediate dietary intervention recommended. Starting on RUTF (Ready-to-Use Therapeutic Food). Follow-up in 7 days.</div>
+            <div class="dn-tags"><span class="dn-tag">RUTF Started</span><span class="dn-tag">7-Day Follow-Up</span><span class="dn-tag">Hospital Referral Ready</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GROWTH -->
+    <div id="sec-growth" class="section">
+      <div class="page-header"><h2>&#128200; Growth Tracker</h2><p>Monitor Aarav's growth against WHO standards</p></div>
+      <div class="row2">
+        <div class="card">
+          <div class="card-hdr"><div class="card-title">Weight-for-Age (kg)</div><div class="card-sub">vs WHO Median</div></div>
+          <div class="growth-chart"><div class="gc-yaxis"><span>12</span><span>10</span><span>8</span><span>6</span><span>4</span></div><div class="gc-bars"><div class="gc-col"><div class="gc-bar-wrap"><div class="who-line" style="bottom:68%"></div><div class="gc-bar" style="height:52%"></div></div><div class="gc-lbl">Apr</div></div><div class="gc-col"><div class="gc-bar-wrap"><div class="who-line" style="bottom:72%"></div><div class="gc-bar" style="height:55%"></div></div><div class="gc-lbl">May</div></div><div class="gc-col"><div class="gc-bar-wrap"><div class="who-line" style="bottom:75%"></div><div class="gc-bar warn" style="height:57%"></div></div><div class="gc-lbl">Jun</div></div><div class="gc-col"><div class="gc-bar-wrap"><div class="who-line" style="bottom:78%"></div><div class="gc-bar warn" style="height:60%"></div></div><div class="gc-lbl">Jul</div></div><div class="gc-col"><div class="gc-bar-wrap"><div class="who-line" style="bottom:82%"></div><div class="gc-bar danger" style="height:62%"></div></div><div class="gc-lbl">Aug</div></div></div></div>
+          <div class="gc-legend"><div class="gcl-item"><div class="gcl-dot green"></div>Normal</div><div class="gcl-item"><div class="gcl-line"></div>WHO Median</div><div class="gcl-item"><div class="gcl-dot red"></div>Aarav</div></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr"><div class="card-title">Height-for-Age (cm)</div><div class="card-sub">vs WHO Median</div></div>
+          <div class="growth-chart"><div class="gc-yaxis"><span>82</span><span>78</span><span>74</span><span>70</span><span>66</span></div><div class="gc-bars"><div class="gc-col"><div class="gc-bar-wrap"><div class="who-line" style="bottom:60%"></div><div class="gc-bar" style="height:30%"></div></div><div class="gc-lbl">Apr</div></div><div class="gc-col"><div class="gc-bar-wrap"><div class="who-line" style="bottom:65%"></div><div class="gc-bar" style="height:36%"></div></div><div class="gc-lbl">May</div></div><div class="gc-col"><div class="gc-bar-wrap"><div class="who-line" style="bottom:70%"></div><div class="gc-bar warn" style="height:40%"></div></div><div class="gc-lbl">Jun</div></div><div class="gc-col"><div class="gc-bar-wrap"><div class="who-line" style="bottom:75%"></div><div class="gc-bar warn" style="height:44%"></div></div><div class="gc-lbl">Jul</div></div><div class="gc-col"><div class="gc-bar-wrap"><div class="who-line" style="bottom:80%"></div><div class="gc-bar danger" style="height:48%"></div></div><div class="gc-lbl">Aug</div></div></div></div>
+          <div class="gc-legend"><div class="gcl-item"><div class="gcl-dot green"></div>Normal</div><div class="gcl-item"><div class="gcl-line"></div>WHO Median</div><div class="gcl-item"><div class="gcl-dot red"></div>Aarav</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hdr"><div class="card-title">Monthly Measurements Log</div></div>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Month</th><th>Age</th><th>Weight</th><th>Height</th><th>MUAC</th><th>Head Circ.</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>Aug 2025</td><td>14 mo</td><td class="val-bad">7.2 kg</td><td class="val-bad">68.0 cm</td><td class="val-bad">11.5 cm</td><td class="val-ok">45.2 cm</td><td><span class="badge stunted">Stunted</span></td></tr>
+            <tr><td>Jul 2025</td><td>13 mo</td><td class="val-bad">7.0 kg</td><td class="val-bad">67.0 cm</td><td class="val-warn">12.0 cm</td><td class="val-ok">44.8 cm</td><td><span class="badge stunted">Stunted</span></td></tr>
+            <tr><td>Jun 2025</td><td>12 mo</td><td class="val-warn">6.7 kg</td><td class="val-warn">65.5 cm</td><td class="val-warn">12.2 cm</td><td class="val-ok">44.1 cm</td><td><span class="badge wasted">Wasted</span></td></tr>
+            <tr><td>May 2025</td><td>11 mo</td><td class="val-warn">6.5 kg</td><td class="val-warn">64.0 cm</td><td class="val-ok">12.6 cm</td><td class="val-ok">43.5 cm</td><td><span class="badge underweight">Underweight</span></td></tr>
+            <tr><td>Apr 2025</td><td>10 mo</td><td class="val-ok">6.2 kg</td><td class="val-ok">63.0 cm</td><td class="val-ok">13.0 cm</td><td class="val-ok">43.0 cm</td><td><span class="badge normal">Normal</span></td></tr>
+          </tbody>
+        </table></div>
+      </div>
+    </div>
+
+    <!-- AI ASSESSMENT -->
+    <div id="sec-assessment" class="section">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2>&#129302; AI Assessment Results</h2>
+          <p>Latest AI-powered malnourishment analysis</p>
+        </div>
+        <button type="button" onclick="openParentAssessModal()" style="background:#1a7f5a;color:#fff;border:none;padding:10px 18px;border-radius:10px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 4px 12px rgba(26,127,90,.25);">
+          <span>&#43;</span> Run New Assessment
+        </button>
+      </div>
+      <div class="ai-result-card">
+        <div class="arc-header"><div class="arc-chip danger">&#9888; HIGH RISK DETECTED</div><div class="arc-date">Assessed: 21 Aug 2025, 09:45 AM</div></div>
+        <div class="arc-scores">
+          <div class="arc-score-item"><div class="arc-label">Stunting Risk</div><div class="arc-bar"><div class="arc-fill" style="width:82%;background:linear-gradient(90deg,#c0392b,#e74c3c)"></div></div><div class="arc-pct red">82%</div></div>
+          <div class="arc-score-item"><div class="arc-label">Wasting Risk</div><div class="arc-bar"><div class="arc-fill" style="width:55%;background:linear-gradient(90deg,#e07a1c,#f4a827)"></div></div><div class="arc-pct orange">55%</div></div>
+          <div class="arc-score-item"><div class="arc-label">Underweight Risk</div><div class="arc-bar"><div class="arc-fill" style="width:74%;background:linear-gradient(90deg,#c0392b,#e74c3c)"></div></div><div class="arc-pct red">74%</div></div>
+          <div class="arc-score-item"><div class="arc-label">SAM Probability</div><div class="arc-bar"><div class="arc-fill" style="width:38%;background:linear-gradient(90deg,#27a872,#52d68a)"></div></div><div class="arc-pct green">38%</div></div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="card"><div class="card-hdr"><div class="card-title">What This Means for Aarav</div></div><div class="explain-list"><div class="explain-item danger"><div class="ei-icon">&#128201;</div><div><div class="ei-title">Stunting Detected</div><div class="ei-desc">Aarav's height is significantly below WHO standard for his age, indicating chronic malnutrition affecting long-term growth.</div></div></div><div class="explain-item warn"><div class="ei-icon">&#9878;</div><div><div class="ei-title">Underweight</div><div class="ei-desc">Aarav's weight is below normal. His body is not getting enough nutrients for healthy weight gain.</div></div></div><div class="explain-item danger"><div class="ei-icon">&#128070;</div><div><div class="ei-title">Critical MUAC</div><div class="ei-desc">MUAC of 11.5 cm is below the 12.5 cm safety threshold, indicating severe risk of Acute Malnutrition.</div></div></div></div></div>
+        <div class="card"><div class="card-hdr"><div class="card-title">&#9989; AI Recommendations</div></div><div class="rec-list"><div class="rec-item"><span class="rec-num">1</span><div><div class="rec-title">Start RUTF Immediately</div><div class="rec-desc">Ready-to-Use Therapeutic Food as prescribed by doctor</div></div></div><div class="rec-item"><span class="rec-num">2</span><div><div class="rec-title">High-Protein Diet</div><div class="rec-desc">Eggs, lentils, fortified cereals &mdash; 4-5 small meals daily</div></div></div><div class="rec-item"><span class="rec-num">3</span><div><div class="rec-title">Weekly Weight Check</div><div class="rec-desc">Monitor weight every 7 days at nearest health center</div></div></div><div class="rec-item"><span class="rec-num">4</span><div><div class="rec-title">Hospital If Worsens</div><div class="rec-desc">Seek emergency care if fever, diarrhea, or food refusal occurs</div></div></div></div></div>
+      </div>
+    </div>
+
+    <!-- PHOTOS -->
+    <div id="sec-photos" class="section">
+      <div class="page-header"><h2>&#128247; Child Photos</h2><p>Upload facial &amp; full-body photos for AI visual assessment</p></div>
+      <input type="file" id="photoFileInput" accept="image/png,image/jpeg,image/jpg" style="display:none" onchange="handlePhotoUpload(event)" />
+      <div class="upload-zone" onclick="document.getElementById('photoFileInput').click()">
+        <div class="uz-icon">&#128247;</div>
+        <div class="uz-title">Upload Child Photos for AI Analysis</div>
+        <div class="uz-sub">Drag &amp; drop or click to upload &bull; Facial &amp; Full-body &bull; Multiple poses accepted<br/>Photos are used by AI for visual malnourishment screening</div>
+        <div class="uz-types"><span class="uz-type">&#128100; Front View</span><span class="uz-type">&#128100; Side View</span><span class="uz-type">&#128100; Full Body</span></div>
+        <button type="button" class="uz-btn" onclick="event.stopPropagation(); document.getElementById('photoFileInput').click()">Choose Photos</button>
+      </div>
+      <div class="card" style="margin-top:4px">
+        <div class="card-hdr"><div class="card-title">Previously Uploaded Photos</div><div class="card-sub">Used for AI visual analysis</div></div>
+        <div class="photo-grid">
+          <div class="photo-thumb"><div class="pt-placeholder green">&#128100;<br/><span>Front View</span></div><div class="pt-date">21 Aug 2025</div></div>
+          <div class="photo-thumb"><div class="pt-placeholder blue">&#128100;<br/><span>Side View</span></div><div class="pt-date">21 Aug 2025</div></div>
+          <div class="photo-thumb"><div class="pt-placeholder orange">&#128100;<br/><span>Full Body</span></div><div class="pt-date">14 Aug 2025</div></div>
+          <div class="photo-thumb add-more" onclick="showToast('Opening upload...')"><div class="pt-add">&#43;</div><div class="pt-date">Add Photo</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEDICAL HISTORY -->
+    <div id="sec-medical" class="section">
+      <div class="page-header" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
+        <div>
+          <h2>&#128196; Medical History</h2>
+          <p id="medicalHistorySubTitle">Previous clinic visits, records &amp; pediatric reports for Aarav</p>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+          <button class="btn-download-report" onclick="downloadMedicalReportPDF()" style="display:inline-flex;align-items:center;gap:8px;padding:10px 20px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;border:none;border-radius:12px;font-size:0.875rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(231,76,60,0.3);transition:all 0.2s;">
+            <span style="font-size:1.1rem;">&#128196;</span> Download PDF Report
+          </button>
+          <button onclick="openMedicalReportModal()" style="display:inline-flex;align-items:center;gap:8px;padding:10px 18px;background:linear-gradient(135deg,var(--primary),var(--primary-light));color:#fff;border:none;border-radius:12px;font-size:0.875rem;font-weight:700;cursor:pointer;box-shadow:0 4px 14px rgba(26,127,90,0.25);transition:all 0.2s;">
+            <span>&#128065;</span> View Full Report
+          </button>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-dot danger"></div><div class="tl-card"><div class="tl-header"><div class="tl-title">Monthly Assessment Visit</div><div class="tl-date">21 Aug 2025</div></div><div class="tl-doctor">Dr. Meena Rao &bull; PHC Andheri</div><div class="tl-body">Stunting confirmed. MUAC critically low at 11.5 cm. RUTF therapy initiated. Referral to hospital on standby.</div><div class="tl-tags"><span class="tl-tag red">Stunted</span><span class="tl-tag orange">RUTF Started</span></div></div></div>
+        <div class="tl-item"><div class="tl-dot warn"></div><div class="tl-card"><div class="tl-header"><div class="tl-title">Monthly Assessment Visit</div><div class="tl-date">14 Jul 2025</div></div><div class="tl-doctor">Dr. Meena Rao &bull; PHC Andheri</div><div class="tl-body">Weight slightly below normal. Height tracking below WHO median. Dietary guidance given. Iron and Vitamin D supplements prescribed.</div><div class="tl-tags"><span class="tl-tag orange">Underweight</span><span class="tl-tag blue">Supplements Prescribed</span></div></div></div>
+        <div class="tl-item"><div class="tl-dot warn"></div><div class="tl-card"><div class="tl-header"><div class="tl-title">Routine Check-Up</div><div class="tl-date">12 Jun 2025</div></div><div class="tl-doctor">Dr. Anil Kumar &bull; PHC Andheri</div><div class="tl-body">Child shows signs of wasting. MUAC borderline at 12.2 cm. Diet counseling for mother. Protein-rich foods recommended.</div><div class="tl-tags"><span class="tl-tag orange">Wasted</span><span class="tl-tag green">Diet Counseling</span></div></div></div>
+        <div class="tl-item"><div class="tl-dot green"></div><div class="tl-card"><div class="tl-header"><div class="tl-title">Initial Registration</div><div class="tl-date">10 Apr 2025</div></div><div class="tl-doctor">Dr. Meena Rao &bull; Anganwadi Centre</div><div class="tl-body">Child registered in ChildNutri AI. Initial measurements recorded. All parameters within normal range at registration.</div><div class="tl-tags"><span class="tl-tag green">Normal</span><span class="tl-tag blue">Registered</span></div></div></div>
+      </div>
+    </div>
+
+    <!-- NUTRITION -->
+    <div id="sec-nutrition" class="section">
+      <div class="page-header"><h2>&#127857; Diet &amp; Nutrition Plan</h2><p>Personalized nutrition guide by Dr. Meena Rao</p></div>
+      <div class="alert-banner warn"><div class="ab-icon">&#128161;</div><div class="ab-body"><div class="ab-title">Therapeutic Feeding Active</div><div class="ab-text">Aarav is on RUTF (Ready-to-Use Therapeutic Food) therapy. Follow the prescribed feeding schedule strictly.</div></div></div>
+      <div class="row3">
+        <div class="card meal-card"><div class="meal-time">&#127775; Morning (7&ndash;8 AM)</div><div class="meal-items"><div class="meal-item">&#129371; Breast milk / Formula (200ml)</div><div class="meal-item">&#129364; Mashed banana (half)</div><div class="meal-item">&#129368; RUTF sachet (1/2)</div></div></div>
+        <div class="card meal-card"><div class="meal-time">&#9728; Mid-Morning (10 AM)</div><div class="meal-items"><div class="meal-item">&#129361; Dal khichdi (4 tbsp)</div><div class="meal-item">&#129367; Mashed potato with ghee</div></div></div>
+        <div class="card meal-card"><div class="meal-time">&#127774; Afternoon (1 PM)</div><div class="meal-items"><div class="meal-item">&#129365; Egg yolk mash</div><div class="meal-item">&#129360; Fortified porridge</div><div class="meal-item">&#129368; RUTF sachet (1/2)</div></div></div>
+        <div class="card meal-card"><div class="meal-time">&#127769; Evening (4 PM)</div><div class="meal-items"><div class="meal-item">&#127822; Fruit puree (apple/pear)</div><div class="meal-item">&#129371; Breast milk / Formula</div></div></div>
+        <div class="card meal-card"><div class="meal-time">&#127762; Night (7 PM)</div><div class="meal-items"><div class="meal-item">&#129361; Rice with lentil soup</div><div class="meal-item">&#129367; Mashed vegetables</div><div class="meal-item">&#129368; RUTF sachet (1)</div></div></div>
+        <div class="card meal-card"><div class="meal-time">&#128138; Daily Supplements</div><div class="meal-items"><div class="meal-item">&#128138; Iron drops (daily)</div><div class="meal-item">&#128138; Vitamin D drops</div><div class="meal-item">&#128138; Zinc syrup (10 days)</div></div></div>
+      </div>
+    </div>
+
+    <!-- APPOINTMENTS -->
+    <div id="sec-appointments" class="section">
+      <div class="page-header"><h2>&#128197; Appointments</h2><p>Upcoming &amp; past appointments for Aarav</p></div>
+      <div class="appt-list">
+        <div class="appt-row upcoming"><div class="ar-date"><div class="ar-day">23</div><div class="ar-mon">AUG</div></div><div class="ar-info"><div class="ar-title">Monthly Follow-Up Assessment</div><div class="ar-meta">&#128337; 10:00 AM &bull; Dr. Meena Rao &bull; PHC Andheri Centre</div><div class="ar-note">Bring previous weight records. Fasting not required.</div></div><span class="ar-badge upcoming">UPCOMING</span></div>
+        <div class="appt-row upcoming"><div class="ar-date"><div class="ar-day">30</div><div class="ar-mon">AUG</div></div><div class="ar-info"><div class="ar-title">RUTF Progress Review</div><div class="ar-meta">&#128337; 11:30 AM &bull; Dr. Meena Rao &bull; PHC Andheri Centre</div><div class="ar-note">Therapeutic food review &amp; MUAC recheck.</div></div><span class="ar-badge upcoming">UPCOMING</span></div>
+        <div class="appt-row done"><div class="ar-date"><div class="ar-day">21</div><div class="ar-mon">AUG</div></div><div class="ar-info"><div class="ar-title">Monthly Assessment</div><div class="ar-meta">&#128337; 09:30 AM &bull; Dr. Meena Rao &bull; PHC Andheri</div><div class="ar-note">Stunting confirmed. RUTF initiated.</div></div><span class="ar-badge done">COMPLETED</span></div>
+        <div class="appt-row done"><div class="ar-date"><div class="ar-day">14</div><div class="ar-mon">JUL</div></div><div class="ar-info"><div class="ar-title">Monthly Assessment</div><div class="ar-meta">&#128337; 10:00 AM &bull; Dr. Meena Rao &bull; PHC Andheri</div><div class="ar-note">Supplements prescribed. Diet advice given.</div></div><span class="ar-badge done">COMPLETED</span></div>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div id="sec-profile" class="section">
+      <div class="page-header"><h2>&#128100; My Profile</h2><p>Parent &amp; child information</p></div>
+      <div class="row2">
+        <div class="card"><div class="card-hdr"><div class="card-title">Parent / Guardian Details</div></div><div class="profile-form"><div class="pf-row"><label>Full Name</label><div class="pf-val">Priya Sharma</div></div><div class="pf-row"><label>Phone Number</label><div class="pf-val">+91 98765 43210</div></div><div class="pf-row"><label>Email</label><div class="pf-val">priya.sharma@email.com</div></div><div class="pf-row"><label>Village / Area</label><div class="pf-val">Andheri East, Mumbai</div></div><div class="pf-row"><label>Assigned Health Worker</label><div class="pf-val">Dr. Meena Rao</div></div><button class="btn-edit" onclick="showToast('Edit profile opened...')">&#9998; Edit Profile</button></div></div>
+        <div class="card"><div class="card-hdr"><div class="card-title">Child Details</div></div><div class="profile-form"><div class="pf-row"><label>Child Name</label><div class="pf-val">Aarav Sharma</div></div><div class="pf-row"><label>Date of Birth</label><div class="pf-val">10 June 2024</div></div><div class="pf-row"><label>Gender</label><div class="pf-val">Male</div></div><div class="pf-row"><label>Age</label><div class="pf-val">14 Months</div></div><div class="pf-row"><label>Birth Weight</label><div class="pf-val">2.8 kg (Low Birth Weight)</div></div><div class="pf-row"><label>Health ID</label><div class="pf-val">CHN-2024-00814</div></div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- COMPLETE CHILD PROFILE ONBOARDING MODAL -->
+<div class="modal-overlay" id="childProfileModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:20px;">
+  <div class="modal-box" style="background:#fff;border-radius:18px;width:100%;max-width:480px;padding:32px 28px;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);position:relative;">
+    <div style="font-size:2rem;margin-bottom:8px;">👶</div>
+    <div style="font-size:1.35rem;font-weight:700;color:#0f172a;margin-bottom:4px;">Complete Child Profile</div>
+    <div style="font-size:.875rem;color:#64748b;margin-bottom:20px;line-height:1.5;">Welcome! Please enter your child's basic information to begin AI growth monitoring.</div>
+    <form onsubmit="submitChildProfile(event)" style="display:flex;flex-direction:column;gap:14px;">
+      <div>
+        <label style="font-size:.8rem;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Child Name</label>
+        <input type="text" id="newChildName" placeholder="Full name (e.g. Aarav Kumar)" required style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.9rem;outline:none;" />
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="font-size:.8rem;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Date of Birth</label>
+          <input type="date" id="newChildDob" required style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.9rem;outline:none;" />
+        </div>
+        <div>
+          <label style="font-size:.8rem;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Gender</label>
+          <select id="newChildGender" required style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.9rem;outline:none;background:#fff;">
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="font-size:.8rem;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Birth Weight (kg)</label>
+          <input type="number" step="0.01" id="newChildWeight" placeholder="e.g. 2.8" style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.9rem;outline:none;" />
+        </div>
+        <div>
+          <label style="font-size:.8rem;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Birth Length (cm)</label>
+          <input type="number" step="0.1" id="newChildLength" placeholder="e.g. 48.0" style="width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.9rem;outline:none;" />
+        </div>
+      </div>
+      <button type="submit" id="btnSaveChild" style="margin-top:10px;padding:12px;background:#1a7f5a;color:#fff;border:none;border-radius:10px;font-weight:600;font-size:.95rem;cursor:pointer;">Save Child Profile & Continue</button>
+    </form>
+  </div>
+</div>
+
+
+<!-- PARENT RUN NEW ASSESSMENT MODAL -->
+<div class="modal-overlay" id="parentAssessModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:20px;">
+  <div class="modal-box" style="background:#fff;border-radius:18px;width:100%;max-width:520px;padding:30px 26px;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);position:relative;">
+    <button type="button" onclick="closeParentAssessModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.4rem;color:#94a3b8;cursor:pointer;">&times;</button>
+    <div style="font-size:1.8rem;margin-bottom:6px;">🤖</div>
+    <div style="font-size:1.3rem;font-weight:700;color:#0f172a;margin-bottom:4px;">Run AI Malnourishment Assessment</div>
+    <div style="font-size:.85rem;color:#64748b;margin-bottom:20px;">Enter updated anthropometric measurements for immediate AI screening.</div>
+    <form onsubmit="submitParentAssessment(event)" style="display:flex;flex-direction:column;gap:14px;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="font-size:.8rem;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Age (months)</label>
+          <input type="number" id="pAssessAge" placeholder="e.g. 14" min="0" max="60" step="0.5" required style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.9rem;outline:none;" />
+        </div>
+        <div>
+          <label style="font-size:.8rem;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Weight (kg)</label>
+          <input type="number" id="pAssessWeight" step="0.01" placeholder="e.g. 7.4" required style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.9rem;outline:none;" />
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div>
+          <label style="font-size:.8rem;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Height / Length (cm)</label>
+          <input type="number" id="pAssessHeight" step="0.1" placeholder="e.g. 69.0" required style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.9rem;outline:none;" />
+        </div>
+        <div>
+          <label style="font-size:.8rem;font-weight:600;color:#334155;display:block;margin-bottom:6px;">MUAC (cm)</label>
+          <input type="number" id="pAssessMuac" step="0.1" placeholder="e.g. 11.8" style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.9rem;outline:none;" />
+        </div>
+      </div>
+      <div>
+        <label style="font-size:.8rem;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Head Circumference (cm)</label>
+        <input type="number" id="pAssessHeadCirc" step="0.1" placeholder="Optional (e.g. 45.5)" style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.9rem;outline:none;" />
+      </div>
+      <div>
+        <label style="font-size:.8rem;font-weight:600;color:#334155;display:block;margin-bottom:6px;">Observations / Diet Notes</label>
+        <input type="text" id="pAssessNotes" placeholder="e.g. Child active, improved appetite" style="width:100%;padding:10px 12px;border:1.5px solid #e2e8f0;border-radius:10px;font-size:.9rem;outline:none;" />
+      </div>
+      <div style="display:flex;gap:12px;margin-top:8px;">
+        <button type="button" onclick="closeParentAssessModal()" style="flex:1;padding:11px;background:#f1f5f9;color:#475569;border:none;border-radius:10px;font-weight:600;cursor:pointer;">Cancel</button>
+        <button type="submit" id="btnRunParentAssessment" style="flex:2;padding:11px;background:#1a7f5a;color:#fff;border:none;border-radius:10px;font-weight:600;cursor:pointer;">Run AI Assessment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+<!-- APPOINTMENT DETAILS MODAL -->
+<div class="modal-overlay" id="apptDetailsModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.65);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(4px);padding:20px;">
+  <div class="modal-box" style="background:#fff;border-radius:18px;width:100%;max-width:480px;padding:28px 24px;box-shadow:0 25px 50px -12px rgba(0,0,0,.25);position:relative;">
+    <button type="button" onclick="closeApptDetailsModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:1.4rem;color:#94a3b8;cursor:pointer;">&times;</button>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+      <div style="width:44px;height:44px;border-radius:12px;background:rgba(26,127,90,.12);color:#1a7f5a;display:flex;align-items:center;justify-content:center;font-size:1.4rem;">📅</div>
+      <div>
+        <div style="font-size:1.15rem;font-weight:700;color:#0f172a;" id="modalApptTitle">Monthly Follow-Up</div>
+        <div style="font-size:.8rem;color:#1a7f5a;font-weight:600;" id="modalApptStatus">UPCOMING</div>
+      </div>
+    </div>
+    
+    <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:16px;margin-bottom:20px;display:flex;flex-direction:column;gap:12px;font-size:.875rem;">
+      <div style="display:flex;justify-content:space-between;color:#475569;">
+        <span style="font-weight:600;color:#1e293b;">🗓️ Date & Time:</span>
+        <span id="modalApptDateTime">28 Aug 2025 • 10:00 AM</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;color:#475569;">
+        <span style="font-weight:600;color:#1e293b;">👨‍⚕️ Doctor / Worker:</span>
+        <span id="modalApptDoctor">Dr. Meena Rao</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;color:#475569;">
+        <span style="font-weight:600;color:#1e293b;">🏥 Center:</span>
+        <span id="modalApptCenter">PHC Andheri Centre</span>
+      </div>
+      <div style="border-top:1px dashed #cbd5e1;padding-top:10px;color:#475569;">
+        <span style="font-weight:600;color:#1e293b;display:block;margin-bottom:4px;">📋 Clinical Note:</span>
+        <span id="modalApptNotes" style="font-style:italic;color:#64748b;">Bring previous weight records. Fasting not required.</span>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:10px;">
+      <button type="button" onclick="closeApptDetailsModal(); switchSection('appointments', document.querySelectorAll('.nav-item')[6]);" style="flex:1;padding:11px;background:#1a7f5a;color:#fff;border:none;border-radius:10px;font-weight:600;font-size:.875rem;cursor:pointer;">View All Appointments</button>
+      <button type="button" onclick="closeApptDetailsModal()" style="padding:11px 18px;background:#f1f5f9;color:#475569;border:none;border-radius:10px;font-weight:600;font-size:.875rem;cursor:pointer;">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">&#10003; <span id="toastMsg"></span></div>
+<script src="parent_dashboard.js"></script>
+
+<!-- CHILD MEDICAL HEALTH REPORT MODAL -->
+<div class="modal-overlay" id="medicalReportModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,.75);z-index:99999;align-items:center;justify-content:center;backdrop-filter:blur(5px);padding:16px;overflow-y:auto;">
+  <div class="modal-box" style="background:#fff;border-radius:20px;width:100%;max-width:800px;max-height:92vh;overflow-y:auto;padding:0;box-shadow:0 25px 50px -12px rgba(0,0,0,.35);position:relative;display:flex;flex-direction:column;">
+    
+    <!-- Modal Header Actions -->
+    <div style="padding:16px 24px;border-bottom:1px solid #e2e8f0;display:flex;align-items:center;justify-content:space-between;background:#f8fafc;border-radius:20px 20px 0 0;" class="no-print">
+      <div style="font-weight:700;font-size:1.05rem;color:#0f172a;display:flex;align-items:center;gap:8px;">
+        <span>&#128203;</span> Official Child Health &amp; Medical Report
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button onclick="downloadMedicalReportPDF()" style="padding:8px 16px;background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;border:none;border-radius:10px;font-weight:700;font-size:0.84rem;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 2px 8px rgba(231,76,60,0.25);">
+          <span>&#128196;</span> Download PDF
+        </button>
+        <button onclick="printMedicalReport()" style="padding:8px 14px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-weight:600;font-size:0.84rem;cursor:pointer;display:flex;align-items:center;gap:6px;">
+          <span>&#128424;</span> Print
+        </button>
+        <button onclick="exportMedicalDataCSV()" style="padding:8px 12px;background:#f1f5f9;color:#334155;border:1px solid #cbd5e1;border-radius:10px;font-weight:600;font-size:0.84rem;cursor:pointer;display:flex;align-items:center;gap:6px;">
+          <span>&#128202;</span> CSV
+        </button>
+        <button onclick="closeMedicalReportModal()" style="width:32px;height:32px;border:none;background:#e2e8f0;border-radius:50%;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;color:#64748b;margin-left:4px;">
+          &times;
+        </button>
+      </div>
+    </div>
+
+    <!-- Printable & Exportable Report Area -->
+    <div id="printableReportArea" style="padding:32px 36px;color:#1e293b;font-size:0.9rem;line-height:1.6;background:#fff;">
+      
+      <!-- Clinic / System Header -->
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2.5px solid var(--primary);padding-bottom:18px;margin-bottom:20px;">
+        <div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="width:40px;height:40px;background:linear-gradient(135deg,var(--primary),var(--primary-light));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;">👶</div>
+            <div>
+              <div style="font-family:'Poppins',sans-serif;font-size:1.4rem;font-weight:800;color:var(--primary-dark);letter-spacing:-0.5px;line-height:1.2;">ChildNutri <span style="color:#f4a827;">AI</span></div>
+              <div style="font-size:0.75rem;font-weight:600;color:#64748b;letter-spacing:0.5px;text-transform:uppercase;">Pediatric Malnutrition Screening &amp; Growth Registry</div>
+            </div>
+          </div>
+          <div style="font-size:0.78rem;color:#64748b;margin-top:8px;">Primary Health Centre (PHC) &bull; Integrated Child Development Services</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46;font-size:0.72rem;font-weight:700;padding:4px 10px;border-radius:6px;display:inline-block;margin-bottom:4px;">OFFICIAL MEDICAL RECORD</div>
+          <div style="font-size:0.78rem;color:#64748b;">Report Date: <strong id="repGeneratedDate" style="color:#0f172a;">22 Aug 2025</strong></div>
+          <div style="font-size:0.78rem;color:#64748b;">Health ID: <strong id="repHealthId" style="color:#0f172a;">CHN-2024-00814</strong></div>
+        </div>
+      </div>
+
+      <!-- 1. Patient Demographics -->
+      <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:16px 20px;margin-bottom:20px;">
+        <div style="font-size:0.8rem;font-weight:800;text-transform:uppercase;color:#475569;margin-bottom:10px;letter-spacing:0.5px;border-bottom:1px solid #e2e8f0;padding-bottom:4px;">1. Patient Demographics</div>
+        <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:12px;font-size:0.85rem;">
+          <div><span style="color:#64748b;display:block;font-size:0.75rem;">Child Full Name:</span><strong id="repChildName" style="color:#0f172a;font-size:0.95rem;">Visheshwar Yadav</strong></div>
+          <div><span style="color:#64748b;display:block;font-size:0.75rem;">Date of Birth:</span><strong id="repChildDob">10 Jun 2024</strong></div>
+          <div><span style="color:#64748b;display:block;font-size:0.75rem;">Gender / Age:</span><strong id="repChildGenderAge">Male / 14 Months</strong></div>
+          <div><span style="color:#64748b;display:block;font-size:0.75rem;">Parent / Guardian:</span><strong id="repParentName">Priya Sharma</strong></div>
+          <div><span style="color:#64748b;display:block;font-size:0.75rem;">Phone Number:</span><strong id="repParentPhone">+91 98765 43210</strong></div>
+          <div><span style="color:#64748b;display:block;font-size:0.75rem;">Birth Weight / Length:</span><strong id="repBirthStats">2.8 kg / 48.0 cm</strong></div>
+        </div>
+      </div>
+
+      <!-- 2. Anthropometrics & AI Nutritional Status -->
+      <div style="margin-bottom:20px;">
+        <div style="font-size:0.8rem;font-weight:800;text-transform:uppercase;color:#475569;margin-bottom:10px;letter-spacing:0.5px;border-bottom:1px solid #e2e8f0;padding-bottom:4px;">2. Latest Anthropometric &amp; AI Nutritional Status</div>
+        <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;margin-bottom:12px;">
+          <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:10px 12px;text-align:center;">
+            <div style="font-size:0.72rem;color:#64748b;font-weight:600;">Weight</div>
+            <div style="font-size:1.2rem;font-weight:800;color:#0f172a;" id="repWeight">7.2 kg</div>
+            <div style="font-size:0.7rem;color:#e74c3c;font-weight:600;" id="repWeightStatus">Lagging (-2.8 SD)</div>
+          </div>
+          <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:10px 12px;text-align:center;">
+            <div style="font-size:0.72rem;color:#64748b;font-weight:600;">Height / Length</div>
+            <div style="font-size:1.2rem;font-weight:800;color:#0f172a;" id="repHeight">68.0 cm</div>
+            <div style="font-size:0.7rem;color:#e74c3c;font-weight:600;" id="repHeightStatus">Stunted (-2.9 SD)</div>
+          </div>
+          <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:10px 12px;text-align:center;">
+            <div style="font-size:0.72rem;color:#64748b;font-weight:600;">MUAC</div>
+            <div style="font-size:1.2rem;font-weight:800;color:#0f172a;" id="repMuac">11.5 cm</div>
+            <div style="font-size:0.7rem;color:#f4a827;font-weight:600;" id="repMuacStatus">MAM / Critical</div>
+          </div>
+          <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;padding:10px 12px;text-align:center;">
+            <div style="font-size:0.72rem;color:#64748b;font-weight:600;">AI Risk Score</div>
+            <div style="font-size:1.2rem;font-weight:800;color:#e74c3c;" id="repRiskScore">57.4%</div>
+            <div style="font-size:0.7rem;color:#64748b;font-weight:600;" id="repDiagnosis">Wasted</div>
+          </div>
+        </div>
+
+        <div style="background:#fffbeb;border:1px solid #fde68a;border-radius:12px;padding:10px 14px;display:flex;gap:10px;align-items:flex-start;">
+          <div style="font-size:1.2rem;">&#9888;&#65039;</div>
+          <div style="font-size:0.8rem;color:#92400e;">
+            <strong>AI Diagnostic Evaluation (Soft-Voting Ensemble v2.0):</strong>
+            <div id="repAiSummaryText" style="margin-top:2px;">Child presents with moderate wasting and acute linear stunting. Weight-for-Age Z-score is severely depressed. Active nutritional intervention initiated.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Medical History Records -->
+      <div style="margin-bottom:20px;">
+        <div style="font-size:0.8rem;font-weight:800;text-transform:uppercase;color:#475569;margin-bottom:10px;letter-spacing:0.5px;border-bottom:1px solid #e2e8f0;padding-bottom:4px;">3. Clinical Examination &amp; Medical History</div>
+        <table style="width:100%;border-collapse:collapse;font-size:0.8rem;text-align:left;">
+          <thead>
+            <tr style="background:#f1f5f9;border-bottom:1.5px solid #cbd5e1;color:#475569;">
+              <th style="padding:7px 10px;font-weight:700;">Visit Date</th>
+              <th style="padding:7px 10px;font-weight:700;">Examining Doctor</th>
+              <th style="padding:7px 10px;font-weight:700;">Diagnosis</th>
+              <th style="padding:7px 10px;font-weight:700;">Prescribed Treatment / Notes</th>
+            </tr>
+          </thead>
+          <tbody id="repMedicalTableBody">
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:7px 10px;font-weight:600;">21 Aug 2025</td>
+              <td style="padding:7px 10px;">Dr. Meena Rao</td>
+              <td style="padding:7px 10px;"><span style="color:#e74c3c;font-weight:700;">Stunted</span></td>
+              <td style="padding:7px 10px;">MUAC critically low at 11.5 cm. RUTF therapy started. Follow-up in 7 days.</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:7px 10px;font-weight:600;">14 Jul 2025</td>
+              <td style="padding:7px 10px;">Dr. Meena Rao</td>
+              <td style="padding:7px 10px;"><span style="color:#f4a827;font-weight:700;">Underweight</span></td>
+              <td style="padding:7px 10px;">Dietary guidance provided. Iron drops and Vitamin D prescribed.</td>
+            </tr>
+            <tr style="border-bottom:1px solid #e2e8f0;">
+              <td style="padding:7px 10px;font-weight:600;">12 Jun 2025</td>
+              <td style="padding:7px 10px;">Dr. Anil Kumar</td>
+              <td style="padding:7px 10px;"><span style="color:#f4a827;font-weight:700;">Wasted</span></td>
+              <td style="padding:7px 10px;">MUAC borderline at 12.2 cm. Protein-rich foods recommended.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 4. Dietary & Nutrition Plan -->
+      <div style="margin-bottom:24px;">
+        <div style="font-size:0.8rem;font-weight:800;text-transform:uppercase;color:#475569;margin-bottom:10px;letter-spacing:0.5px;border-bottom:1px solid #e2e8f0;padding-bottom:4px;">4. Prescribed Dietary &amp; Supplementary Feeding Protocol</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:0.8rem;">
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;">
+            <strong style="color:var(--primary-dark);display:block;margin-bottom:4px;">Therapeutic Feeding Schedule:</strong>
+            <ul style="padding-left:14px;color:#334155;margin:0;line-height:1.6;">
+              <li><strong>Morning:</strong> RUTF sachet (1/2) + Mashed banana</li>
+              <li><strong>Afternoon:</strong> Fortified dal porridge + Egg yolk mash</li>
+              <li><strong>Evening/Night:</strong> RUTF sachet (1) + Rice with lentil soup</li>
+            </ul>
+          </div>
+          <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:10px 12px;">
+            <strong style="color:var(--primary-dark);display:block;margin-bottom:4px;">Micronutrient Prescriptions:</strong>
+            <ul style="padding-left:14px;color:#334155;margin:0;line-height:1.6;">
+              <li><strong>Iron drops:</strong> 1 ml daily after morning feed</li>
+              <li><strong>Vitamin D3 drops:</strong> 400 IU daily</li>
+              <li><strong>Zinc syrup:</strong> 20 mg daily for 14 days</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verification / Stamp Block -->
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;border-top:1.5px solid #cbd5e1;padding-top:16px;margin-top:20px;">
+        <div>
+          <div style="font-size:0.75rem;color:#64748b;">Primary Health Center:</div>
+          <div style="font-size:0.85rem;font-weight:700;color:#0f172a;">PHC Andheri West &bull; Child Health Cell</div>
+          <div style="font-size:0.7rem;color:#94a3b8;">Digitally Certified by ChildNutri AI Health Network</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="width:150px;border-bottom:1.5px dashed #64748b;margin-bottom:4px;margin-left:auto;"></div>
+          <div style="font-size:0.82rem;font-weight:700;color:#0f172a;" id="repDoctorSign">Dr. Meena Rao, MD (Pediatrics)</div>
+          <div style="font-size:0.72rem;color:#64748b;">Authorized Medical Officer &bull; Reg: 84920</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

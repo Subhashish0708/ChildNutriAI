@@ -1,98 +1,200 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ChildNutriAI — Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - ChildNutri AI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="dashboard.css"/>
 </head>
 <body>
-<div class="app-shell">
 
-  <aside class="sidebar">
-    <div class="brand">
-      <div class="brand-ring"></div>
-      <div class="brand-name">ChildNutriAI</div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-icon">&#127807;</div>
+    <div class="logo-text">ChildNutri <em>AI</em></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section-label">Main</div>
+    <a class="nav-item active" onclick="showPage('Dashboard',this)"><span class="ni">&#127968;</span> Dashboard</a>
+    <a class="nav-item" onclick="showPage('Assessments',this)"><span class="ni">&#128203;</span> Assessments<span class="nav-badge">3</span></a>
+    <a class="nav-item" onclick="showPage('Children Records',this)"><span class="ni">&#128100;</span> Children Records</a>
+    <a class="nav-item" onclick="showPage('Reports',this)"><span class="ni">&#128196;</span> Reports</a>
+    <div class="nav-section-label">Health</div>
+    <a class="nav-item" onclick="showPage('Growth Charts',this)"><span class="ni">&#128200;</span> Growth Charts</a>
+    <a class="nav-item" onclick="showPage('Nutrition Guide',this)"><span class="ni">&#127857;</span> Nutrition Guide</a>
+    <a class="nav-item" onclick="showPage('Alerts',this)"><span class="ni">&#9888;</span> Alerts<span class="nav-badge" style="background:#f4a827">5</span></a>
+    <div class="nav-section-label">Settings</div>
+    <a class="nav-item" onclick="showPage('My Profile',this)"><span class="ni">&#128100;</span> My Profile</a>
+    <a class="nav-item" onclick="showPage('Settings',this)"><span class="ni">&#9881;</span> Settings</a>
+    <a class="nav-item" onclick="confirmLogout()"><span class="ni">&#128682;</span> Logout</a>
+  </nav>
+  <div class="sidebar-footer">
+    <div class="sf-avatar">S</div>
+    <div class="sf-info">
+      <div class="sf-name">Dr. Subha</div>
+      <div class="sf-role">Pediatric Health Worker</div>
     </div>
-    <a class="nav-link" href="index.html">Home</a>
-    <a class="nav-link" href="register.html">① Register Child</a>
-    <a class="nav-link" href="upload.html">② Upload Images</a>
-    <a class="nav-link active" href="dashboard.html">③ Dashboard</a>
-    <a class="nav-link" href="about.html">About</a>
-    <a class="nav-link" href="contact.html">Contact</a>
-    <div class="nav-tag">Milestone 2 build</div>
-  </aside>
+    <span class="sf-logout" onclick="confirmLogout()" title="Logout">&#128682;</span>
+  </div>
+</aside>
 
-  <main class="main">
-    <div class="page-eyebrow">Step 5 of 5</div>
-    <h1 class="page-title">Assessment dashboard</h1>
-    <p class="page-sub">Result of the AI analysis for this child.</p>
+<div class="main">
+  <header class="topbar">
+    <div class="hamburger" onclick="openSidebar()"><span></span><span></span><span></span></div>
+    <div class="topbar-title" id="pageTitle">Dashboard</div>
+    <div class="topbar-search"><span>&#128269;</span><input type="text" placeholder="Search children, reports..."/></div>
+    <div class="icon-btn" onclick="showToast('5 new notifications')">&#128276;<span class="notif-dot"></span></div>
+    <div class="icon-btn" onclick="showToast('Refreshing data...')">&#8635;</div>
+    <div class="topbar-user">
+      <div class="tb-avatar">S</div>
+      <div><div class="tb-name">Dr. Subha</div><div class="tb-role-tag">Health Worker</div></div>
+    </div>
+  </header>
 
-    <span class="dummy-flag">● Placeholder prediction — model not yet connected</span>
+  <div class="content" id="mainContent">
+    <div class="greeting-bar">
+      <div>
+        <h2>Good Morning, <span>Dr. Subha</span> &#128075;</h2>
+        <p>3 new assessments pending &bull; Friday, 22 Aug 2025</p>
+      </div>
+      <button class="btn-quick" onclick="openModal()">&#43; New Assessment</button>
+    </div>
 
-    <div class="dash-grid">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="sc-icon green">&#128100;</div><div class="sc-body"><div class="sc-val">148</div><div class="sc-label">Total Children</div><div class="sc-change up">&#8599; +12 this month</div></div></div>
+      <div class="stat-card"><div class="sc-icon red">&#9888;</div><div class="sc-body"><div class="sc-val" style="color:#c0392b">24</div><div class="sc-label">At Risk / Malnourished</div><div class="sc-change down">&#8599; +3 this week</div></div></div>
+      <div class="stat-card"><div class="sc-icon green">&#9989;</div><div class="sc-body"><div class="sc-val" style="color:#1a7f5a">112</div><div class="sc-label">Normal / Healthy</div><div class="sc-change up">&#8599; +8 this month</div></div></div>
+      <div class="stat-card"><div class="sc-icon orange">&#128197;</div><div class="sc-body"><div class="sc-val" style="color:#b07a00">18</div><div class="sc-label">Follow-Ups Scheduled</div><div class="sc-change up">&#8601; -2 done today</div></div></div>
+    </div>
 
-      <div class="card child-id-card">
-        <div class="section-label" style="margin-top:0;">Child information</div>
-        <div style="display:flex; align-items:center; gap:14px;">
-          <div class="child-avatar" id="childInitial">R</div>
-          <div>
-            <div class="child-name" id="childName">Rahul</div>
-          </div>
+    <div class="row2">
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-title">Recent Assessments</div><div class="card-sub">Last 7 days &bull; 14 records</div></div>
+          <a class="card-action" onclick="showPage('Assessments',null)">View All &#8594;</a>
         </div>
-
-        <div class="metric-row" style="grid-template-columns: 1fr 1fr;">
-          <div class="metric">
-            <div class="metric-value" id="childAge">3</div>
-            <div class="metric-label">Age (years)</div>
-          </div>
-          <div class="metric">
-            <div class="metric-value" id="childGender">Male</div>
-            <div class="metric-label">Gender</div>
-          </div>
-        </div>
-
-        <div class="section-label">Risk</div>
-        <span class="risk-pill medium">Medium</span>
-
-        <div class="section-label">Growth status</div>
-        <p style="margin:0; font-size:14px; color:var(--ink);">Healthy progress</p>
-
-        <button type="button" class="btn-primary" id="downloadReportBtn">Download report</button>
+        <div class="tbl-wrap"><table>
+          <thead><tr><th>Child</th><th>Status</th><th>Risk</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="child-info"><div class="child-avatar" style="background:linear-gradient(135deg,#1a7f5a,#27a872)">A</div><div><div class="child-name">Aarav Sharma</div><div class="child-age">14 months &bull; Male</div></div></div></td><td><span class="badge stunted">Stunted</span></td><td><div class="risk-bar"><div class="risk-fill high"></div></div></td><td class="td-muted">21 Aug 2025</td><td><div class="action-row"><button class="tbl-btn view" onclick="showToast('Opening Aarav profile...')">View</button><button class="tbl-btn report" onclick="showToast('Generating report...')">Report</button></div></td></tr>
+            <tr><td><div class="child-info"><div class="child-avatar" style="background:linear-gradient(135deg,#e07a1c,#f4a827)">P</div><div><div class="child-name">Priya Patel</div><div class="child-age">8 months &bull; Female</div></div></div></td><td><span class="badge normal">Normal</span></td><td><div class="risk-bar"><div class="risk-fill low"></div></div></td><td class="td-muted">21 Aug 2025</td><td><div class="action-row"><button class="tbl-btn view" onclick="showToast('Opening Priya profile...')">View</button><button class="tbl-btn report" onclick="showToast('Generating report...')">Report</button></div></td></tr>
+            <tr><td><div class="child-info"><div class="child-avatar" style="background:linear-gradient(135deg,#2980b9,#3498db)">R</div><div><div class="child-name">Rahul Verma</div><div class="child-age">22 months &bull; Male</div></div></div></td><td><span class="badge severe">Severe (SAM)</span></td><td><div class="risk-bar"><div class="risk-fill high"></div></div></td><td class="td-muted">20 Aug 2025</td><td><div class="action-row"><button class="tbl-btn view" onclick="showToast('Opening Rahul profile...')">View</button><button class="tbl-btn report" onclick="showToast('Generating report...')">Report</button></div></td></tr>
+            <tr><td><div class="child-info"><div class="child-avatar" style="background:linear-gradient(135deg,#8e44ad,#9b59b6)">M</div><div><div class="child-name">Meena Devi</div><div class="child-age">11 months &bull; Female</div></div></div></td><td><span class="badge wasted">Wasted</span></td><td><div class="risk-bar"><div class="risk-fill medium"></div></div></td><td class="td-muted">19 Aug 2025</td><td><div class="action-row"><button class="tbl-btn view" onclick="showToast('Opening Meena profile...')">View</button><button class="tbl-btn report" onclick="showToast('Generating report...')">Report</button></div></td></tr>
+            <tr><td><div class="child-info"><div class="child-avatar" style="background:linear-gradient(135deg,#27ae60,#2ecc71)">K</div><div><div class="child-name">Kabir Singh</div><div class="child-age">6 months &bull; Male</div></div></div></td><td><span class="badge underweight">Underweight</span></td><td><div class="risk-bar"><div class="risk-fill medium"></div></div></td><td class="td-muted">18 Aug 2025</td><td><div class="action-row"><button class="tbl-btn view" onclick="showToast('Opening Kabir profile...')">View</button><button class="tbl-btn report" onclick="showToast('Generating report...')">Report</button></div></td></tr>
+          </tbody>
+        </table></div>
       </div>
 
       <div class="card">
-        <div class="section-label" style="margin-top:0;">Prediction</div>
-        <p class="prediction-title">Moderate Malnutrition</p>
+        <div class="card-header"><div><div class="card-title">Notifications</div><div class="card-sub">5 unread</div></div><a class="card-action">Mark all read</a></div>
+        <div class="notif-list">
+          <div class="notif-item"><div class="notif-dot-i unread"></div><div class="notif-body"><div class="notif-text"><strong>Rahul Verma</strong> flagged as SAM &mdash; immediate attention required</div><div class="notif-ts">2 hours ago</div></div></div>
+          <div class="notif-item"><div class="notif-dot-i unread"></div><div class="notif-body"><div class="notif-text">Follow-up due for <strong>Aarav Sharma</strong> today at 10:00 AM</div><div class="notif-ts">3 hours ago</div></div></div>
+          <div class="notif-item"><div class="notif-dot-i unread"></div><div class="notif-body"><div class="notif-text">Monthly report for August 2025 is ready</div><div class="notif-ts">5 hours ago</div></div></div>
+          <div class="notif-item"><div class="notif-dot-i unread"></div><div class="notif-body"><div class="notif-text"><strong>3 new children</strong> registered in your area today</div><div class="notif-ts">8 hours ago</div></div></div>
+          <div class="notif-item"><div class="notif-dot-i read"></div><div class="notif-body"><div class="notif-text">AI model updated to v2.4 with improved accuracy</div><div class="notif-ts">Yesterday</div></div></div>
+        </div>
+      </div>
+    </div>
 
-        <div class="ring-panel">
-          <div class="growth-ring-wrap">
-            <svg width="168" height="168" viewBox="0 0 168 168">
-              <circle class="ring-bg" cx="84" cy="84" r="70"></circle>
-              <circle class="ring-fg" cx="84" cy="84" r="70"></circle>
+    <div class="row3">
+      <div class="card">
+        <div class="card-header"><div><div class="card-title">Status Distribution</div><div class="card-sub">148 children total</div></div></div>
+        <div class="donut-wrap">
+          <div class="donut">
+            <svg width="120" height="120" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#f0faf5" stroke-width="18"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#27a872" stroke-width="18" stroke-dasharray="238 76" stroke-dashoffset="0" transform="rotate(-90 60 60)"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#f4a827" stroke-width="18" stroke-dasharray="31 283" stroke-dashoffset="-238" transform="rotate(-90 60 60)"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#e74c3c" stroke-width="18" stroke-dasharray="25 289" stroke-dashoffset="-269" transform="rotate(-90 60 60)"/>
+              <circle cx="60" cy="60" r="50" fill="none" stroke="#9b59b6" stroke-width="18" stroke-dasharray="19 295" stroke-dashoffset="-294" transform="rotate(-90 60 60)"/>
             </svg>
-            <div class="ring-center">
-              <div class="pct" id="confidenceValue" data-value="0.94">94%</div>
-              <div class="pct-label">Confidence</div>
-            </div>
+            <div class="donut-center"><div class="donut-num">148</div><div class="donut-lbl">Total</div></div>
+          </div>
+          <div class="legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#27a872"></div><div class="legend-label">Normal</div><div class="legend-val">112</div></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#f4a827"></div><div class="legend-label">Stunted</div><div class="legend-val">15</div></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div><div class="legend-label">Wasted</div><div class="legend-val">12</div></div>
+            <div class="legend-item"><div class="legend-dot" style="background:#9b59b6"></div><div class="legend-label">Severe SAM</div><div class="legend-val">9</div></div>
           </div>
         </div>
-
-        <div class="section-label">Nutrition recommendation</div>
-        <ul class="reco-list">
-          <li>Milk</li>
-          <li>Eggs</li>
-          <li>Green vegetables</li>
-          <li>Protein rich food</li>
-        </ul>
       </div>
 
+      <div class="card">
+        <div class="card-header"><div><div class="card-title">Monthly Assessments</div><div class="card-sub">Jan - Aug 2025</div></div></div>
+        <div class="bar-chart">
+          <div class="bar-col"><div class="bar" style="height:44px"></div><div class="bar-lbl">Jan</div></div>
+          <div class="bar-col"><div class="bar" style="height:58px"></div><div class="bar-lbl">Feb</div></div>
+          <div class="bar-col"><div class="bar" style="height:38px"></div><div class="bar-lbl">Mar</div></div>
+          <div class="bar-col"><div class="bar" style="height:70px"></div><div class="bar-lbl">Apr</div></div>
+          <div class="bar-col"><div class="bar" style="height:55px"></div><div class="bar-lbl">May</div></div>
+          <div class="bar-col"><div class="bar" style="height:80px"></div><div class="bar-lbl">Jun</div></div>
+          <div class="bar-col"><div class="bar" style="height:66px"></div><div class="bar-lbl">Jul</div></div>
+          <div class="bar-col"><div class="bar dim" style="height:48px"></div><div class="bar-lbl">Aug</div></div>
+        </div>
+        <div class="bar-legend"><div class="bl-item"><div class="bl-dot" style="background:linear-gradient(135deg,#1a7f5a,#27a872)"></div>Completed</div><div class="bl-item"><div class="bl-dot" style="background:#d4ede2"></div>In Progress</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">Quick Actions</div></div>
+        <div class="quick-grid">
+          <div class="quick-action" onclick="openModal()"><div class="qa-icon">&#128100;</div><div class="qa-label">New Assessment</div></div>
+          <div class="quick-action" onclick="showToast('Opening scanner...')"><div class="qa-icon">&#128247;</div><div class="qa-label">Photo Scan</div></div>
+          <div class="quick-action" onclick="showToast('Generating report...')"><div class="qa-icon">&#128196;</div><div class="qa-label">Generate Report</div></div>
+          <div class="quick-action" onclick="showPage('Growth Charts',null)"><div class="qa-icon">&#128200;</div><div class="qa-label">Growth Chart</div></div>
+          <div class="quick-action" onclick="showToast('Scheduling follow-up...')"><div class="qa-icon">&#128197;</div><div class="qa-label">Schedule Follow-Up</div></div>
+          <div class="quick-action" onclick="showToast('Opening nutrition guide...')"><div class="qa-icon">&#127857;</div><div class="qa-label">Nutrition Tips</div></div>
+        </div>
+      </div>
     </div>
-  </main>
+
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-title">Upcoming Follow-Ups &amp; Alerts</div><div class="card-sub">18 scheduled this week</div></div>
+        <a class="card-action" onclick="showPage('Alerts',null)">View All &#8594;</a>
+      </div>
+      <div class="alert-grid">
+        <div class="alert-item high"><div class="alert-icon">&#128680;</div><div class="alert-body"><div class="alert-name">Rahul Verma - 22 months</div><div class="alert-detail">Severe Acute Malnutrition (SAM) - Refer to hospital immediately</div><div class="alert-time">Due: Today, Urgent</div></div><span class="alert-badge high">URGENT</span></div>
+        <div class="alert-item medium"><div class="alert-icon">&#9203;</div><div class="alert-body"><div class="alert-name">Aarav Sharma - 14 months</div><div class="alert-detail">Stunting follow-up - Monthly weight &amp; height check</div><div class="alert-time">Due: Today, 10:00 AM</div></div><span class="alert-badge medium">TODAY</span></div>
+        <div class="alert-item medium"><div class="alert-icon">&#128210;</div><div class="alert-body"><div class="alert-name">Meena Devi - 11 months</div><div class="alert-detail">Wasting follow-up - MUAC measurement &amp; diet review</div><div class="alert-time">Due: 23 Aug 2025</div></div><span class="alert-badge medium">TOMORROW</span></div>
+        <div class="alert-item low"><div class="alert-icon">&#9989;</div><div class="alert-body"><div class="alert-name">Priya Patel - 8 months</div><div class="alert-detail">Routine check-up - Normal growth monitoring</div><div class="alert-time">Due: 25 Aug 2025</div></div><span class="alert-badge low">ROUTINE</span></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<script src="js/script.js"></script>
+<div class="modal-overlay" id="assessModal" onclick="handleOverlay(event)">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div class="modal-title">New Assessment</div>
+    <div class="modal-sub">Enter infant details for AI-powered malnourishment analysis</div>
+    <form onsubmit="submitAssessment(event)">
+      <div class="form-grid">
+        <div class="fg"><label>Child Name</label><input type="text" id="assessChildName" placeholder="Full name" required/></div>
+        <div class="fg"><label>Date of Birth</label><input type="date" id="assessDob" required/></div>
+        <div class="fg"><label>Gender</label><select id="assessGender" required><option value="" disabled selected>Select</option><option value="Male">Male</option><option value="Female">Female</option></select></div>
+        <div class="fg"><label>Age (months)</label><input type="number" id="assessAge" placeholder="e.g. 12" min="0" max="60" step="0.5" required/></div>
+        <div class="fg"><label>Weight (kg)</label><input type="number" id="assessWeight" step="0.01" placeholder="e.g. 7.5" required/></div>
+        <div class="fg"><label>Height (cm)</label><input type="number" id="assessHeight" step="0.1" placeholder="e.g. 68.5" required/></div>
+        <div class="fg"><label>MUAC (cm)</label><input type="number" id="assessMuac" step="0.1" placeholder="Mid-Upper Arm Circumference"/></div>
+        <div class="fg"><label>Head Circumference (cm)</label><input type="number" id="assessHeadCirc" step="0.1" placeholder="Optional"/></div>
+        <div class="fg full"><label>Parent / Guardian Name</label><input type="text" id="assessParentName" placeholder="Guardian name"/></div>
+        <div class="fg full"><label>Village / Area</label><input type="text" id="assessArea" placeholder="Location"/></div>
+        <div class="fg full"><label>Notes</label><input type="text" id="assessNotes" placeholder="Any relevant observations..."/></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-cancel" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="btn-save" id="btnRunAssessment">Run AI Assessment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast">&#10003; <span id="toastMsg"></span></div>
+
+<script src="dashboard.js"></script>
 </body>
 </html>
