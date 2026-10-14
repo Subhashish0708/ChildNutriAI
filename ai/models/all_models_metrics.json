@@ -1,0 +1,167 @@
+{
+  "production_champion": "Soft-Voting Ensemble (XGB+LGB+RF)",
+  "test_benchmarks": {
+    "XGBoost Classifier": {
+      "Accuracy": 0.98,
+      "Balanced_Accuracy": 0.9718102195514708,
+      "Macro_Precision": 0.9721792292214827,
+      "Macro_Recall": 0.9718102195514708,
+      "Macro_F1": 0.9718831190180843,
+      "Weighted_F1": 0.9799626913246251,
+      "Weighted_Precision": 0.9800809988133933,
+      "Weighted_Recall": 0.98
+    },
+    "LightGBM Classifier": {
+      "Accuracy": 0.9844444444444445,
+      "Balanced_Accuracy": 0.9792176269588783,
+      "Macro_Precision": 0.9774603174603176,
+      "Macro_Recall": 0.9792176269588783,
+      "Macro_F1": 0.9783279488878336,
+      "Weighted_F1": 0.9844976830271722,
+      "Weighted_Precision": 0.9845714285714285,
+      "Weighted_Recall": 0.9844444444444445
+    },
+    "Random Forest Classifier": {
+      "Accuracy": 0.9733333333333334,
+      "Balanced_Accuracy": 0.964232355367032,
+      "Macro_Precision": 0.962973137973138,
+      "Macro_Recall": 0.964232355367032,
+      "Macro_F1": 0.9634438740597122,
+      "Weighted_F1": 0.9733789824980204,
+      "Weighted_Precision": 0.9736640211640213,
+      "Weighted_Recall": 0.9733333333333334
+    },
+    "Soft-Voting Ensemble (XGB+LGB+RF) [PRODUCTION]": {
+      "Accuracy": 0.98,
+      "Balanced_Accuracy": 0.974538313499077,
+      "Macro_Precision": 0.9723969360429632,
+      "Macro_Recall": 0.974538313499077,
+      "Macro_F1": 0.9734019518893426,
+      "Weighted_F1": 0.9800495401042754,
+      "Weighted_Precision": 0.9802116229062814,
+      "Weighted_Recall": 0.98
+    },
+    "1292-D Multimodal Fusion Network (ARAN Benchmark Prototype)": {
+      "Accuracy": 1.0,
+      "Balanced_Accuracy": 1.0,
+      "Macro_Precision": 1.0,
+      "Macro_Recall": 1.0,
+      "Macro_F1": 1.0,
+      "Weighted_F1": 1.0,
+      "Weighted_Precision": 1.0,
+      "Weighted_Recall": 1.0,
+      "operational_tier": "experimental_prototype",
+      "prototype_notice": "Experimental prototype benchmark on 25 synthetic-labeled neonatal test samples with known target leakage. Does not represent clinical diagnostic accuracy."
+    }
+  },
+  "per_class_metrics": {
+    "Normal": {
+      "precision": 1.0,
+      "recall": 0.9902439024390244,
+      "f1-score": 0.9950980392156863,
+      "support": 205.0
+    },
+    "Severe (SAM)": {
+      "precision": 1.0,
+      "recall": 1.0,
+      "f1-score": 1.0,
+      "support": 32.0
+    },
+    "Stunted": {
+      "precision": 0.989010989010989,
+      "recall": 1.0,
+      "f1-score": 0.994475138121547,
+      "support": 90.0
+    },
+    "Underweight": {
+      "precision": 0.9433962264150944,
+      "recall": 0.9259259259259259,
+      "f1-score": 0.9345794392523364,
+      "support": 54.0
+    },
+    "Wasted": {
+      "precision": 0.9295774647887324,
+      "recall": 0.9565217391304348,
+      "f1-score": 0.9428571428571428,
+      "support": 69.0
+    }
+  },
+  "confusion_matrix": [
+    [
+      203,
+      0,
+      0,
+      0,
+      2
+    ],
+    [
+      0,
+      32,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      90,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      50,
+      3
+    ],
+    [
+      0,
+      0,
+      0,
+      3,
+      66
+    ]
+  ],
+  "stratified_5fold_cv": {
+    "accuracy_mean": 0.9823809523809525,
+    "accuracy_std": 0.006317380553057922,
+    "accuracy_folds": [
+      0.9904761904761905,
+      0.9809523809523809,
+      0.9833333333333333,
+      0.9714285714285714,
+      0.9857142857142858
+    ],
+    "weighted_f1_mean": 0.9824191527220846,
+    "weighted_f1_std": 0.006251313947271119
+  },
+  "dataset_metadata": {
+    "total_samples": 3000,
+    "train_samples": 2100,
+    "val_samples": 450,
+    "test_samples": 450,
+    "features_count": 12,
+    "feature_names": [
+      "age_months",
+      "gender_code",
+      "weight",
+      "height",
+      "muac",
+      "head_circumference",
+      "bmi",
+      "weight_to_height_ratio",
+      "muac_to_height_ratio",
+      "head_to_height_ratio",
+      "height_deficit_ratio",
+      "weight_deficit_ratio"
+    ],
+    "classes": [
+      "Normal",
+      "Severe (SAM)",
+      "Stunted",
+      "Underweight",
+      "Wasted"
+    ]
+  }
+}

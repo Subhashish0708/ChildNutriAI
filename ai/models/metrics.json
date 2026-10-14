@@ -1,0 +1,80 @@
+{
+  "champion_model": "RandomForest",
+  "test_accuracy": 0.9733333333333334,
+  "test_f1_score": 0.9733789824980204,
+  "test_precision": 0.9736640211640213,
+  "test_recall": 0.9733333333333334,
+  "validation_metrics": {
+    "RandomForest": {
+      "accuracy": 0.98,
+      "f1_score": 0.9800562512556085
+    },
+    "GradientBoosting": {
+      "accuracy": 0.9755555555555555,
+      "f1_score": 0.9756291106450778
+    },
+    "ExtraTrees": {
+      "accuracy": 0.9711111111111111,
+      "f1_score": 0.9711494234342609
+    }
+  },
+  "classes": [
+    "Normal",
+    "Severe (SAM)",
+    "Stunted",
+    "Underweight",
+    "Wasted"
+  ],
+  "num_features": 12,
+  "feature_names": [
+    "age_months",
+    "gender_code",
+    "weight",
+    "height",
+    "muac",
+    "head_circumference",
+    "bmi",
+    "weight_to_height_ratio",
+    "muac_to_height_ratio",
+    "head_to_height_ratio",
+    "height_deficit_ratio",
+    "weight_deficit_ratio"
+  ],
+  "confusion_matrix": [
+    [
+      203,
+      0,
+      0,
+      0,
+      2
+    ],
+    [
+      0,
+      32,
+      0,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      90,
+      0,
+      0
+    ],
+    [
+      0,
+      0,
+      1,
+      48,
+      5
+    ],
+    [
+      0,
+      0,
+      0,
+      4,
+      65
+    ]
+  ]
+}

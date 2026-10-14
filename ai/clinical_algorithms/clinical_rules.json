@@ -1,0 +1,181 @@
+{
+  "safety_disclaimer": "ChildNutri AI is a screening and clinical decision-support prototype. It does not provide a medical diagnosis or replace assessment by a qualified healthcare professional. Clinical management should follow current applicable clinical guidelines and local protocols.",
+  "rules": [
+    {
+      "rule_id": "RULE_RED_001",
+      "description": "Emergency triage for bilateral pitting edema (Kwashiorkor hallmark)",
+      "condition": "has_bilateral_edema == true",
+      "output": {
+        "triage_level": "URGENT (RED)",
+        "facility_referral": "Nutrition Rehabilitation Centre (NRC) / Hospital Inpatient",
+        "action_advisory": "Urgent clinical evaluation/referral recommended. Inpatient medical stabilization should follow current WHO/national clinical guidelines under medical officer supervision.",
+        "referral_recommended": true,
+        "treatment_prescription": false
+      },
+      "age_range": "0-60 months",
+      "source": "WHO Guideline: Updates on the management of severe acute malnutrition in infants and children (2013)",
+      "source_status": "verified",
+      "last_reviewed": "2026-09-25"
+    },
+    {
+      "rule_id": "RULE_RED_002",
+      "description": "Severe Acute Malnutrition (SAM) emergency triage by MUAC with medical complications or failed appetite",
+      "condition": "muac < 11.5 and (appetite_test_pass == false or medical_complications == true)",
+      "output": {
+        "triage_level": "URGENT (RED)",
+        "facility_referral": "Nutrition Rehabilitation Centre (NRC) / Hospital Inpatient",
+        "action_advisory": "Urgent clinical evaluation/referral recommended. Child requires immediate inpatient stabilization for complicated severe acute malnutrition.",
+        "referral_recommended": true,
+        "treatment_prescription": false
+      },
+      "age_range": "6-59 months",
+      "source": "WHO/UNICEF Joint Statement: Child growth standards and identification of severe acute malnutrition (2009)",
+      "source_status": "verified",
+      "last_reviewed": "2026-09-25"
+    },
+    {
+      "rule_id": "RULE_RED_003",
+      "description": "Severe Acute Malnutrition (SAM) triage by MUAC without medical complications (Uncomplicated SAM)",
+      "condition": "muac < 11.5 and appetite_test_pass == true and medical_complications == false",
+      "output": {
+        "triage_level": "URGENT (RED)",
+        "facility_referral": "Outpatient Therapeutic Programme (OTP) / Primary Health Centre",
+        "action_advisory": "Urgent clinical evaluation/referral recommended. Outpatient therapeutic management should follow national CMAM/IMAM guidelines under qualified supervision.",
+        "referral_recommended": true,
+        "treatment_prescription": false
+      },
+      "age_range": "6-59 months",
+      "source": "WHO/UNICEF Joint Statement: Child growth standards and identification of severe acute malnutrition (2009)",
+      "source_status": "verified",
+      "last_reviewed": "2026-09-25"
+    },
+    {
+      "rule_id": "RULE_RED_004",
+      "description": "Severe Wasting diagnostic threshold by Weight-for-Height/Length Z-score",
+      "condition": "whz < -3.0",
+      "output": {
+        "triage_level": "URGENT (RED)",
+        "facility_referral": "Nutrition Rehabilitation Centre (NRC) / Medical Officer",
+        "action_advisory": "Urgent clinical evaluation/referral recommended. WHZ below -3 SD denotes severe wasting requiring clinical workup and therapeutic nutrition support.",
+        "referral_recommended": true,
+        "treatment_prescription": false
+      },
+      "age_range": "0-60 months",
+      "source": "WHO Child Growth Standards (2006) - Weight-for-length/height",
+      "source_status": "verified",
+      "last_reviewed": "2026-09-25"
+    },
+    {
+      "rule_id": "RULE_RED_005",
+      "description": "Acute growth degradation / rapid weight loss velocity",
+      "condition": "delta_weight_kg < -0.20 and days <= 30",
+      "output": {
+        "triage_level": "URGENT (RED)",
+        "facility_referral": "Primary Health Centre / Pediatric Clinic",
+        "action_advisory": "Concerning growth trajectory detected. Rapid weight loss warrants prompt clinical evaluation to rule out acute infectious illness or dehydration.",
+        "referral_recommended": true,
+        "treatment_prescription": false
+      },
+      "age_range": "0-60 months",
+      "source": "WHO Integrated Management of Childhood Illness (IMCI)",
+      "source_status": "verified",
+      "last_reviewed": "2026-09-25"
+    },
+    {
+      "rule_id": "RULE_AMB_001",
+      "description": "Moderate Acute Malnutrition (MAM) monitoring threshold by MUAC",
+      "condition": "11.5 <= muac < 12.5",
+      "output": {
+        "triage_level": "MONITOR (YELLOW)",
+        "facility_referral": "Anganwadi / Supplementary Nutrition Center / PHC",
+        "action_advisory": "Targeted supplementary nutritional support and dietary counseling recommended. Biweekly growth monitoring by frontline health worker.",
+        "referral_recommended": false,
+        "treatment_prescription": false
+      },
+      "age_range": "6-59 months",
+      "source": "WHO/UNICEF Joint Statement on Child Malnutrition (2009)",
+      "source_status": "verified",
+      "last_reviewed": "2026-09-25"
+    },
+    {
+      "rule_id": "RULE_AMB_002",
+      "description": "Moderate Wasting threshold by Weight-for-Height/Length Z-score",
+      "condition": "-3.0 <= whz < -2.0",
+      "output": {
+        "triage_level": "MONITOR (YELLOW)",
+        "facility_referral": "Primary Health Centre / Community Nutrition Center",
+        "action_advisory": "Nutritional counseling and growth monitoring recommended. Review feeding practices and schedule clinical re-evaluation within 14 days.",
+        "referral_recommended": false,
+        "treatment_prescription": false
+      },
+      "age_range": "0-60 months",
+      "source": "WHO Child Growth Standards (2006)",
+      "source_status": "verified",
+      "last_reviewed": "2026-09-25"
+    },
+    {
+      "rule_id": "RULE_AMB_003",
+      "description": "Stunting (chronic undernutrition) threshold by Height-for-Age Z-score",
+      "condition": "haz < -2.0",
+      "output": {
+        "triage_level": "MONITOR (YELLOW)",
+        "facility_referral": "Community Health Post / Anganwadi",
+        "action_advisory": "Linear growth deficit noted. Promote age-appropriate complementary feeding with diverse animal-source and fortified foods; monitor growth monthly.",
+        "referral_recommended": false,
+        "treatment_prescription": false
+      },
+      "age_range": "0-60 months",
+      "source": "WHO Child Growth Standards (2006)",
+      "source_status": "verified",
+      "last_reviewed": "2026-09-25"
+    },
+    {
+      "rule_id": "RULE_AMB_004",
+      "description": "Underweight threshold by Weight-for-Age Z-score",
+      "condition": "waz < -2.0",
+      "output": {
+        "triage_level": "MONITOR (YELLOW)",
+        "facility_referral": "Community Health Post / Anganwadi",
+        "action_advisory": "Weight deficit relative to age. Review feeding frequency, calorie density, and recent illness history; schedule follow-up within 14 days.",
+        "referral_recommended": false,
+        "treatment_prescription": false
+      },
+      "age_range": "0-60 months",
+      "source": "WHO Child Growth Standards (2006)",
+      "source_status": "verified",
+      "last_reviewed": "2026-09-25"
+    },
+    {
+      "rule_id": "RULE_AMB_005",
+      "description": "Longitudinal growth faltering / weight stagnation",
+      "condition": "delta_weight_kg <= 0.05 and months >= 1.0",
+      "output": {
+        "triage_level": "MONITOR (YELLOW)",
+        "facility_referral": "Primary Health Centre",
+        "action_advisory": "Weight trajectory is flat across consecutive evaluations. Early growth faltering identified before acute wasting manifests; review feeding adequacy.",
+        "referral_recommended": false,
+        "treatment_prescription": false
+      },
+      "age_range": "0-60 months",
+      "source": "WHO Guidelines on Growth Monitoring and Promotion",
+      "source_status": "verified",
+      "last_reviewed": "2026-09-25"
+    },
+    {
+      "rule_id": "RULE_GRN_001",
+      "description": "Standard pediatric growth monitoring for healthy parameters",
+      "condition": "whz >= -2.0 and haz >= -2.0 and waz >= -2.0 and (muac == null or muac >= 12.5) and has_bilateral_edema == false",
+      "output": {
+        "triage_level": "ROUTINE (GREEN)",
+        "facility_referral": "Community Health Post / Home",
+        "action_advisory": "Anthropometric parameters track within normal WHO growth standards. Continue exclusive breastfeeding (0-6m) or balanced complementary feeding and routine immunizations.",
+        "referral_recommended": false,
+        "treatment_prescription": false
+      },
+      "age_range": "0-60 months",
+      "source": "WHO Infant and Young Child Feeding (IYCF) Guidelines",
+      "source_status": "verified",
+      "last_reviewed": "2026-09-25"
+    }
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "model_name": "EfficientNetB0NeonatalRegressor",
+  "dataset": "Neonatal Anthropometric Image Dataset for Computer Vision-Based Growth Analysis",
+  "attribution": "Anurag Singh & Dr. Rashi Agarwal (2026)",
+  "clinical_sites": [
+    "Combined District Hospital, Manjhanpur, Kaushambi, UP, India",
+    "Madhuraj Hospital, Kanpur, UP, India"
+  ],
+  "training_metadata": {
+    "epochs": 5,
+    "batch_size": 16,
+    "learning_rate": 0.001,
+    "train_images": 151,
+    "val_images": 38,
+    "test_images": 25
+  },
+  "test_metrics": {
+    "weight_g": {
+      "count": 25,
+      "mae": 656.852,
+      "rmse": 777.078,
+      "median_absolute_error": 690.821,
+      "r2_score": -0.1217,
+      "ground_truth_mean": 2128.0,
+      "ground_truth_std": 733.71
+    },
+    "body_length_cm": {
+      "count": 25,
+      "mae": 1.902,
+      "rmse": 2.769,
+      "median_absolute_error": 1.053,
+      "r2_score": -0.1546,
+      "ground_truth_mean": 46.0,
+      "ground_truth_std": 2.58
+    },
+    "head_circumference_cm": {
+      "count": 25,
+      "mae": 1.651,
+      "rmse": 1.924,
+      "median_absolute_error": 1.416,
+      "r2_score": 0.2871,
+      "ground_truth_mean": 30.08,
+      "ground_truth_std": 2.28
+    },
+    "chest_girth_cm": {
+      "count": 17,
+      "mae": 1.193,
+      "rmse": 1.522,
+      "median_absolute_error": 1.18,
+      "r2_score": 0.1614,
+      "ground_truth_mean": 31.06,
+      "ground_truth_std": 1.66
+    },
+    "arm_length_cm": {
+      "count": 25,
+      "mae": 1.949,
+      "rmse": 2.345,
+      "median_absolute_error": 1.286,
+      "r2_score": -1.461,
+      "ground_truth_mean": 18.08,
+      "ground_truth_std": 1.49
+    },
+    "leg_length_cm": {
+      "count": 25,
+      "mae": 1.714,
+      "rmse": 2.061,
+      "median_absolute_error": 1.66,
+      "r2_score": -0.9039,
+      "ground_truth_mean": 19.64,
+      "ground_truth_std": 1.49
+    }
+  },
+  "val_metrics": {
+    "weight_g": {
+      "count": 38,
+      "mae": 522.367,
+      "rmse": 614.069,
+      "median_absolute_error": 596.537,
+      "r2_score": 0.0163,
+      "ground_truth_mean": 2438.16,
+      "ground_truth_std": 619.13
+    },
+    "body_length_cm": {
+      "count": 38,
+      "mae": 3.031,
+      "rmse": 3.749,
+      "median_absolute_error": 2.058,
+      "r2_score": 0.0943,
+      "ground_truth_mean": 43.71,
+      "ground_truth_std": 3.94
+    },
+    "head_circumference_cm": {
+      "count": 38,
+      "mae": 1.717,
+      "rmse": 2.125,
+      "median_absolute_error": 1.641,
+      "r2_score": 0.4564,
+      "ground_truth_mean": 30.18,
+      "ground_truth_std": 2.88
+    },
+    "chest_girth_cm": {
+      "count": 25,
+      "mae": 1.844,
+      "rmse": 2.595,
+      "median_absolute_error": 1.132,
+      "r2_score": -0.7638,
+      "ground_truth_mean": 29.32,
+      "ground_truth_std": 1.95
+    },
+    "arm_length_cm": {
+      "count": 38,
+      "mae": 1.105,
+      "rmse": 1.337,
+      "median_absolute_error": 0.976,
+      "r2_score": 0.479,
+      "ground_truth_mean": 17.13,
+      "ground_truth_std": 1.85
+    },
+    "leg_length_cm": {
+      "count": 38,
+      "mae": 1.234,
+      "rmse": 1.433,
+      "median_absolute_error": 1.006,
+      "r2_score": 0.683,
+      "ground_truth_mean": 20.0,
+      "ground_truth_std": 2.54
+    }
+  }
+}
