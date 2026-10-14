@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>New Assessment · ChildNutri AI</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/dashboard.html"><span class="brand-mark">CN</span> ChildNutri AI</a>
+  <div class="nav-links">
+    <a href="/dashboard.html" data-i18n="dashboard">Dashboard</a>
+    <a href="/photo-scan.html" data-i18n="photo_ai">Photo AI</a>
+    <a href="/ocr.html" data-i18n="ocr_scan">OCR scan</a>
+    <a href="/resources.html" data-i18n="resources">Resources</a>
+    <button id="lang-toggle" onclick="toggleLanguage()" style="background:transparent;border:1.5px solid #00d4aa;color:#00d4aa;border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;font-weight:600;margin-left:12px;transition:all 0.2s;" onmouseover="this.style.background='#00d4aa';this.style.color='#0d2818';" onmouseout="this.style.background='transparent';this.style.color='#00d4aa';">हिंदी</button>
+    <button id="logout-btn" data-i18n="log_out">Log out</button>
+  </div>
+</nav>
+
+<div class="app-shell">
+  <div class="section">
+    <!-- Progress bar -->
+    <div class="progress-bar mb" style="margin-bottom:20px;">
+      <div class="progress-fill" id="progress-fill" style="width:16.6%"></div>
+    </div>
+
+    <form class="wizard" id="assessment-form">
+      <!-- Sidebar -->
+      <aside class="steps-sidebar">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--muted);margin-bottom:8px;padding:0 4px;">Steps</div>
+        <button type="button" class="step-tab active" data-step="0" data-i18n="step_child"><span class="step-num">1</span>Child</button>
+        <button type="button" class="step-tab" data-step="1" data-i18n="step_measurements"><span class="step-num">2</span>Measurements</button>
+        <button type="button" class="step-tab" data-step="2" data-i18n="step_feeding"><span class="step-num">3</span>Feeding</button>
+        <button type="button" class="step-tab" data-step="3" data-i18n="step_health"><span class="step-num">4</span>Health</button>
+        <button type="button" class="step-tab" data-step="4" data-i18n="step_home"><span class="step-num">5</span>Home</button>
+        <button type="button" class="step-tab" data-step="5" data-i18n="step_review"><span class="step-num">6</span>Review</button>
+        <hr class="divider" style="margin-top:12px;">
+        <p class="muted" style="font-size:11px;padding:4px 4px 0;line-height:1.5;" data-i18n="all_data_private">All data stays on your device and server. Not shared with third parties.</p>
+      </aside>
+
+      <!-- Content -->
+      <div class="glass panel">
+        <!-- Step 0: Child -->
+        <div class="step-panel active" data-step-panel="0">
+          <div>
+            <h2 data-i18n="select_child">Select child</h2>
+            <p class="muted" style="font-size:13px;margin-top:4px" data-i18n="select_child_desc">Choose a registered child or go to the dashboard to add one first.</p>
+          </div>
+          <label><span data-i18n="child_name">Child</span><select name="child_id" id="child-select" required></select></label>
+          <label><span data-i18n="measurement_date">Measurement date</span><input name="measurement_date" type="date" required id="meas-date"></label>
+          <div class="step-actions">
+            <button type="button" class="primary" data-next data-i18n="next_step">Next step →</button>
+          </div>
+        </div>
+
+        <!-- Step 1: Measurements -->
+        <div class="step-panel" data-step-panel="1">
+          <div>
+            <h2 data-i18n="measurements">Anthropometric measurements</h2>
+            <p class="muted" style="font-size:13px;margin-top:4px" data-i18n="measurements_desc">Use calibrated equipment. Record to one decimal place.</p>
+          </div>
+          <div class="two">
+            <label><span data-i18n="weight_kg">Weight (kg) *</span><input name="weight_kg" type="number" min="1.5" max="30" step="0.01" placeholder="9.5" required></label>
+            <label><span data-i18n="height_cm">Height / length (cm) *</span><input name="height_cm" type="number" min="40" max="125" step="0.1" placeholder="76.0" required></label>
+          </div>
+          <div class="two">
+            <label><span data-i18n="muac_cm">MUAC (cm)</span><input name="muac_cm" type="number" min="7" max="25" step="0.1" placeholder="13.5"></label>
+            <label><span data-i18n="head_circ">Head circumference (cm)</span><input name="head_circ_cm" type="number" min="25" max="55" step="0.1" placeholder="46.0"></label>
+          </div>
+          <label><span data-i18n="measured_by">Measured by</span>
+            <select name="how_measured">
+              <option value="doctor" data-i18n="opt_doctor">Doctor / Nurse</option>
+              <option value="anganwadi" data-i18n="opt_anganwadi">Anganwadi worker</option>
+              <option value="self" data-i18n="opt_self">Self-measured (parent)</option>
+            </select>
+          </label>
+          <label class="checkbox-row"><input name="bilateral_edema" type="checkbox"> <span data-i18n="oedema">Bilateral pitting oedema (swelling of both feet)</span></label>
+          <div class="step-actions">
+            <button type="button" data-back data-i18n="back">← Back</button>
+            <button type="button" class="primary" data-next data-i18n="next_step">Next step →</button>
+          </div>
+        </div>
+
+        <!-- Step 2: Feeding -->
+        <div class="step-panel" data-step-panel="2">
+          <div>
+            <h2 data-i18n="feeding">Feeding practices</h2>
+            <p class="muted" style="font-size:13px;margin-top:4px" data-i18n="feeding_desc">Recall from yesterday and typical weekly pattern.</p>
+          </div>
+          <div class="two">
+            <label><span data-i18n="breastfeeding">Currently breastfeeding?</span>
+              <select name="breastfed">
+                <option value="true" data-i18n="opt_yes">Yes</option>
+                <option value="false" data-i18n="opt_no">No</option>
+              </select>
+            </label>
+            <label><span data-i18n="appetite">Appetite</span>
+              <select name="appetite">
+                <option value="good" data-i18n="opt_good">Good</option>
+                <option value="poor" data-i18n="opt_poor">Poor</option>
+                <option value="refuses" data-i18n="opt_refuses">Refuses food</option>
+              </select>
+            </label>
+          </div>
+          <div class="two">
+            <label><span data-i18n="food_groups">Food groups eaten yesterday (0–8)</span><input name="food_groups_yesterday" type="number" min="0" max="8" placeholder="4"></label>
+            <label><span data-i18n="meals_per_day">Meals per day</span><input name="meals_per_day" type="number" min="0" max="8" placeholder="3"></label>
+          </div>
+          <div class="step-actions">
+            <button type="button" data-back data-i18n="back">← Back</button>
+            <button type="button" class="primary" data-next data-i18n="next_step">Next step →</button>
+          </div>
+        </div>
+
+        <!-- Step 3: Health -->
+        <div class="step-panel" data-step-panel="3">
+          <div>
+            <h2 data-i18n="health">Health history</h2>
+            <p class="muted" style="font-size:13px;margin-top:4px" data-i18n="health_desc">Recent illness and immunisation status.</p>
+          </div>
+          <div class="two">
+            <label class="checkbox-row"><input name="diarrhoea_2w" type="checkbox"> <span data-i18n="diarrhoea">Diarrhoea in last 2 weeks</span></label>
+            <label class="checkbox-row"><input name="fever_2w" type="checkbox"> <span data-i18n="fever">Fever in last 2 weeks</span></label>
+          </div>
+          <label><span data-i18n="vaccination">Vaccination status</span>
+            <select name="vaccination_status">
+              <option value="full" data-i18n="opt_vax_full">Fully vaccinated (age-appropriate)</option>
+              <option value="partial" data-i18n="opt_vax_partial">Partially vaccinated</option>
+              <option value="none" data-i18n="opt_vax_none">No vaccinations</option>
+            </select>
+          </label>
+          <label><span data-i18n="food_allergy">Food allergy (if any)</span><input name="food_allergy" placeholder="e.g. peanut, dairy" data-i18n="food_allergy"></label>
+          <label><span data-i18n="known_illness">Known illness or diagnosis</span><textarea name="known_illness" placeholder="e.g. cerebral palsy, recurrent RTI…" data-i18n="known_illness"></textarea></label>
+          <div class="step-actions">
+            <button type="button" data-back data-i18n="back">← Back</button>
+            <button type="button" class="primary" data-next data-i18n="next_step">Next step →</button>
+          </div>
+        </div>
+
+        <!-- Step 4: Home -->
+        <div class="step-panel" data-step-panel="4">
+          <div>
+            <h2 data-i18n="home_context">Family &amp; home context</h2>
+            <p class="muted" style="font-size:13px;margin-top:4px" data-i18n="home_context_desc">Socio-economic context for the ML risk model.</p>
+          </div>
+          <div class="two">
+            <label><span data-i18n="mother_education">Mother / caregiver education</span>
+              <select name="mother_education">
+                <option value="none" data-i18n="opt_edu_none">No formal education</option>
+                <option value="primary" data-i18n="opt_edu_primary">Primary</option>
+                <option value="secondary" data-i18n="opt_edu_secondary">Secondary / 10th</option>
+                <option value="higher" data-i18n="opt_edu_higher">Higher education</option>
+              </select>
+            </label>
+            <label><span data-i18n="mother_age">Mother age</span><input name="mother_age" type="number" min="12" max="60" placeholder="26"></label>
+          </div>
+          <div class="two">
+            <label><span data-i18n="wealth_score">Household wealth score (1–5)</span><input name="wealth_score" type="number" min="1" max="5" placeholder="3"></label>
+            <label><span data-i18n="area">Area</span>
+              <select name="rural_urban">
+                <option value="Urban" data-i18n="opt_urban">Urban</option>
+                <option value="Rural" data-i18n="opt_rural">Rural</option>
+              </select>
+            </label>
+          </div>
+          <label><span data-i18n="food_preference">Food preference</span>
+            <select name="food_preference">
+              <option value="non-veg" data-i18n="opt_nonveg">Non-vegetarian</option>
+              <option value="veg" data-i18n="opt_veg">Vegetarian</option>
+            </select>
+          </label>
+          <div class="step-actions">
+            <button type="button" data-back data-i18n="back">← Back</button>
+            <button type="button" class="primary" data-next data-i18n="next_step">Next step →</button>
+          </div>
+        </div>
+
+        <!-- Step 5: Review -->
+        <div class="step-panel" data-step-panel="5">
+          <div>
+            <h2 data-i18n="review">Review &amp; submit</h2>
+            <p class="muted" style="font-size:13px;margin-top:4px" data-i18n="review_desc">Submitting will run WHO z-score computation, ML risk scoring, and diet plan generation instantly.</p>
+          </div>
+          <div class="alert warning">
+            <span>⚠</span>
+            <div data-i18n="screening_tool_warning">Screening tool. Results support clinical judgment but do not replace a healthcare professional's assessment.</div>
+          </div>
+          <div id="review-summary" class="glass panel-sm" style="font-size:13px;color:var(--muted);">—</div>
+          <button class="primary btn lg" type="submit" id="submit-btn" data-i18n="run_assessment">Run assessment ✓</button>
+          <p class="message" id="assess-msg"></p>
+          <div class="step-actions">
+            <button type="button" data-back data-i18n="back">← Back</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/hi.js"></script>
+<script src="/js/lang.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

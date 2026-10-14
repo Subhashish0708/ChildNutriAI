@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Create account · ChildNutri AI</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:24px 0;position:relative;">
+<div style="position:absolute;top:20px;right:20px;">
+  <button id="lang-toggle" onclick="toggleLanguage()" style="background:transparent;border:1.5px solid #00d4aa;color:#00d4aa;border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='#00d4aa';this.style.color='#0d2818';" onmouseout="this.style.background='transparent';this.style.color='#00d4aa';">हिंदी</button>
+</div>
+<a class="brand" href="/index.html" style="margin-bottom:32px;text-decoration:none;">
+  <span class="brand-mark">CN</span> ChildNutri AI
+</a>
+<div class="glass panel fade-up" style="width:min(480px,92vw);">
+  <h2 style="margin-bottom:6px;" data-i18n="sign_up">Create your account</h2>
+  <p class="muted" style="margin-bottom:24px;font-size:14px;">Free · No credit card required</p>
+  <form class="form" id="signup-form">
+    <label>Full name<input id="full_name" type="text" placeholder="Dr. Ananya Sharma" autocomplete="name" required></label>
+    <label>Email address<input id="email" type="email" placeholder="you@example.com" autocomplete="email" required></label>
+    <label>Role
+      <select id="role">
+        <option value="doctor">Doctor / Clinician</option>
+        <option value="anganwadi">Anganwadi Worker</option>
+        <option value="parent">Parent / Guardian</option>
+        <option value="researcher">Researcher</option>
+      </select>
+    </label>
+    <label>Password<input id="password" type="password" placeholder="Min 8 characters" autocomplete="new-password" required minlength="8"></label>
+    <label>Confirm password<input id="confirm" type="password" placeholder="Repeat password" autocomplete="new-password" required minlength="8"></label>
+    <button class="primary" type="submit" id="signup-btn" data-i18n="sign_up">Create account</button>
+    <p class="message" id="msg"></p>
+  </form>
+  <hr class="divider mt" style="margin:20px 0;">
+  <p class="muted center" style="font-size:13px;">Have an account? <a href="/login.html" style="color:var(--green);font-weight:600;" data-i18n="sign_in">Sign in</a></p>
+</div>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/hi.js"></script>
+<script src="/js/lang.js"></script>
+<script>
+document.getElementById('signup-form').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const msg=document.getElementById('msg');
+  const btn=document.getElementById('signup-btn');
+  if(document.getElementById('password').value!==document.getElementById('confirm').value){
+    msg.className='message error';msg.textContent='Passwords do not match.';return;
+  }
+  btn.disabled=true;btn.textContent='Creating…';
+  try{
+    await API.post('/api/auth/signup',{
+      full_name:document.getElementById('full_name').value,
+      email:document.getElementById('email').value,
+      role:document.getElementById('role').value,
+      password:document.getElementById('password').value
+    });
+    location.href='/dashboard.html';
+  }catch(err){
+    msg.className='message error';msg.textContent=err.message;
+  }finally{btn.disabled=false;btn.textContent='Create account';}
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Log in · ChildNutri AI</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;position:relative;">
+<div style="position:absolute;top:20px;right:20px;">
+  <button id="lang-toggle" onclick="toggleLanguage()" style="background:transparent;border:1.5px solid #00d4aa;color:#00d4aa;border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;font-weight:600;transition:all 0.2s;" onmouseover="this.style.background='#00d4aa';this.style.color='#0d2818';" onmouseout="this.style.background='transparent';this.style.color='#00d4aa';">हिंदी</button>
+</div>
+<a class="brand" href="/index.html" style="margin-bottom:32px;text-decoration:none;">
+  <span class="brand-mark">CN</span> ChildNutri AI
+</a>
+<div class="glass panel fade-up" style="width:min(420px,92vw);">
+  <h2 style="margin-bottom:6px;" data-i18n="sign_in">Welcome back</h2>
+  <p class="muted" style="margin-bottom:24px;font-size:14px;">Sign in to continue screening</p>
+  <form class="form" id="login-form">
+    <label>Email address<input id="email" type="email" placeholder="dr.subha@childnutri.org" autocomplete="email" required></label>
+    <label>Password<input id="password" type="password" placeholder="••••••••" autocomplete="current-password" required></label>
+    <button class="primary" type="submit" id="login-btn" data-i18n="sign_in">Sign in</button>
+    <p class="message" id="msg"></p>
+  </form>
+  <hr class="divider mt" style="margin:20px 0;">
+  <p class="muted center" style="font-size:13px;">No account? <a href="/signup.html" style="color:var(--green);font-weight:600;" data-i18n="sign_up">Create one free</a></p>
+</div>
+<p class="muted mt" style="font-size:12px;text-align:center;max-width:360px;">Demo — Doctor: <code>dr.subha@childnutri.org</code> / <code>Doctor@123</code><br>Parent: <code>priya.sharma@email.com</code> / <code>Parent@123</code></p>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/hi.js"></script>
+<script src="/js/lang.js"></script>
+<script>
+document.getElementById('login-form').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const btn=document.getElementById('login-btn');
+  const msg=document.getElementById('msg');
+  btn.disabled=true;btn.textContent='Signing in…';
+  try{
+    await API.post('/api/auth/login',{email:document.getElementById('email').value,password:document.getElementById('password').value});
+    location.href='/dashboard.html';
+  }catch(err){
+    msg.className='message error';msg.textContent=err.message;
+  }finally{btn.disabled=false;btn.textContent='Sign in';}
+});
+</script>
+</body>
+</html>

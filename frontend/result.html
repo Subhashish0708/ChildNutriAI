@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Result · ChildNutri AI</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/dashboard.html"><span class="brand-mark">CN</span> ChildNutri AI</a>
+  <div class="nav-links">
+    <a href="/dashboard.html" data-i18n="dashboard">Dashboard</a>
+    <a href="/assess.html" class="btn primary" data-i18n="new_assessment">＋ New assessment</a>
+    <a href="/photo-scan.html" data-i18n="photo_ai">Photo AI</a>
+    <a href="/ocr.html" data-i18n="ocr_scan">OCR scan</a>
+    <a href="/resources.html" data-i18n="resources">Resources</a>
+    <button id="lang-toggle" onclick="toggleLanguage()" style="background:transparent;border:1.5px solid #00d4aa;color:#00d4aa;border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;font-weight:600;margin-left:12px;transition:all 0.2s;" onmouseover="this.style.background='#00d4aa';this.style.color='#0d2818';" onmouseout="this.style.background='transparent';this.style.color='#00d4aa';">हिंदी</button>
+    <button id="logout-btn" data-i18n="log_out">Log out</button>
+  </div>
+</nav>
+
+<div class="app-shell">
+  <div class="section">
+    <p class="message" id="global-msg"></p>
+
+    <!-- HISTORY VIEW -->
+    <div id="history-view" class="hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+        <h1 data-i18n="timeline_title">Growth trajectory (WAZ)</h1>
+        <a class="btn primary" id="new-assess-link" href="/assess.html" data-i18n="new_screening">New screening</a>
+      </div>
+      <!-- Chart -->
+      <div class="glass panel mb">
+        <h3 style="margin-bottom:16px;">Z-score trend</h3>
+        <div class="chart-wrap" style="height:240px;">
+          <canvas id="history-chart"></canvas>
+        </div>
+      </div>
+      <div class="timeline" id="history-list"></div>
+    </div>
+
+    <!-- SINGLE RESULT VIEW -->
+    <div id="result-view" class="hidden">
+      <!-- ORB + HEADLINE -->
+      <div class="result-hero glass panel mb glass-glow fade-up">
+        <div class="orb-wrap">
+          <div class="orb" id="result-orb"><div class="orb-inner"></div></div>
+        </div>
+        <div>
+          <div id="result-badge" class="badge mb-sm" style="width:fit-content">Loading</div>
+          <h1 id="result-headline" style="margin-bottom:8px;">—</h1>
+          <p class="muted" id="result-confidence"></p>
+          <p id="result-explanation" style="margin-top:8px;font-size:15px;line-height:1.6;"></p>
+          <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+            <a class="btn primary" id="pdf-link" href="#" data-i18n="download_pdf">Download PDF report</a>
+            <a class="btn" href="/assess.html" data-i18n="new_screening">New screening</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Z-SCORES + RISK -->
+      <div class="result-grid mb fade-up-1">
+        <div class="glass panel">
+          <h3 style="margin-bottom:14px;" data-i18n="who_zscores">WHO Z-scores</h3>
+          <div id="zscore-display" class="stack-sm"></div>
+        </div>
+        <div class="glass panel">
+          <h3 style="margin-bottom:14px;" data-i18n="future_risk">Future risk</h3>
+          <div id="future-risk-display"></div>
+        </div>
+        <div class="glass panel">
+          <h3 style="margin-bottom:14px;" data-i18n="risk_reasons">Risk reasons</h3>
+          <ul class="list-bullet" id="risk-reasons"></ul>
+        </div>
+      </div>
+
+      <!-- DIET PLAN ACCORDION -->
+      <div class="glass panel mb fade-up-2">
+        <h2 style="margin-bottom:4px;" data-i18n="diet_plan">Diet &amp; care plan</h2>
+        <p class="muted" style="font-size:13px;margin-bottom:20px;">Tailored for age group and food preference.</p>
+        <div id="diet-accordion"></div>
+      </div>
+
+      <!-- GROWTH CHART (if history available) -->
+      <div class="glass panel fade-up-3" id="growth-chart-wrap" style="display:none;">
+        <h3 style="margin-bottom:16px;">Growth chart — this child</h3>
+        <div class="chart-wrap"><canvas id="growth-chart"></canvas></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/hi.js"></script>
+<script src="/js/lang.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>

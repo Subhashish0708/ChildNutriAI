@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Resources · ChildNutri AI</title>
+  <meta name="description" content="Curated nutrition education articles for parents, caregivers, and health workers — feeding, warning signs, government schemes, prevention.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/dashboard.html"><span class="brand-mark">CN</span> ChildNutri AI</a>
+  <div class="nav-links">
+    <a href="/dashboard.html" data-i18n="dashboard">Dashboard</a>
+    <a href="/assess.html" class="btn primary" data-i18n="new_assessment">＋ New assessment</a>
+    <a href="/photo-scan.html" data-i18n="photo_ai">Photo AI</a>
+    <a href="/ocr.html" data-i18n="ocr_scan">OCR scan</a>
+    <a href="/resources.html" class="active" data-i18n="resources">Resources</a>
+    <button id="lang-toggle" onclick="toggleLanguage()" style="background:transparent;border:1.5px solid #00d4aa;color:#00d4aa;border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;font-weight:600;margin-left:12px;transition:all 0.2s;" onmouseover="this.style.background='#00d4aa';this.style.color='#0d2818';" onmouseout="this.style.background='transparent';this.style.color='#00d4aa';">हिंदी</button>
+    <button id="logout-btn" data-i18n="log_out">Log out</button>
+  </div>
+</nav>
+
+<div class="app-shell">
+  <section class="section">
+    <div class="fade-up mb-lg">
+      <div class="badge info mb-sm" style="width:fit-content">Evidence-based</div>
+      <h1 data-i18n="resources">Nutrition resources</h1>
+      <p class="lede">Original summaries with source links for parents, Anganwadi workers, and clinicians.</p>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="glass panel-sm mb" style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+      <input id="search-input" placeholder="Search articles…" style="flex:1;min-width:160px;" oninput="filterCards()">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;" id="topic-filters">
+        <button class="btn sm active-filter" onclick="setTopic('')" id="f-all">All</button>
+        <button class="btn sm" onclick="setTopic('Feeding')" id="f-feeding" data-i18n="feeding">Feeding</button>
+        <button class="btn sm" onclick="setTopic('Symptoms')" id="f-symptoms">Symptoms</button>
+        <button class="btn sm" onclick="setTopic('Prevention')" id="f-prevention">Prevention</button>
+        <button class="btn sm" onclick="setTopic('Schemes')" id="f-schemes">Schemes</button>
+        <button class="btn sm" onclick="setTopic('Emergency')" id="f-emergency" style="border-color:rgba(239,68,68,0.4);color:#fca5a5;">🚨 Emergency</button>
+      </div>
+    </div>
+
+    <div class="cards-grid" id="resources-list">
+      <div class="spinner mt"></div>
+    </div>
+  </section>
+</div>
+
+<style>
+.active-filter{background:linear-gradient(135deg,var(--green),var(--cyan))!important;color:#031a13!important;border-color:transparent!important;}
+.active-filter#f-emergency{background:linear-gradient(135deg,#ef4444,#dc2626)!important;color:#fff!important;}
+.badge.emergency{background:rgba(239,68,68,0.2);color:#f87171;border:1px solid rgba(239,68,68,0.3);}
+</style>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/hi.js"></script>
+<script src="/js/lang.js"></script>
+<script>
+let allArticles=[];
+let currentTopic='';
+
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    await requireUser();
+  } catch(e) {
+    return;
+  }
+});
+
+const EMERGENCY_SLUGS = new Set([
+  'muac-tape-measurement',               // Card 6: MUAC tape (red = severe)
+  'nrc-rehabilitation-centres',          // Card 14: NRC 14-day inpatient admission
+  'pmmvy-maternal-scheme',               // Card 16: Immediate maternal nutrition grant
+  'when-to-go-to-hospital-immediately',   // Card 20: Immediate hospital danger signs
+  'sam-vs-mam-difference'                // Card 5: SAM emergency difference
+]);
+
+function setTopic(topic){
+  currentTopic=topic;
+  document.querySelectorAll('#topic-filters .btn').forEach(b=>b.classList.remove('active-filter'));
+  const map={'':'f-all','Feeding':'f-feeding','Symptoms':'f-symptoms','Prevention':'f-prevention','Schemes':'f-schemes','Emergency':'f-emergency'};
+  const el=document.getElementById(map[topic]||'f-all');
+  if(el) el.classList.add('active-filter');
+  renderCards();
+}
+
+function filterCards(){ renderCards(); }
+
+function isEmergency(a){
+  return EMERGENCY_SLUGS.has(a.slug) || a.topic === 'Emergency';
+}
+
+function renderCards(){
+  const q=document.getElementById('search-input').value.toLowerCase();
+  const list=document.getElementById('resources-list');
+  const filtered=allArticles.filter(a=>{
+    let matchTopic = true;
+    if (currentTopic === 'Emergency') {
+      matchTopic = isEmergency(a);
+    } else if (currentTopic) {
+      matchTopic = a.topic === currentTopic;
+    }
+    const matchQ=!q||a.title.toLowerCase().includes(q)||a.summary.toLowerCase().includes(q);
+    return matchTopic&&matchQ;
+  });
+
+  if(!filtered.length){
+    list.innerHTML='<div class="empty-state"><span class="empty-icon">📚</span><h3>No articles found</h3><p>Try a different search or filter.</p></div>';
+    return;
+  }
+  const topicClass={'Feeding':'info','Symptoms':'watch','Prevention':'healthy','Schemes':'neutral','Emergency':'emergency'};
+  list.innerHTML=filtered.map(a=>{
+    const emergencyBadge = isEmergency(a) ? '<span class="badge emergency" style="margin-left:6px;">🚨 Urgent</span>' : '';
+    return `
+    <article class="card fade-up">
+      <div class="card-header" style="display:flex;align-items:center;">
+        <span class="badge ${topicClass[a.topic]||'neutral'}">${a.topic}</span>
+        ${emergencyBadge}
+      </div>
+      <h3 style="margin-bottom:8px;">${a.title}</h3>
+      <p class="muted" style="font-size:14px;line-height:1.6;">${a.summary}</p>
+      <div style="margin-top:16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+        <a class="btn sm primary" href="${a.source_url}" target="_blank" rel="noreferrer noopener">Read source ↗</a>
+        <span class="tag">${a.source_name}</span>
+      </div>
+    </article>
+  `}).join('');
+}
+
+async function loadArticles(){
+  try{
+    allArticles=await API.get('/api/resources');
+    renderCards();
+  }catch(e){
+    document.getElementById('resources-list').innerHTML='<p class="muted">Could not load articles — is the server running?</p>';
+  }
+}
+loadArticles();
+</script>
+</body>
+</html>

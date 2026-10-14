@@ -1,0 +1,721 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Photo AI Screening · ChildNutri AI</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <style>
+    .meter-container {
+      margin-bottom: 14px;
+    }
+    .meter-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+    .meter-bar {
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+    .meter-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+    }
+    .meter-fill.red { background: linear-gradient(90deg, #f87171, #ef4444); }
+    .meter-fill.amber { background: linear-gradient(90deg, #fbbf24, #f59e0b); }
+    .meter-fill.green { background: linear-gradient(90deg, #34d399, #10b981); }
+    .meter-fill.blue { background: linear-gradient(90deg, #60a5fa, #3b82f6); }
+    .meter-fill.muted { background: rgba(255,255,255,0.15); }
+    
+    .view-toggle {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+      background: rgba(0,0,0,0.3);
+      padding: 4px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .view-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .view-btn.active {
+      background: rgba(52,211,153,0.18);
+      color: var(--green);
+      border: 1px solid rgba(52,211,153,0.3);
+    }
+    .preview-box {
+      position: relative;
+      width: 100%;
+      min-height: 260px;
+      max-height: 380px;
+      border-radius: var(--radius);
+      overflow: hidden;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 14px;
+      border: 1px solid var(--border);
+    }
+    .preview-box img {
+      max-width: 100%;
+      max-height: 380px;
+      object-fit: contain;
+      display: block;
+    }
+    .guide-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-top: 20px;
+    }
+    .guide-card h4 {
+      font-size: 14px;
+      color: var(--text);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .guide-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .guide-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.4;
+    }
+    .badge-critical {
+      background: rgba(248,113,113,0.18);
+      color: #fca5a5;
+      border: 1px solid rgba(248,113,113,0.4);
+    }
+    .badge-watch {
+      background: rgba(251,191,36,0.18);
+      color: #fde68a;
+      border: 1px solid rgba(251,191,36,0.4);
+    }
+    .badge-healthy {
+      background: rgba(52,211,153,0.18);
+      color: #6ee7b7;
+      border: 1px solid rgba(52,211,153,0.4);
+    }
+    .badge-inconclusive {
+      background: rgba(148,163,184,0.18);
+      color: #cbd5e1;
+      border: 1px solid rgba(148,163,184,0.4);
+    }
+  </style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="brand" href="/dashboard.html"><span class="brand-mark">CN</span> ChildNutri AI</a>
+  <div class="nav-links">
+    <a href="/dashboard.html" data-i18n="dashboard">Dashboard</a>
+    <a href="/assess.html" data-i18n="new_assessment">New assessment</a>
+    <a href="/ocr.html" data-i18n="ocr_scan">OCR Scan</a>
+    <a href="/photo-scan.html" class="btn primary" style="padding:6px 14px;" data-i18n="photo_ai">Photo AI</a>
+    <a href="/resources.html" data-i18n="resources">Resources</a>
+    <button id="lang-toggle" onclick="toggleLanguage()" style="background:transparent;border:1.5px solid #00d4aa;color:#00d4aa;border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;font-weight:600;margin-left:12px;transition:all 0.2s;" onmouseover="this.style.background='#00d4aa';this.style.color='#0d2818';" onmouseout="this.style.background='transparent';this.style.color='#00d4aa';">हिंदी</button>
+    <button id="logout-btn" onclick="logout()" data-i18n="log_out">Log out</button>
+  </div>
+</nav>
+
+<div class="app-shell" style="padding: 32px 0 60px;">
+  <section class="section">
+    <div class="fade-up mb-lg">
+      <div class="badge info mb-sm" style="width:fit-content" data-i18n="photo_badge">Deep Learning Vision AI · Pediatric Screening Gate</div>
+      <h1 style="font-size:clamp(28px, 4vw, 44px);" data-i18n="photo_hero_title">AI Child Photo Malnutrition Screening</h1>
+      <p class="lede" style="max-width:680px;color:var(--text-2);margin-top:8px;" data-i18n="photo_hero_desc">
+        Upload a frontal photograph of an infant or young child (0–59 months). The computer vision system assesses image suitability, flags clothing obstruction or unsupported age ranges, and provides preliminary exploratory screening. Certified anthropometric measurement is required to confirm nutritional status.
+      </p>
+    </div>
+
+    <div class="grid-2" style="align-items:start;gap:24px;">
+      <!-- Left Panel: Upload & Visuals -->
+      <div class="glass panel fade-up-1">
+        <h2 style="font-size:20px;margin-bottom:14px;" data-i18n="photo_upload_title">Upload Child Photograph</h2>
+        
+        <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()" style="border:2px dashed var(--border);border-radius:var(--radius);padding:28px 16px;text-align:center;cursor:pointer;background:rgba(255,255,255,0.02);transition:all 0.2s;">
+          <span style="font-size:36px;display:block;margin-bottom:8px;">📸</span>
+          <p class="bold" style="font-size:15px;color:var(--text);" data-i18n="photo_drop_text">Drop child photo here or click to browse</p>
+          <p class="muted" style="font-size:12px;margin-top:4px;" data-i18n="photo_drop_sub">JPEG · PNG · WebP — Maximum 10 MB</p>
+        </div>
+        <input type="file" id="file-input" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleFile(this.files[0])">
+
+        <!-- Child Demographic Context (Optional Input) -->
+        <div style="margin-top:16px;background:rgba(255,255,255,0.025);border:1px solid var(--border);border-radius:var(--radius);padding:14px;">
+          <label style="font-size:12.5px;font-weight:700;color:var(--text-2);margin-bottom:6px;display:block;" data-i18n="photo_age_label">
+            Child Age (Optional)
+          </label>
+          <div style="display:flex;gap:8px;">
+            <input type="number" id="child-age-val" min="0" max="216" step="0.5" placeholder="e.g. 18" style="flex:1;background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;color:var(--text);font-size:13px;">
+            <select id="child-age-unit" style="background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:var(--radius);padding:8px 12px;color:var(--text);font-size:13px;">
+              <option value="months">Months (महीने)</option>
+              <option value="years">Years (वर्ष)</option>
+            </select>
+          </div>
+          <p style="font-size:11px;color:var(--muted);margin-top:6px;line-height:1.4;" data-i18n="photo_age_hint">
+            WHO 2006 growth standards and acute malnutrition algorithms are validated for infants & toddlers aged 0–59 months (under 5 years).
+          </p>
+        </div>
+
+        <!-- Image Preview & Heatmap Toggle -->
+        <div id="preview-section" class="hidden" style="margin-top:16px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span id="file-name" class="bold" style="font-size:13.5px;color:var(--text-2);"></span>
+            <span id="file-size" class="tag" style="background:rgba(255,255,255,0.08);padding:3px 8px;border-radius:6px;font-size:11.5px;"></span>
+          </div>
+
+          <div class="view-toggle" id="view-toggle-bar" style="display:none;">
+            <button class="view-btn active" id="btn-orig" onclick="setViewMode('orig')" data-i18n="photo_btn_orig">Original Photo</button>
+            <button class="view-btn" id="btn-cam" onclick="setViewMode('cam')" data-i18n="photo_btn_cam">Visual Contrast Map</button>
+          </div>
+
+          <div class="preview-box">
+            <img id="img-orig" src="" alt="Child photo preview" style="display:none;">
+            <img id="img-cam" src="" alt="Visual Contrast Map" style="display:none;">
+          </div>
+          <p id="heatmap-desc" style="font-size:11px;color:var(--muted);margin-top:6px;text-align:center;display:none;"></p>
+        </div>
+
+        <button class="primary btn mt" id="analyze-btn" onclick="analyzePhoto()" disabled style="width:100%;justify-content:center;margin-top:18px;padding:12px;" data-i18n="photo_analyze_btn">
+          Analyze Child Photo →
+        </button>
+        <p class="message" id="vision-msg" style="margin-top:10px;"></p>
+
+        <!-- Guidelines Card -->
+        <div class="guide-card">
+          <h4 data-i18n="photo_guide_title">📋 Best Photo Guidelines for Highest Accuracy</h4>
+          <ul class="guide-list">
+            <li><span>✓</span> <span data-i18n="photo_guide_torso">Clear Torso & Chest: Ensure the upper chest and abdominal wall are visible (minimal thick clothing).</span></li>
+            <li><span>✓</span> <span data-i18n="photo_guide_posture">Frontal Posture: Face and upper limbs facing the camera directly without steep angles.</span></li>
+            <li><span>✓</span> <span data-i18n="photo_guide_light">Even Ambient Lighting: Bright room or daylight. Avoid deep harsh backlighting or heavy flash shadows.</span></li>
+            <li><span>✓</span> <span data-i18n="photo_guide_lie">Target Population: Infants & toddlers 0–59 months. School-aged children cannot be evaluated with under-5 algorithms.</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Right Panel: Results & Triaging -->
+      <div class="glass panel fade-up-2">
+        <h2 style="font-size:20px;margin-bottom:4px;" data-i18n="photo_triage_title">Clinical Visual Triage</h2>
+        <p class="muted" style="font-size:13px;margin-bottom:20px;" data-i18n="photo_triage_sub">Preliminary exploratory screening & image suitability assessment.</p>
+
+        <!-- Empty State -->
+        <div id="result-empty" style="padding:48px 16px;text-align:center;">
+          <span style="font-size:48px;opacity:0.25;display:block;margin-bottom:12px;">🩺</span>
+          <p class="bold" style="color:var(--text-2);margin-bottom:6px;" data-i18n="photo_empty_title">No photo analyzed yet</p>
+          <p class="muted" style="font-size:13px;max-width:320px;margin:0 auto;" data-i18n="photo_empty_sub">Upload an infant photo and click "Analyze Child Photo" to run suitability check and preliminary screening.</p>
+        </div>
+
+        <!-- Loading State -->
+        <div id="result-loading" class="hidden" style="padding:54px 16px;text-align:center;">
+          <div class="spinner" style="margin:0 auto 16px;width:38px;height:38px;border:3px solid rgba(52,211,153,0.2);border-top-color:var(--green);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+          <p class="bold" style="color:var(--text);font-size:15px;" id="loading-step-text" data-i18n="photo_processing">Evaluating image suitability & optical features…</p>
+          <p class="muted" style="font-size:12.5px;margin-top:6px;" data-i18n="photo_processing_sub">Checking clothing obstruction, age criteria, and neural feature activation…</p>
+        </div>
+
+        <!-- Analysis Results Content -->
+        <div id="result-content" class="hidden">
+          
+          <!-- Verdict Badge Card -->
+          <div style="background:rgba(255,255,255,0.035);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+              <div>
+                <span style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);" data-i18n="photo_verdict_label">Screening Verdict</span>
+                <h3 id="verdict-title" style="font-size:22px;margin-top:2px;">—</h3>
+              </div>
+              <div id="verdict-badge" class="badge" style="padding:6px 14px;font-size:12.5px;font-weight:700;">—</div>
+            </div>
+            <p id="verdict-headline" style="color:var(--text-2);font-size:13.5px;font-weight:500;line-height:1.5;margin-bottom:12px;"></p>
+            <div style="background:rgba(0,0,0,0.25);border-radius:var(--radius);padding:12px;border-left:3px solid var(--green);">
+              <span style="font-size:11px;font-weight:700;color:var(--green);text-transform:uppercase;letter-spacing:0.05em;display:block;margin-bottom:4px;" data-i18n="photo_action_label">Recommended Clinical Action</span>
+              <p id="triage-action" style="font-size:13px;color:var(--text);line-height:1.45;margin:0;"></p>
+            </div>
+          </div>
+
+          <!-- Suitability & Quality Gate -->
+          <div style="background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-bottom:20px;">
+            <span style="font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--cyan);display:block;margin-bottom:8px;">
+              🛡️ Image Suitability &amp; Clinical Safety Gate
+            </span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:12.5px;">
+              <div>
+                <span class="muted">Torso Visibility:</span>
+                <span id="gate-torso" class="bold" style="display:block;margin-top:2px;">—</span>
+              </div>
+              <div>
+                <span class="muted">Age Range Supported:</span>
+                <span id="gate-age" class="bold" style="display:block;margin-top:2px;">—</span>
+              </div>
+              <div>
+                <span class="muted">Lighting Quality:</span>
+                <span id="gate-light" class="bold" style="display:block;margin-top:2px;">—</span>
+              </div>
+              <div>
+                <span class="muted">Resolution:</span>
+                <span id="gate-res" class="bold" style="display:block;margin-top:2px;">—</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Probability Breakdown -->
+          <div style="margin-bottom:24px;">
+            <h4 style="font-size:14px;color:var(--text);margin-bottom:14px;display:flex;justify-content:space-between;">
+              <span data-i18n="photo_prob_title">Exploratory Model Probability Distribution</span>
+              <span id="top-confidence" style="font-weight:700;color:var(--cyan);font-size:12.5px;"></span>
+            </h4>
+            
+            <div class="meter-container">
+              <div class="meter-header">
+                <span style="color:#fca5a5;" data-i18n="photo_prob_sam">Severe Acute Malnutrition (SAM)</span>
+                <span id="prob-sam-val">0%</span>
+              </div>
+              <div class="meter-bar"><div class="meter-fill red" id="prob-sam-bar" style="width:0%"></div></div>
+            </div>
+
+            <div class="meter-container">
+              <div class="meter-header">
+                <span style="color:#fde68a;" data-i18n="photo_prob_mam">Moderate Acute Malnutrition (MAM)</span>
+                <span id="prob-mam-val">0%</span>
+              </div>
+              <div class="meter-bar"><div class="meter-fill amber" id="prob-mam-bar" style="width:0%"></div></div>
+            </div>
+
+            <div class="meter-container">
+              <div class="meter-header">
+                <span style="color:#6ee7b7;" data-i18n="photo_prob_healthy">Healthy / Well-Nourished</span>
+                <span id="prob-healthy-val">0%</span>
+              </div>
+              <div class="meter-bar"><div class="meter-fill green" id="prob-healthy-bar" style="width:0%"></div></div>
+            </div>
+          </div>
+
+          <!-- Anatomical Biomarkers -->
+          <div style="margin-bottom:24px;">
+            <h4 style="font-size:14px;color:var(--text);margin-bottom:14px;" data-i18n="photo_biomarkers_title">Visual Contours &amp; Anatomical Indicators</h4>
+
+            <div class="meter-container">
+              <div class="meter-header">
+                <span data-i18n="photo_ribs_label">Thoracic Ribcage Prominence</span>
+                <span id="score-ribs-val" class="bold">—</span>
+              </div>
+              <div class="meter-bar"><div class="meter-fill red" id="score-ribs-bar" style="width:0%"></div></div>
+            </div>
+
+            <div class="meter-container">
+              <div class="meter-header">
+                <span data-i18n="photo_face_label">Facial Buccal Fat Depletion / Sunken Orbits</span>
+                <span id="score-face-val" class="bold">—</span>
+              </div>
+              <div class="meter-bar"><div class="meter-fill amber" id="score-face-bar" style="width:0%"></div></div>
+            </div>
+
+            <div class="meter-container">
+              <div class="meter-header">
+                <span data-i18n="photo_limbs_label">Upper Limb Contour Thinness</span>
+                <span id="score-limbs-val" class="bold">—</span>
+              </div>
+              <div class="meter-bar"><div class="meter-fill blue" id="score-limbs-bar" style="width:0%"></div></div>
+            </div>
+          </div>
+
+          <!-- Detected Observations -->
+          <div style="margin-bottom:24px;">
+            <h4 style="font-size:14px;color:var(--text);margin-bottom:10px;" data-i18n="photo_obs_title">Visual Clinical Observations</h4>
+            <ul id="obs-list" style="list-style:none;padding:0;display:flex;flex-direction:column;gap:8px;"></ul>
+          </div>
+
+          <!-- Direct Next Actions -->
+          <div style="display:flex;flex-direction:column;gap:10px;margin-top:20px;">
+            <button class="primary btn" style="width:100%;justify-content:center;padding:12px;font-size:14px;" onclick="proceedToAssessment()" data-i18n="photo_proceed_btn">
+              Proceed to Verified Clinical Assessment (Pre-fill) →
+            </button>
+            <p style="font-size:11.5px;color:var(--muted);text-align:center;line-height:1.45;margin-top:4px;" data-i18n="photo_disclaimer">
+              ⚠ <em>AI visual screening is an experimental exploratory tool. It CANNOT diagnose malnutrition. A clinical anthropometric assessment (weight, height, MUAC) is required.</em>
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<style>
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/hi.js"></script>
+<script src="/js/lang.js"></script>
+<script>
+// Enforce authentication: only logged-in users can access Photo AI
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const user = await requireUser();
+    if (user && user.full_name) {
+      console.log(`[Photo AI] Authenticated as: ${user.full_name}`);
+    }
+  } catch (err) {
+    // requireUser handles redirection to /login.html
+    return;
+  }
+});
+
+let selectedFile = null;
+let lastVisionResult = null;
+let heatmapDataUrl = null;
+let originalDataUrl = null;
+let currentView = 'orig';
+
+const DYNAMIC_I18N = {
+  en: {
+    conf_prefix: "Confidence: ",
+    inconclusive_verdict: "Inconclusive / Evaluation Obstructed",
+    sam_verdict: "Preliminary Concern: Potential Severe Wasting",
+    mam_verdict: "Preliminary Concern: Potential Moderate Wasting",
+    healthy_verdict: "Preliminary Screening: Normal Subcutaneous Fat",
+    unsupported_age_verdict: "Inconclusive (Unsupported Age: > 5 Years)",
+    clothing_verdict: "Inconclusive (Clothing Obstruction)",
+    obstructed_label: "Obstructed by clothing",
+    unsupported_age_label: "Outside validated 0–59m range",
+    gate_bare: "Bare Skin Visible (Evaluated)",
+    gate_clothed: "Obstructed by Clothing",
+    gate_age_yes: "Yes (0–59 Months)",
+    gate_age_no: "No (School-aged / > 5 Years)",
+    gate_ok: "Adequate",
+    gate_poor: "Suboptimal"
+  },
+  hi: {
+    conf_prefix: "सटीकता / विश्वसनीयता: ",
+    inconclusive_verdict: "अस्पष्ट / कपड़ों के कारण मूल्यांकन बाधित",
+    sam_verdict: "प्रारंभिक चेतावनी: गंभीर दुर्बलता के संभावित संकेत",
+    mam_verdict: "प्रारंभिक चेतावनी: मध्यम दुर्बलता के संभावित संकेत",
+    healthy_verdict: "प्रारंभिक जाँच: सामान्य उपचर्म वसा (फैट)",
+    unsupported_age_verdict: "अमान्य (असमर्थित आयु: 5 वर्ष से अधिक)",
+    clothing_verdict: "अस्पष्ट (कपड़ों के कारण सीना ढका हुआ)",
+    obstructed_label: "कपड़ों से ढका हुआ",
+    unsupported_age_label: "0–59 माह सीमा से बाहर",
+    gate_bare: "खुली त्वचा दृश्यमान (जाँच योग्य)",
+    gate_clothed: "कपड़ों से ढका हुआ (अस्पष्ट)",
+    gate_age_yes: "हाँ (0–59 माह के भीतर)",
+    gate_age_no: "नहीं (स्कूली बच्चा / 5 वर्ष से अधिक)",
+    gate_ok: "उचित प्रकाश",
+    gate_poor: "अपर्याप्त"
+  }
+};
+
+function formatBytes(b) {
+  if (b < 1024) return b + ' B';
+  if (b < 1048576) return (b / 1024).toFixed(1) + ' KB';
+  return (b / 1048576).toFixed(1) + ' MB';
+}
+
+function handleFile(file) {
+  if (!file) return;
+  selectedFile = file;
+
+  document.getElementById('preview-section').classList.remove('hidden');
+  document.getElementById('file-name').textContent = file.name;
+  document.getElementById('file-size').textContent = formatBytes(file.size);
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    originalDataUrl = e.target.result;
+    document.getElementById('img-orig').src = originalDataUrl;
+    document.getElementById('img-orig').style.display = 'block';
+    document.getElementById('img-cam').style.display = 'none';
+    document.getElementById('view-toggle-bar').style.display = 'none';
+    document.getElementById('heatmap-desc').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+
+  document.getElementById('analyze-btn').removeAttribute('disabled');
+  document.getElementById('vision-msg').textContent = '';
+  document.getElementById('result-content').classList.add('hidden');
+  document.getElementById('result-empty').classList.remove('hidden');
+}
+
+// Drag & drop support
+const dropZone = document.getElementById('drop-zone');
+dropZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropZone.style.borderColor = 'var(--green)';
+  dropZone.style.background = 'rgba(52,211,153,0.06)';
+});
+dropZone.addEventListener('dragleave', () => {
+  dropZone.style.borderColor = 'var(--border)';
+  dropZone.style.background = 'rgba(255,255,255,0.02)';
+});
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.style.borderColor = 'var(--border)';
+  dropZone.style.background = 'rgba(255,255,255,0.02)';
+  if (e.dataTransfer.files.length) {
+    handleFile(e.dataTransfer.files[0]);
+  }
+});
+
+function setViewMode(mode) {
+  currentView = mode;
+  const btnOrig = document.getElementById('btn-orig');
+  const btnCam = document.getElementById('btn-cam');
+  const imgOrig = document.getElementById('img-orig');
+  const imgCam = document.getElementById('img-cam');
+
+  if (mode === 'orig') {
+    btnOrig.classList.add('active');
+    btnCam.classList.remove('active');
+    imgOrig.style.display = 'block';
+    imgCam.style.display = 'none';
+  } else {
+    btnCam.classList.add('active');
+    btnOrig.classList.remove('active');
+    imgCam.style.display = 'block';
+    imgOrig.style.display = 'none';
+  }
+}
+
+async function analyzePhoto() {
+  if (!selectedFile) return;
+
+  const btn = document.getElementById('analyze-btn');
+  const msg = document.getElementById('vision-msg');
+  const emptyEl = document.getElementById('result-empty');
+  const loadingEl = document.getElementById('result-loading');
+  const contentEl = document.getElementById('result-content');
+
+  btn.setAttribute('disabled', 'true');
+  msg.textContent = '';
+  emptyEl.classList.add('hidden');
+  contentEl.classList.add('hidden');
+  loadingEl.classList.remove('hidden');
+
+  const formData = new FormData();
+  formData.append('file', selectedFile);
+
+  // Optional Child Age input
+  const ageVal = parseFloat(document.getElementById('child-age-val').value);
+  const ageUnit = document.getElementById('child-age-unit').value;
+  if (!isNaN(ageVal) && ageVal >= 0) {
+    const ageMonths = (ageUnit === 'years') ? ageVal * 12.0 : ageVal;
+    formData.append('age_months', ageMonths);
+  }
+
+  try {
+    const data = await API.postForm('/api/vision/predict', formData);
+    lastVisionResult = data;
+
+    // Render results
+    renderResults(data);
+
+    loadingEl.classList.add('hidden');
+    contentEl.classList.remove('hidden');
+  } catch (err) {
+    loadingEl.classList.add('hidden');
+    emptyEl.classList.remove('hidden');
+    msg.textContent = (window.currentLang === 'hi' ? 'विश्लेषण त्रुटि: ' : 'Analysis error: ') + (err.message || 'Failed to analyze photo');
+    msg.className = 'message error';
+  } finally {
+    btn.removeAttribute('disabled');
+  }
+}
+
+function renderResults(data) {
+  const lang = (window.currentLang === 'hi') ? 'hi' : 'en';
+  const t = DYNAMIC_I18N[lang] || DYNAMIC_I18N.en;
+
+  // Title, Badge & Headline
+  const badge = document.getElementById('verdict-badge');
+  const vTitleEl = document.getElementById('verdict-title');
+  const vHeadlineEl = document.getElementById('verdict-headline');
+  const vActionEl = document.getElementById('triage-action');
+
+  vTitleEl.textContent = data.verdict;
+  vHeadlineEl.textContent = data.headline;
+  vActionEl.textContent = data.triage_recommendation;
+  badge.textContent = data.verdict;
+
+  if (data.badge_class === 'high') {
+    badge.className = 'badge badge-critical';
+  } else if (data.badge_class === 'watch') {
+    badge.className = 'badge badge-watch';
+  } else if (data.badge_class === 'healthy') {
+    badge.className = 'badge badge-healthy';
+  } else {
+    badge.className = 'badge badge-inconclusive';
+  }
+
+  // Confidence & Quality Gate
+  document.getElementById('top-confidence').textContent = (data.confidence_pct > 0)
+    ? `${t.conf_prefix}${data.confidence_pct}%`
+    : (lang === 'hi' ? 'सटीकता: लागू नहीं (अस्पष्ट)' : 'Confidence: N/A (Inconclusive)');
+
+  const suit = data.suitability || {};
+  const gTorso = document.getElementById('gate-torso');
+  const gAge = document.getElementById('gate-age');
+  const gLight = document.getElementById('gate-light');
+  const gRes = document.getElementById('gate-res');
+
+  if (suit.clothing_obstruction_detected) {
+    gTorso.textContent = t.gate_clothed;
+    gTorso.style.color = '#fde68a';
+  } else {
+    gTorso.textContent = t.gate_bare;
+    gTorso.style.color = '#6ee7b7';
+  }
+
+  if (suit.age_supported) {
+    gAge.textContent = t.gate_age_yes;
+    gAge.style.color = '#6ee7b7';
+  } else {
+    gAge.textContent = t.gate_age_no;
+    gAge.style.color = '#fca5a5';
+  }
+
+  gLight.textContent = suit.lighting_adequate ? t.gate_ok : t.gate_poor;
+  gLight.style.color = suit.lighting_adequate ? '#6ee7b7' : '#fde68a';
+
+  gRes.textContent = suit.resolution_adequate ? t.gate_ok : t.gate_poor;
+  gRes.style.color = suit.resolution_adequate ? '#6ee7b7' : '#fca5a5';
+
+  // Probabilities
+  const probs = data.probabilities || {};
+  const pSam = Math.round((probs['Severe (SAM)'] || 0) * 100);
+  const pMam = Math.round((probs['Moderate (MAM)'] || 0) * 100);
+  const pHealthy = Math.round((probs['Healthy'] || 0) * 100);
+
+  document.getElementById('prob-sam-val').textContent = pSam + '%';
+  document.getElementById('prob-sam-bar').style.width = pSam + '%';
+
+  document.getElementById('prob-mam-val').textContent = pMam + '%';
+  document.getElementById('prob-mam-bar').style.width = pMam + '%';
+
+  document.getElementById('prob-healthy-val').textContent = pHealthy + '%';
+  document.getElementById('prob-healthy-bar').style.width = pHealthy + '%';
+
+  // Anatomical Scores (Display N/A honestly if clothing detected or unsupported)
+  const scores = data.anatomic_scores || {};
+  const ribVal = scores.rib_prominence;
+  const faceVal = scores.facial_wasting;
+  const limbVal = scores.limb_wasting;
+
+  const scoreRibsEl = document.getElementById('score-ribs-val');
+  const scoreRibsBar = document.getElementById('score-ribs-bar');
+  if (ribVal !== null && ribVal !== undefined) {
+    scoreRibsEl.textContent = `${Math.round(ribVal)}/100`;
+    scoreRibsBar.style.width = `${Math.round(ribVal)}%`;
+    scoreRibsBar.className = 'meter-fill red';
+  } else {
+    scoreRibsEl.textContent = (lang === 'hi') ? 'लागू नहीं (कपड़ों से ढका)' : 'N/A (Obstructed by clothing)';
+    scoreRibsBar.style.width = '0%';
+    scoreRibsBar.className = 'meter-fill muted';
+  }
+
+  const scoreFaceEl = document.getElementById('score-face-val');
+  const scoreFaceBar = document.getElementById('score-face-bar');
+  if (faceVal !== null && faceVal !== undefined) {
+    scoreFaceEl.textContent = `${Math.round(faceVal)}/100`;
+    scoreFaceBar.style.width = `${Math.round(faceVal)}%`;
+  } else {
+    scoreFaceEl.textContent = (lang === 'hi') ? 'लागू नहीं (असमर्थित)' : 'N/A (Not evaluated)';
+    scoreFaceBar.style.width = '0%';
+  }
+
+  const scoreLimbsEl = document.getElementById('score-limbs-val');
+  const scoreLimbsBar = document.getElementById('score-limbs-bar');
+  if (limbVal !== null && limbVal !== undefined) {
+    scoreLimbsEl.textContent = `${Math.round(limbVal)}/100`;
+    scoreLimbsBar.style.width = `${Math.round(limbVal)}%`;
+  } else {
+    scoreLimbsEl.textContent = (lang === 'hi') ? 'लागू नहीं (कपड़ों से ढका)' : 'N/A (Obstructed)';
+    scoreLimbsBar.style.width = '0%';
+  }
+
+  // Observations list
+  const obsList = document.getElementById('obs-list');
+  obsList.innerHTML = '';
+  (data.observations || []).forEach(obs => {
+    const li = document.createElement('li');
+    li.style.fontSize = '13px';
+    li.style.color = 'var(--text-2)';
+    li.style.display = 'flex';
+    li.style.alignItems = 'flex-start';
+    li.style.gap = '8px';
+    li.style.lineHeight = '1.45';
+    li.innerHTML = `<span style="color:var(--cyan);font-weight:bold;">•</span> <span>${obs}</span>`;
+    obsList.appendChild(li);
+  });
+
+  // Heatmap setup
+  if (data.heatmap_data_url) {
+    heatmapDataUrl = data.heatmap_data_url;
+    document.getElementById('img-cam').src = heatmapDataUrl;
+    document.getElementById('view-toggle-bar').style.display = 'flex';
+    const descEl = document.getElementById('heatmap-desc');
+    descEl.textContent = data.heatmap_explanation || 'Visual feature contrast map.';
+    descEl.style.display = 'block';
+  }
+}
+
+// Re-render when language toggle changes
+window.addEventListener('languageChanged', (e) => {
+  if (lastVisionResult) {
+    renderResults(lastVisionResult);
+  }
+});
+
+function proceedToAssessment() {
+  if (lastVisionResult) {
+    sessionStorage.setItem('childnutri_photo_screen', JSON.stringify({
+      verdict: lastVisionResult.verdict,
+      confidence_pct: lastVisionResult.confidence_pct,
+      status: lastVisionResult.status,
+      suitability: lastVisionResult.suitability,
+      headline: lastVisionResult.headline,
+      timestamp: new Date().toISOString()
+    }));
+  }
+  window.location.href = '/assess.html';
+}
+
+function logout() {
+  API.post('/api/auth/logout').catch(() => {}).finally(() => {
+    window.location.href = '/login.html';
+  });
+}
+</script>
+
+</body>
+</html>

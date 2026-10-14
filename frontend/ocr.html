@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>OCR Scan · ChildNutri AI</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/dashboard.html"><span class="brand-mark">CN</span> ChildNutri AI</a>
+  <div class="nav-links">
+    <a href="/dashboard.html" data-i18n="dashboard">Dashboard</a>
+    <a href="/assess.html" class="btn primary" data-i18n="new_assessment">＋ New assessment</a>
+    <a href="/photo-scan.html" data-i18n="photo_ai">Photo AI</a>
+    <a href="/ocr.html" class="active" data-i18n="ocr_scan">OCR scan</a>
+    <a href="/resources.html" data-i18n="resources">Resources</a>
+    <button id="lang-toggle" onclick="toggleLanguage()" style="background:transparent;border:1.5px solid #00d4aa;color:#00d4aa;border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;font-weight:600;margin-left:12px;transition:all 0.2s;" onmouseover="this.style.background='#00d4aa';this.style.color='#0d2818';" onmouseout="this.style.background='transparent';this.style.color='#00d4aa';">हिंदी</button>
+    <button id="logout-btn" data-i18n="log_out">Log out</button>
+  </div>
+</nav>
+
+<div class="app-shell">
+  <section class="section">
+    <div class="fade-up mb-lg">
+      <div class="badge info mb-sm" style="width:fit-content">Tesseract 4 + OpenCV</div>
+      <h1 data-i18n="ocr_title">OCR health-card scan</h1>
+      <p class="lede" style="max-width:540px;" data-i18n="ocr_desc">Upload a health card photo or PDF. The system extracts weight, height, age, and MUAC automatically. Always verify extracted values before use in an assessment.</p>
+    </div>
+
+    <div class="grid-2" style="align-items:start;">
+      <!-- Upload panel -->
+      <div class="glass panel fade-up-1">
+        <h2 style="margin-bottom:16px;" data-i18n="upload_doc">Upload document</h2>
+        <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+          <span class="upload-icon">📄</span>
+          <p class="bold" data-i18n="drop_file">Drop file here or click to browse</p>
+          <p class="muted" style="font-size:13px;margin-top:6px;">JPEG · PNG · PDF — max 10 MB</p>
+        </div>
+        <input type="file" id="file-input" accept=".jpg,.jpeg,.png,.pdf" style="display:none" onchange="handleFile(this.files[0])">
+
+        <div id="file-preview" class="mt hidden">
+          <div class="row">
+            <span id="file-name" class="bold" style="font-size:14px;"></span>
+            <span id="file-size" class="tag"></span>
+          </div>
+          <img id="img-preview" src="" alt="Preview" style="width:100%;border-radius:var(--radius);margin-top:12px;display:none;max-height:280px;object-fit:contain;">
+        </div>
+
+        <button class="primary btn mt" id="extract-btn" onclick="extractOCR()" disabled data-i18n="extract_fields">Extract fields →</button>
+        <p class="message" id="ocr-msg"></p>
+      </div>
+
+      <!-- Results panel -->
+      <div class="glass panel fade-up-2">
+        <h2 style="margin-bottom:4px;" data-i18n="extracted_fields">Extracted fields</h2>
+        <p class="muted" style="font-size:13px;margin-bottom:16px;" data-i18n="verify_note">All values must be verified before clinical use.</p>
+
+        <div id="ocr-loading" class="hidden center" style="padding:32px 0;"><div class="spinner"></div><p class="muted mt-sm">Processing image…</p></div>
+        <div id="ocr-empty" style="padding:32px 0;" class="center">
+          <span style="font-size:40px;opacity:0.3;display:block;margin-bottom:12px;">🔍</span>
+          <p class="muted">No scan yet. Upload a file and click Extract.</p>
+        </div>
+        <div id="ocr-results" class="hidden">
+          <div id="ocr-notice" class="alert warning mb" style="display:none;"></div>
+          <div class="ocr-field"><span class="ocr-key" data-i18n="field_weight">Weight</span><span class="ocr-val" id="ocr-weight">—</span></div>
+          <div class="ocr-field"><span class="ocr-key" data-i18n="field_height">Height / length</span><span class="ocr-val" id="ocr-height">—</span></div>
+          <div class="ocr-field"><span class="ocr-key" data-i18n="field_age">Age</span><span class="ocr-val" id="ocr-age">—</span></div>
+          <div class="ocr-field"><span class="ocr-key" data-i18n="field_muac">MUAC</span><span class="ocr-val" id="ocr-muac">—</span></div>
+          <div class="ocr-field"><span class="ocr-key" data-i18n="field_name">Name</span><span class="ocr-val" id="ocr-name">—</span></div>
+          <div class="ocr-field"><span class="ocr-key" data-i18n="field_date">Date</span><span class="ocr-val" id="ocr-date">—</span></div>
+          <div class="mt">
+            <p class="muted" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px;" data-i18n="raw_text">Raw text</p>
+            <pre id="ocr-raw" style="font-size:11px;color:var(--muted);white-space:pre-wrap;word-break:break-word;max-height:160px;overflow-y:auto;background:rgba(0,0,0,0.2);border-radius:var(--radius);padding:12px;"></pre>
+          </div>
+          <button class="btn primary mt" style="width:100%;cursor:pointer;" onclick="useInAssessment()" data-i18n="use_in_assessment">Use in assessment →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/hi.js"></script>
+<script src="/js/lang.js"></script>
+<script>
+let selectedFile=null;
+let lastExtracted=null;
+
+async function init(){await requireUser();}
+init().catch(()=>{});
+
+function handleFile(file){
+  if(!file)return;
+  selectedFile=file;
+  document.getElementById('file-preview').classList.remove('hidden');
+  document.getElementById('file-name').textContent=file.name;
+  document.getElementById('file-size').textContent=formatBytes(file.size);
+  const img=document.getElementById('img-preview');
+  if(file.type.startsWith('image/')){
+    img.src=URL.createObjectURL(file);img.style.display='block';
+  }else{img.style.display='none';}
+  document.getElementById('extract-btn').disabled=false;
+}
+
+function formatBytes(b){if(b<1024)return b+'B';if(b<1048576)return(b/1024).toFixed(1)+'KB';return(b/1048576).toFixed(1)+'MB';}
+
+const dropZone=document.getElementById('drop-zone');
+dropZone.addEventListener('dragover',e=>{e.preventDefault();dropZone.classList.add('drag-over');});
+dropZone.addEventListener('dragleave',()=>dropZone.classList.remove('drag-over'));
+dropZone.addEventListener('drop',e=>{e.preventDefault();dropZone.classList.remove('drag-over');handleFile(e.dataTransfer.files[0]);});
+
+async function extractOCR(){
+  if(!selectedFile)return;
+  document.getElementById('ocr-loading').classList.remove('hidden');
+  document.getElementById('ocr-empty').classList.add('hidden');
+  document.getElementById('ocr-results').classList.add('hidden');
+  document.getElementById('ocr-msg').textContent='';
+  try{
+    const fd=new FormData();fd.append('file',selectedFile);
+    const res=await API.postForm('/api/ocr/extract',fd);
+    lastExtracted=res;
+    document.getElementById('ocr-loading').classList.add('hidden');
+    document.getElementById('ocr-results').classList.remove('hidden');
+
+    const fields = res.fields || {};
+    const weight = res.weight_kg ?? fields.weight_kg?.value;
+    const height = res.height_cm ?? fields.height_cm?.value;
+    const age = res.age_months ?? fields.age_months?.value;
+    const muac = res.muac_cm ?? fields.muac_cm?.value;
+    const name = res.child_name ?? fields.child_name?.value;
+    const date = res.measurement_date ?? fields.date?.value;
+    const raw = res.raw_text || res.full_text || '—';
+
+    document.getElementById('ocr-weight').textContent = weight != null ? weight + ' kg' : 'not found';
+    document.getElementById('ocr-height').textContent = height != null ? height + ' cm' : 'not found';
+    document.getElementById('ocr-age').textContent = age != null ? age + ' months' : 'not found';
+    document.getElementById('ocr-muac').textContent = muac != null ? muac + ' cm' : 'not found';
+    document.getElementById('ocr-name').textContent = name || 'not found';
+    document.getElementById('ocr-date').textContent = date || 'not found';
+    document.getElementById('ocr-raw').textContent = raw;
+    const notice=document.getElementById('ocr-notice');
+    if(res.notice){notice.textContent=res.notice;notice.style.display='flex';}
+    if (typeof applyTranslations === 'function') applyTranslations(currentLang);
+  }catch(e){
+    document.getElementById('ocr-loading').classList.add('hidden');
+    document.getElementById('ocr-empty').classList.remove('hidden');
+    const msg=document.getElementById('ocr-msg');
+    msg.className='message error';
+    msg.textContent=e.message||'OCR failed. Is Tesseract installed?';
+  }
+}
+
+function useInAssessment(){
+  if (lastExtracted) {
+    sessionStorage.setItem('childnutri_prefill', JSON.stringify(lastExtracted));
+  }
+  window.location.href = '/assess.html';
+}
+</script>
+</body>
+</html>

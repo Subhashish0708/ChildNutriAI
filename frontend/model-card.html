@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Model Card · ChildNutri AI</title>
+  <meta name="description" content="Transparency card for the ChildNutri AI risk model — training data, metrics, limitations, and ethical notes.">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<nav class="nav">
+  <a class="brand" href="/index.html"><span class="brand-mark">CN</span> ChildNutri AI</a>
+  <div class="nav-links">
+    <a href="/resources.html" data-i18n="resources">Resources</a>
+    <a href="/dashboard.html" data-i18n="dashboard">Dashboard</a>
+    <button id="lang-toggle" onclick="toggleLanguage()" style="background:transparent;border:1.5px solid #00d4aa;color:#00d4aa;border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;font-weight:600;margin-left:12px;transition:all 0.2s;" onmouseover="this.style.background='#00d4aa';this.style.color='#0d2818';" onmouseout="this.style.background='transparent';this.style.color='#00d4aa';">हिंदी</button>
+    <a href="/login.html" data-i18n="sign_in">Sign in</a>
+  </div>
+</nav>
+<div class="app-shell">
+  <section class="section">
+    <div class="fade-up mb-lg">
+      <div class="badge neutral mb-sm" style="width:fit-content">Transparency</div>
+      <h1>Model card</h1>
+      <p class="lede">What is deterministic, what is predictive, where the limits are, and how not to misuse it.</p>
+    </div>
+
+    <!-- KEY METRICS -->
+    <div class="stats-row mb fade-up-1">
+      <div class="stat-card">
+        <div class="stat-label">ROC-AUC</div>
+        <div class="stat-value">0.87</div>
+        <div class="stat-sub">Stunting-risk LightGBM</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Brier score</div>
+        <div class="stat-value">0.143</div>
+        <div class="stat-sub">Calibrated probability error</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Training samples</div>
+        <div class="stat-value">32k</div>
+        <div class="stat-sub">80/20 stratified split</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Model type</div>
+        <div class="stat-value" style="font-size:22px;">LGB</div>
+        <div class="stat-sub">+ Isotonic calibration</div>
+      </div>
+    </div>
+
+    <div class="grid-2 fade-up-2">
+      <!-- WHO ENGINE -->
+      <div class="glass panel">
+        <div class="card-header"><div class="feature-icon" style="margin:0">📏</div></div>
+        <h3>WHO Z-score engine</h3>
+        <p class="muted mt-sm" style="font-size:14px;">Uses official WHO 2006 Child Growth Standards LMS tables. Computes WAZ, HAZ, WHZ, BAZ, and HCZ via the Box-Cox formula. Near-perfect agreement with WHO Anthro software — any differences are rounding only.</p>
+        <div class="mt" style="font-size:13px;display:flex;flex-direction:column;gap:6px;">
+          <div class="ocr-field"><span class="ocr-key">Method</span><span class="ocr-val">WHO LMS (2006)</span></div>
+          <div class="ocr-field"><span class="ocr-key">Accuracy</span><span class="ocr-val">Deterministic</span></div>
+          <div class="ocr-field"><span class="ocr-key">Limitations</span><span class="ocr-val">Measurement error → z-score error</span></div>
+        </div>
+      </div>
+
+      <!-- CLASSIFIER -->
+      <div class="glass panel">
+        <div class="card-header"><div class="feature-icon" style="margin:0">🏷️</div></div>
+        <h3>Current-status classifier</h3>
+        <p class="muted mt-sm" style="font-size:14px;">100% rule-based using WHO/CMAM cut-offs. No ML involved. "Accuracy" is 100% by definition — real-world error comes only from measurement error, not from the classifier itself.</p>
+        <div class="mt" style="font-size:13px;display:flex;flex-direction:column;gap:6px;">
+          <div class="ocr-field"><span class="ocr-key">SAM</span><span class="ocr-val">WHZ &lt; -3 or MUAC &lt; 11.5 or oedema</span></div>
+          <div class="ocr-field"><span class="ocr-key">MAM</span><span class="ocr-val">-3 ≤ WHZ &lt; -2 or MUAC 11.5–12.5</span></div>
+          <div class="ocr-field"><span class="ocr-key">Stunting</span><span class="ocr-val">HAZ &lt; -2</span></div>
+          <div class="ocr-field"><span class="ocr-key">Underweight</span><span class="ocr-val">WAZ &lt; -2</span></div>
+        </div>
+      </div>
+
+      <!-- ML RISK MODEL -->
+      <div class="glass panel glass-glow">
+        <div class="card-header"><div class="feature-icon" style="margin:0">🔮</div></div>
+        <h3>Future-risk ML model</h3>
+        <p class="muted mt-sm" style="font-size:14px;">LightGBM (120 estimators, max_depth 5) trained on the <em>Dataset Stunting and Nutritional Status of Toddler</em>. Probability calibrated with Isotonic Regression. Combined with trend rules and closeness-to-cut-off rules.</p>
+        <div class="mt" style="font-size:13px;display:flex;flex-direction:column;gap:6px;">
+          <div class="ocr-field"><span class="ocr-key">Training data</span><span class="ocr-val">40k toddler records</span></div>
+          <div class="ocr-field"><span class="ocr-key">Features</span><span class="ocr-val">age, sex, diet, illness, wealth, education</span></div>
+          <div class="ocr-field"><span class="ocr-key">ROC-AUC</span><span class="ocr-val green">0.87</span></div>
+          <div class="ocr-field"><span class="ocr-key">Brier score</span><span class="ocr-val">0.143</span></div>
+        </div>
+      </div>
+
+      <!-- OCR -->
+      <div class="glass panel">
+        <div class="card-header"><div class="feature-icon" style="margin:0">📷</div></div>
+        <h3>OCR pipeline</h3>
+        <p class="muted mt-sm" style="font-size:14px;">Tesseract 4 + OpenCV preprocessing (grayscale, CLAHE, threshold, deskew). Extracts weight, height, age, MUAC from health card photos or PDFs. All extracted values must be human-reviewed before use.</p>
+        <div class="mt" style="font-size:13px;display:flex;flex-direction:column;gap:6px;">
+          <div class="ocr-field"><span class="ocr-key">Engine</span><span class="ocr-val">Tesseract 4 (LSTM)</span></div>
+          <div class="ocr-field"><span class="ocr-key">Input</span><span class="ocr-val">JPEG · PNG · PDF</span></div>
+          <div class="ocr-field"><span class="ocr-key">Accuracy</span><span class="ocr-val amber">~85% on clear cards</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ETHICAL NOTES -->
+    <div class="glass panel mt-lg fade-up-3">
+      <h2 style="margin-bottom:16px;">Ethical notes &amp; limitations</h2>
+      <ul class="list-bullet">
+        <li>ChildNutri AI is a <strong>screening and education tool</strong>. It does not diagnose illness and does not replace a doctor, nurse, or Anganwadi worker.</li>
+        <li>The ML model is trained on survey data; performance may differ in clinical contexts. Treat the risk tier as an early-warning signal, not a clinical verdict.</li>
+        <li>Context features (food groups, meals, wealth) are used only for risk scoring — not stored as personal identifiers.</li>
+        <li>OCR-extracted measurements <strong>must be verified</strong> by a human before they are used in any clinical decision.</li>
+        <li>WHO z-scores are only as accurate as the measurements. Errors in measuring equipment or technique are not detectable by the software.</li>
+        <li>The system currently does not implement Alembic migrations — suitable for demo and early pilot use only.</li>
+      </ul>
+    </div>
+  </section>
+</div>
+<script src="/js/api.js"></script>
+<script src="/js/hi.js"></script>
+<script src="/js/lang.js"></script>
+</body>
+</html>

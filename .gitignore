@@ -1,0 +1,50 @@
+# Environment
+.env
+*.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+env/
+pip-log.txt
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Database
+*.db
+*.sqlite3
+
+# Uploads
+uploads/
+
+# ML artifacts
+backend/ml_artifacts/*.joblib
+backend/ml_artifacts/*.pkl
+backend/ml_artifacts/*.onnx
+
+# Data (never share raw datasets)
+datasets/*.xlsx
+datasets/*.csv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
+logs/
+
+# Alembic
+alembic.ini

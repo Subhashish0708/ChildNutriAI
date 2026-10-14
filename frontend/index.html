@@ -1,1683 +1,207 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ChildNutri AI — AI-Assisted Child Malnutrition Screening &amp; Nutrition Support System</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    
-    :root {
-      --bg: #FAFAF8;
-      --bg-muted: #F3F1EE;
-      --surface: #FFFFFF;
-      --surface-muted: #F9F8F6;
-      --border: #E8E5E0;
-      --border-strong: #D6D2CC;
-      --text: #1C1917;
-      --text-secondary: #57534E;
-      --text-muted: #8C8680;
-      --brand: #3D6B52;
-      --brand-hover: #2D5040;
-      --brand-light: #EBF2EE;
-      --warning: #C2760C;
-      --warning-bg: #FEF6E7;
-      --danger: #B54444;
-      --danger-bg: #FDEAEA;
-      --font-heading: 'DM Sans', -apple-system, sans-serif;
-      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      --radius-sm: 6px;
-      --radius-md: 10px;
-      --radius-lg: 14px;
-      --radius-xl: 20px;
-      --radius-2xl: 28px;
-      --radius-full: 9999px;
-      --shadow-sm: 0 1px 3px rgba(28,25,23,0.06);
-      --shadow-md: 0 4px 12px rgba(28,25,23,0.07);
-      --shadow-lg: 0 10px 25px rgba(28,25,23,0.1);
-    }
-
-    html { scroll-behavior: smooth; font-size: 16px; }
-    body {
-      font-family: var(--font-body);
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    /* NAV */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      background: rgba(250, 250, 248, 0.92);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-      height: 68px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 5%;
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-    }
-
-    .nav-logo-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: var(--radius-md);
-      background: var(--brand);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .nav-logo-text {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: 1.15rem;
-      letter-spacing: -0.02em;
-      color: var(--text);
-    }
-
-    .nav-logo-text em {
-      color: var(--brand);
-      font-style: normal;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: 0.88rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color 150ms ease;
-    }
-
-    .nav-links a:hover {
-      color: var(--text);
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .btn-nav-ghost {
-      background: transparent;
-      border: 1px solid var(--border);
-      padding: 8px 16px;
-      border-radius: var(--radius-full);
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: var(--text);
-      cursor: pointer;
-      transition: all 150ms ease;
-    }
-
-    .btn-nav-ghost:hover {
-      background: var(--bg-muted);
-      border-color: var(--border-strong);
-    }
-
-    .btn-nav-primary {
-      background: var(--brand);
-      border: none;
-      padding: 8px 18px;
-      border-radius: var(--radius-full);
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: #FFFFFF;
-      cursor: pointer;
-      transition: all 150ms ease;
-    }
-
-    .btn-nav-primary:hover {
-      background: var(--brand-hover);
-      transform: translateY(-1px);
-    }
-
-    /* HERO SECTION */
-    .hero {
-      padding: 140px 5% 80px;
-      max-width: 1240px;
-      margin: 0 auto;
-      min-height: 85vh;
-      display: flex;
-      align-items: center;
-      gap: 50px;
-    }
-
-    .hero-content {
-      flex: 1.2;
-    }
-
-    .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 4px 12px;
-      border-radius: var(--radius-full);
-      background: var(--brand-light);
-      color: var(--brand);
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-    }
-
-    .hero h1 {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: clamp(2.4rem, 4.8vw, 3.8rem);
-      letter-spacing: -0.035em;
-      line-height: 1.1;
-      color: var(--text);
-      margin-bottom: 20px;
-    }
-
-    .hero h1 span {
-      color: var(--brand);
-    }
-
-    .hero p {
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      line-height: 1.7;
-      max-width: 540px;
-      margin-bottom: 32px;
-    }
-
-    .hero-ctas {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-      margin-bottom: 48px;
-    }
-
-    .btn-hero-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--brand);
-      color: #FFFFFF;
-      padding: 14px 28px;
-      border-radius: var(--radius-full);
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      font-weight: 600;
-      border: none;
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 180ms ease;
-    }
-
-    .btn-hero-primary:hover {
-      background: var(--brand-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(61,107,82,0.25);
-    }
-
-    .btn-hero-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 14px 24px;
-      border-radius: var(--radius-full);
-      font-size: 0.95rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 180ms ease;
-    }
-
-    .btn-hero-secondary:hover {
-      background: var(--bg-muted);
-      border-color: var(--border-strong);
-    }
-
-    .hero-stats-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      padding-top: 28px;
-      border-top: 1px solid var(--border);
-    }
-
-    .hero-stat-val {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: 1.5rem;
-      color: var(--text);
-      letter-spacing: -0.02em;
-    }
-
-    .hero-stat-lbl {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-top: 2px;
-    }
-
-    /* Abstract Healthcare Visual Composition */
-    .hero-visual {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-    }
-
-    .hero-dossier-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-2xl);
-      padding: 32px;
-      width: 100%;
-      max-width: 440px;
-      box-shadow: var(--shadow-lg);
-      position: relative;
-    }
-
-    .card-tag {
-      font-size: 0.7rem;
-      font-weight: 700;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--brand);
-      margin-bottom: 6px;
-    }
-
-    .card-title {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: 1.25rem;
-      color: var(--text);
-      margin-bottom: 20px;
-    }
-
-    .mock-who-row {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .mock-who-box {
-      background: var(--surface-muted);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      padding: 10px;
-      text-align: center;
-    }
-
-    .mock-who-num {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: 1.15rem;
-      color: var(--brand);
-    }
-
-    .mock-who-label {
-      font-size: 0.65rem;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .mock-triage-bar {
-      padding: 12px 14px;
-      background: var(--brand-light);
-      border-left: 3px solid var(--brand);
-      border-radius: var(--radius-sm);
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--brand);
-      margin-bottom: 16px;
-    }
-
-    .mock-timeline {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 14px;
-      border-top: 1px solid var(--border);
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    /* SECTION STYLING */
-    section {
-      padding: 90px 5%;
-      max-width: 1240px;
-      margin: 0 auto;
-    }
-
-    .section-eyebrow {
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: var(--brand);
-      text-align: center;
-      margin-bottom: 8px;
-    }
-
-    .section-title {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: clamp(1.8rem, 3.2vw, 2.5rem);
-      letter-spacing: -0.03em;
-      text-align: center;
-      color: var(--text);
-      margin-bottom: 14px;
-    }
-
-    .section-subtitle {
-      font-size: 1rem;
-      color: var(--text-secondary);
-      text-align: center;
-      max-width: 580px;
-      margin: 0 auto 56px;
-      line-height: 1.6;
-    }
-
-    /* CAPABILITIES GRID */
-    .capabilities-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 28px;
-    }
-
-    .capability-item {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 28px 24px;
-      transition: all 180ms ease;
-    }
-
-    .capability-item:hover {
-      border-color: var(--brand);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .capability-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: var(--radius-lg);
-      background: var(--brand-light);
-      color: var(--brand);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 18px;
-    }
-
-    .capability-name {
-      font-family: var(--font-heading);
-      font-weight: 700;
-      font-size: 1.05rem;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-
-    .capability-desc {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    /* WORKFLOW STEPS */
-    .workflow-strip {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 18px;
-      position: relative;
-    }
-
-    .workflow-node {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-xl);
-      padding: 24px 20px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .workflow-num {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: 1.75rem;
-      color: var(--brand);
-      margin-bottom: 14px;
-    }
-
-    .workflow-title {
-      font-family: var(--font-heading);
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .workflow-desc {
-      font-size: 0.78rem;
-      color: var(--text-secondary);
-      line-height: 1.5;
-    }
-
-    /* TECH STACK */
-    .tech-pills-row {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
-      max-width: 880px;
-      margin: 0 auto;
-    }
-
-    .tech-badge {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 9px 18px;
-      border-radius: var(--radius-full);
-      font-size: 0.84rem;
-      font-weight: 600;
-      color: var(--text);
-      box-shadow: var(--shadow-sm);
-    }
-
-    /* CTA BANNER */
-    .cta-banner-wrap {
-      padding: 0 5% 90px;
-      max-width: 1240px;
-      margin: 0 auto;
-    }
-
-    .cta-banner {
-      background: #141412;
-      border-radius: var(--radius-2xl);
-      padding: 64px 48px;
-      text-align: center;
-      color: #FFFFFF;
-    }
-
-    .cta-banner h2 {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: clamp(2rem, 3.5vw, 2.75rem);
-      letter-spacing: -0.03em;
-      margin-bottom: 12px;
-    }
-
-    .cta-banner p {
-      font-size: 1rem;
-      color: #A8A29E;
-      max-width: 520px;
-      margin: 0 auto 32px;
-      line-height: 1.6;
-    }
-
-    /* FOOTER */
-    footer {
-      background: #0D0D0B;
-      color: #78716C;
-      padding: 56px 5% 40px;
-      font-size: 0.84rem;
-    }
-
-    .footer-inner {
-      max-width: 1240px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 40px;
-      padding-bottom: 40px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      flex-wrap: wrap;
-    }
-
-    .footer-logo-title {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      color: #FFFFFF;
-      font-size: 1.15rem;
-      margin-bottom: 6px;
-    }
-
-    .footer-disclaimer {
-      max-width: 1240px;
-      margin: 32px auto 0;
-      font-size: 0.75rem;
-      line-height: 1.6;
-      color: #57534E;
-    }
-
-    /* AUTH MODAL */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 999;
-      background: rgba(20, 20, 18, 0.55);
-      backdrop-filter: blur(8px);
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-
-    .modal-overlay.open {
-      display: flex;
-    }
-
-    .modal-box {
-      background: #FFFFFF;
-      border-radius: var(--radius-2xl);
-      padding: 36px 36px 32px;
-      width: 100%;
-      max-width: 440px;
-      max-height: 92vh;
-      overflow-y: auto;
-      box-shadow: var(--shadow-lg);
-      position: relative;
-    }
-
-    .modal-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 1.25rem;
-      color: var(--text-secondary);
-      transition: all 140ms ease;
-    }
-
-    .modal-close:hover {
-      background: var(--bg-muted);
-      color: var(--text);
-    }
-
-    .modal-logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .modal-logo-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: var(--radius-md);
-      background: var(--brand);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal-logo-name {
-      font-family: var(--font-heading);
-      font-weight: 800;
-      font-size: 1.1rem;
-      color: var(--text);
-    }
-
-    .modal-logo-name span {
-      color: var(--brand);
-    }
-
-    .modal-logo-sub {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .auth-tabs {
-      display: flex;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 24px;
-    }
-
-    .tab-btn {
-      flex: 1;
-      padding: 10px;
-      font-family: var(--font-body);
-      font-size: 0.88rem;
-      font-weight: 600;
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
-      color: var(--text-muted);
-      cursor: pointer;
-      transition: all 150ms ease;
-    }
-
-    .tab-btn.active {
-      color: var(--brand);
-      border-bottom-color: var(--brand);
-    }
-
-    .auth-form {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .form-group {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      margin-bottom: 16px;
-    }
-
-    .form-group label {
-      font-size: 0.8125rem;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .input-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .input-icon {
-      position: absolute;
-      left: 12px;
-      color: var(--text-muted);
-      pointer-events: none;
-      display: flex;
-      align-items: center;
-    }
-
-    .input-wrap input, .input-wrap select {
-      width: 100%;
-      height: 42px;
-      padding: 0 40px 0 38px;
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      font-family: var(--font-body);
-      font-size: 0.875rem;
-      color: var(--text);
-      background: var(--surface);
-      outline: none;
-      transition: border-color 150ms ease;
-    }
-
-    .input-wrap input:focus, .input-wrap select:focus {
-      border-color: var(--brand);
-      box-shadow: 0 0 0 3px var(--brand-light);
-    }
-
-    .eye-btn {
-      position: absolute;
-      right: 12px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--text-muted);
-      display: flex;
-      align-items: center;
-      padding: 4px;
-    }
-
-    .form-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      font-size: 0.8125rem;
-    }
-
-    .form-row2 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-
-    .check-label {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      cursor: pointer;
-      color: var(--text-secondary);
-      font-size: 0.8125rem;
-    }
-
-    .forgot-link {
-      color: var(--brand);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.8125rem;
-    }
-
-    .forgot-link:hover {
-      text-decoration: underline;
-    }
-
-    .btn-submit {
-      width: 100%;
-      height: 44px;
-      border-radius: var(--radius-md);
-      background: var(--brand);
-      color: #FFFFFF;
-      font-family: var(--font-body);
-      font-weight: 600;
-      font-size: 0.88rem;
-      border: none;
-      cursor: pointer;
-      transition: background 150ms ease;
-    }
-
-    .btn-submit:hover {
-      background: var(--brand-hover);
-    }
-
-    .btn-submit:disabled {
-      opacity: 0.65;
-      cursor: not-allowed;
-    }
-
-    .switch-text {
-      text-align: center;
-      font-size: 0.8125rem;
-      color: var(--text-muted);
-      margin-top: 16px;
-    }
-
-    .link-btn {
-      background: none;
-      border: none;
-      color: var(--brand);
-      font-weight: 600;
-      cursor: pointer;
-      padding: 0;
-    }
-
-    .link-btn:hover {
-      text-decoration: underline;
-    }
-
-    .auth-toast {
-      padding: 10px 14px;
-      border-radius: var(--radius-md);
-      font-size: 0.8125rem;
-      margin-top: 14px;
-      display: none;
-    }
-
-    .auth-toast.success {
-      display: block;
-      background: var(--brand-light);
-      color: var(--brand);
-      border: 1px solid var(--border);
-    }
-
-    .auth-toast.error {
-      display: block;
-      background: var(--danger-bg);
-      color: var(--danger);
-      border: 1px solid #F2BCBC;
-    }
-
-    .auth-toast.info {
-      display: block;
-      background: #EDF1F8;
-      color: #4A6490;
-      border: 1px solid #C4D1E8;
-    }
-
-    @media (max-width: 860px) {
-      .hero { flex-direction: column; text-align: center; padding-top: 110px; }
-      .hero p { margin: 0 auto 32px; }
-      .hero-ctas { justify-content: center; }
-      .hero-stats-row { grid-template-columns: 1fr; }
-      .capabilities-grid { grid-template-columns: 1fr; }
-      .workflow-strip { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-    }
-  </style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>ChildNutri AI — Pediatric Malnutrition Screening</title>
+  <meta name="description" content="AI-powered pediatric nutrition screening using WHO growth standards, future-risk prediction, and personalised diet plans.">
+  <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
-
-<!-- NAVIGATION -->
-<nav>
-  <a href="#" class="nav-logo">
-    <div class="nav-logo-icon">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg>
-    </div>
-    <div class="nav-logo-text">ChildNutri <em>AI</em></div>
-  </a>
-
-  <ul class="nav-links">
-    <li><a href="#features">Capabilities</a></li>
-    <li><a href="#how">Workflow</a></li>
-    <li><a href="#tech">Research Stack</a></li>
-  </ul>
-
-  <div class="nav-actions">
-    <button class="btn-nav-ghost" onclick="openModal('login')">Sign In</button>
-    <button class="btn-nav-primary" onclick="openModal('register')">Get Started</button>
+<nav class="nav">
+  <a class="brand" href="/index.html"><span class="brand-mark">CN</span> ChildNutri AI</a>
+  <div class="nav-links">
+    <a href="/resources.html" data-i18n="resources">Resources</a>
+    <a href="/photo-scan.html">Photo AI</a>
+    <a href="/model-card.html" data-i18n="model_card">Model card</a>
+    <a href="/login.html" data-i18n="sign_in">Log in</a>
+    <button id="lang-toggle" onclick="toggleLanguage()" style="background:transparent;border:1.5px solid #00d4aa;color:#00d4aa;border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;font-weight:600;margin-left:12px;transition:all 0.2s;" onmouseover="this.style.background='#00d4aa';this.style.color='#0d2818';" onmouseout="this.style.background='transparent';this.style.color='#00d4aa';">हिंदी</button>
+    <a class="btn primary" href="/signup.html" data-i18n="new_screening">Start screening</a>
   </div>
 </nav>
 
-<!-- HERO SECTION -->
-<section class="hero">
-  <div class="hero-content">
-    <div class="hero-eyebrow">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-      Clinical Decision Support System
-    </div>
-    <h1>AI-assisted nutritional screening for <span>children.</span></h1>
-    <p>
-      Understand growth trajectories, identify acute and chronic malnutrition earlier, and support timely clinical escalation with WHO-validated growth indicators and explainable AI.
-    </p>
-
-    <div class="hero-ctas">
-      <button class="btn-hero-primary" onclick="openModal('login')">
-        Start Screening &rarr;
-      </button>
-      <a href="#how" class="btn-hero-secondary">
-        Explore Workflow
-      </a>
-    </div>
-
-    <div class="hero-stats-row">
-      <div>
-        <div class="hero-stat-val">WHO LMS</div>
-        <div class="hero-stat-lbl">Validated growth standards</div>
-      </div>
-      <div>
-        <div class="hero-stat-val">Multimodal</div>
-        <div class="hero-stat-lbl">Vision + anthropometrics</div>
-      </div>
-      <div>
-        <div class="hero-stat-val">SHAP &amp; Grad-CAM</div>
-        <div class="hero-stat-lbl">Explainable inference</div>
+<div class="app-shell">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text fade-up">
+      <div class="badge info mb" style="width:fit-content"><span class="badge-dot"></span> WHO 2006 Standards</div>
+      <h1>Child nutrition<br><span class="gradient-text">AI screening</span><br>for under‑5s</h1>
+      <p class="lede">Combines WHO growth z-scores, a LightGBM future-risk model, and age-specific care plans to support doctors, Anganwadi workers, and parents.</p>
+      <div class="hero-cta">
+        <a class="btn primary lg" href="/signup.html">Create free account</a>
+        <a class="btn lg" href="/login.html">Sign in</a>
       </div>
     </div>
-  </div>
-
-  <div class="hero-visual">
-    <div class="hero-dossier-card">
-      <div class="card-tag">Diagnostic Dossier Snapshot</div>
-      <div class="card-title">Aarav Sharma &bull; 14 months</div>
-
-      <div class="mock-who-row">
-        <div class="mock-who-box">
-          <div class="mock-who-num">-0.42</div>
-          <div class="mock-who-label">HAZ SD</div>
-        </div>
-        <div class="mock-who-box">
-          <div class="mock-who-num">-0.65</div>
-          <div class="mock-who-label">WAZ SD</div>
-        </div>
-        <div class="mock-who-box">
-          <div class="mock-who-num">13.8</div>
-          <div class="mock-who-label">MUAC cm</div>
+    <div class="hero-visual fade-up-2">
+      <div class="hero-card glass">
+        <canvas id="hero-canvas"></canvas>
+        <div class="hero-card-inner">
+          <div class="orb-wrap" style="padding-top:32px">
+            <div class="orb status-healthy float-anim">
+              <div class="orb-inner"></div>
+              <span class="orb-label">Healthy</span>
+            </div>
+          </div>
+          <div style="margin-top:56px">
+            <p class="muted" style="font-size:13px;line-height:1.6">Assessment result</p>
+            <h3 style="margin-top:4px">Normal nutritional status</h3>
+            <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap">
+              <span class="badge healthy">WAZ +0.3</span>
+              <span class="badge healthy">HAZ -0.1</span>
+              <span class="badge healthy">WHZ +0.2</span>
+            </div>
+          </div>
         </div>
       </div>
+    </div>
+  </section>
 
-      <div class="mock-triage-bar">
-        Clinical Status: Normal Growth Trajectory
+  <!-- FEATURES -->
+  <section class="section">
+    <div class="center mb-lg">
+      <h2>Everything in one flow</h2>
+      <p class="muted mt-sm">7-step wizard → results in seconds</p>
+    </div>
+    <div class="grid-3">
+      <div class="card fade-up-1">
+        <div class="feature-icon">📏</div>
+        <h3>WHO z-scores</h3>
+        <p class="muted mt-sm">WAZ, HAZ, WHZ, BAZ computed with official LMS tables. SAM/MAM/stunting/underweight/overweight classification by CMAM cut-offs.</p>
       </div>
-
-      <div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:12px;line-height:1.5;">
-        Vision tensors processed through EfficientNet-B0. Saliency heatmap focused on mid-arm and torso musculature.
+      <div class="card fade-up-2">
+        <div class="feature-icon">🔮</div>
+        <h3>Future-risk tier</h3>
+        <p class="muted mt-sm">LightGBM context model (ROC-AUC 0.87) + trend analysis + closeness-to-cut-off scoring produces a transparent LOW / WATCH / HIGH tier.</p>
       </div>
-
-      <div class="mock-timeline">
-        <span>Evaluated by Dr. Subha</span>
-        <span style="font-weight:600;color:var(--brand);">Verified Active</span>
+      <div class="card fade-up-3">
+        <div class="feature-icon">🍛</div>
+        <h3>Care & diet plan</h3>
+        <p class="muted mt-sm">Age-band and preference-aware diet recommendations, red-flag alerts, follow-up timing, and government scheme guidance.</p>
+      </div>
+      <div class="card fade-up-1">
+        <div class="feature-icon">📄</div>
+        <h3>OCR report scan</h3>
+        <p class="muted mt-sm">Upload a health card photo. Tesseract + OpenCV extract weight, height, age, and MUAC for review before use.</p>
+      </div>
+      <div class="card fade-up-2">
+        <div class="feature-icon">📸</div>
+        <h3>Deep Learning Photo AI</h3>
+        <p class="muted mt-sm">Upload infant photo. Computer vision extracts anatomical wasting features (ribs, facial hollows, limbs) with Grad-CAM heatmaps for SAM/MAM screening.</p>
+      </div>
+      <div class="card fade-up-2">
+        <div class="feature-icon">📊</div>
+        <h3>Growth history</h3>
+        <p class="muted mt-sm">Track z-score trends across visits. Charts show WAZ and HAZ trajectories vs. WHO reference bands.</p>
+      </div>
+      <div class="card fade-up-3">
+        <div class="feature-icon">📥</div>
+        <h3>PDF reports</h3>
+        <p class="muted mt-sm">One-click download of a clinical-grade summary PDF for patient records, referrals, or parent sharing.</p>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- CAPABILITIES SECTION -->
-<section id="features">
-  <div class="section-eyebrow">Capabilities</div>
-  <h2 class="section-title">Engineered for Pediatric Decision Support</h2>
-  <p class="section-subtitle">
-    Combining deep learning computer vision, WHO growth tables, and explainability to empower frontline health workers.
-  </p>
-
-  <div class="capabilities-grid">
-    <div class="capability-item">
-      <div class="capability-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><circle cx="12" cy="12" r="3"/></svg>
+  <!-- STATS BAND -->
+  <section class="section-sm">
+    <div class="glass panel" style="background:linear-gradient(135deg,rgba(52,211,153,0.06),rgba(34,211,238,0.04));border-color:rgba(52,211,153,0.2);">
+      <div class="stats-row">
+        <div class="stat-card" style="background:transparent;border:none;">
+          <div class="stat-label">Model accuracy</div>
+          <div class="stat-value">0.87</div>
+          <div class="stat-sub">ROC-AUC (stunting risk)</div>
+        </div>
+        <div class="stat-card" style="background:transparent;border:none;">
+          <div class="stat-label">Training samples</div>
+          <div class="stat-value">40k+</div>
+          <div class="stat-sub">Toddler nutritional dataset</div>
+        </div>
+        <div class="stat-card" style="background:transparent;border:none;">
+          <div class="stat-label">WHO indicators</div>
+          <div class="stat-value">5</div>
+          <div class="stat-sub">WAZ · HAZ · WHZ · BAZ · HCZ</div>
+        </div>
+        <div class="stat-card" style="background:transparent;border:none;">
+          <div class="stat-label">Assessment steps</div>
+          <div class="stat-value">6</div>
+          <div class="stat-sub">Child → measurements → plan</div>
+        </div>
       </div>
-      <div class="capability-name">Multimodal AI Screening</div>
-      <div class="capability-desc">Fuses convolutional visual embeddings from clinical photographs with precise physical measurements for deep phenotype screening.</div>
     </div>
+  </section>
 
-    <div class="capability-item">
-      <div class="capability-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-      </div>
-      <div class="capability-name">WHO Growth Standards</div>
-      <div class="capability-desc">Computes age- and sex-specific LMS Z-scores for Height-for-Age (HAZ), Weight-for-Age (WAZ), and Weight-for-Height (WHZ).</div>
+  <!-- DISCLAIMER -->
+  <section class="section-sm" style="padding-bottom:64px;">
+    <div class="alert warning">
+      <span>⚠</span>
+      <div><strong>Screening tool only.</strong> ChildNutri AI supports clinical decision-making but does not diagnose illness and does not replace a doctor, nurse, or Anganwadi worker. Always verify OCR-extracted values before use.</div>
     </div>
-
-    <div class="capability-item">
-      <div class="capability-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-      </div>
-      <div class="capability-name">Explainable AI (XAI)</div>
-      <div class="capability-desc">SHAP feature contribution bars explain tabular decisions; Grad-CAM visual heatmaps identify anatomical areas of AI attention.</div>
-    </div>
-
-    <div class="capability-item">
-      <div class="capability-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      </div>
-      <div class="capability-name">Longitudinal Tracking</div>
-      <div class="capability-desc">Continuous growth velocity monitoring across repeat visits with proactive early warning alerts for weight faltering.</div>
-    </div>
-
-    <div class="capability-item">
-      <div class="capability-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-      </div>
-      <div class="capability-name">Future Risk Forecasting</div>
-      <div class="capability-desc">Predictive 30-, 60-, and 90-day trajectory modeling allowing frontline health officers to intervene before acute deterioration.</div>
-    </div>
-
-    <div class="capability-item">
-      <div class="capability-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      </div>
-      <div class="capability-name">Automated Health Dossiers</div>
-      <div class="capability-desc">One-click generation of official clinical PDF reports with complete diagnostic traces, meal guidance, and referral notes.</div>
-    </div>
-  </div>
-</section>
-
-<!-- WORKFLOW SECTION -->
-<section id="how" style="background:var(--bg-muted);border-radius:var(--radius-2xl);">
-  <div class="section-eyebrow">Protocol</div>
-  <h2 class="section-title">The 5-Step Pediatric Assessment Protocol</h2>
-  <p class="section-subtitle">A streamlined clinical workflow engineered for field health workers, Anganwadis, and pediatric clinics.</p>
-
-  <div class="workflow-strip">
-    <div class="workflow-node">
-      <div>
-        <div class="workflow-num">01</div>
-        <div class="workflow-title">Patient Identification</div>
-      </div>
-      <div class="workflow-desc">Select infant from cohort registry or record demographic profile and birth history.</div>
-    </div>
-
-    <div class="workflow-node">
-      <div>
-        <div class="workflow-num">02</div>
-        <div class="workflow-title">Physical Anthropometrics</div>
-      </div>
-      <div class="workflow-desc">Record verified weight, recumbent length, and MUAC arm circumference measurements.</div>
-    </div>
-
-    <div class="workflow-node">
-      <div>
-        <div class="workflow-num">03</div>
-        <div class="workflow-title">Clinical Photo Ingestion</div>
-      </div>
-      <div class="workflow-desc">Upload patient image for EfficientNet-B0 visual tensor feature extraction.</div>
-    </div>
-
-    <div class="workflow-node">
-      <div>
-        <div class="workflow-num">04</div>
-        <div class="workflow-title">Live WHO Calculations</div>
-      </div>
-      <div class="workflow-desc">Instant mathematical benchmark against WHO international reference curves.</div>
-    </div>
-
-    <div class="workflow-node">
-      <div>
-        <div class="workflow-num">05</div>
-        <div class="workflow-title">Synthesis &amp; Dossier</div>
-      </div>
-      <div class="workflow-desc">Multimodal risk score, SHAP attributions, Grad-CAM attention map, and PDF export.</div>
-    </div>
-  </div>
-</section>
-
-<!-- TECH STACK SECTION -->
-<section id="tech">
-  <div class="section-eyebrow">Architecture</div>
-  <h2 class="section-title">Research-Grade Technology Stack</h2>
-  <p class="section-subtitle">Built upon open, verifiable clinical AI and modern high-performance web architecture.</p>
-
-  <div class="tech-pills-row">
-    <div class="tech-badge">Python 3.11</div>
-    <div class="tech-badge">FastAPI Asynchronous Backend</div>
-    <div class="tech-badge">TensorFlow / Keras</div>
-    <div class="tech-badge">EfficientNet-B0 Vision Tensor</div>
-    <div class="tech-badge">SHAP Explainable AI</div>
-    <div class="tech-badge">Grad-CAM Spatial Saliency</div>
-    <div class="tech-badge">WHO LMS Growth Tables</div>
-    <div class="tech-badge">SQLAlchemy ORM</div>
-    <div class="tech-badge">SQLite Clinical Database</div>
-    <div class="tech-badge">ReportLab PDF Engine</div>
-    <div class="tech-badge">JWT Authentication &amp; Bcrypt</div>
-  </div>
-</section>
-
-<!-- CTA SECTION -->
-<div class="cta-banner-wrap">
-  <div class="cta-banner">
-    <h2>Early detection protects potential.</h2>
-    <p>Empower your community health center or research project with validated pediatric nutritional screening.</p>
-    <button class="btn-hero-primary" onclick="openModal('login')">
-      Launch Screening Center &rarr;
-    </button>
-  </div>
+  </section>
 </div>
 
-<!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div>
-      <div class="footer-logo-title">ChildNutri AI</div>
-      <div>AI-Assisted Child Malnutrition Screening &amp; Nutrition Support System</div>
-    </div>
-    <div>
-      <div>&copy; 2026 ChildNutri AI Research Initiative. All rights reserved.</div>
-    </div>
-  </div>
-  <div class="footer-disclaimer">
-    Medical Disclaimer: ChildNutri AI is an AI-assisted clinical decision-support research prototype designed to assist healthcare workers, pediatricians, and researchers in identifying malnutrition risk early. It is not an autonomous diagnostic device and should never replace certified medical evaluation, laboratory testing, or physician clinical judgment.
-  </div>
-</footer>
-
-<!-- ============================================================
-     AUTH MODAL (LOGIN / REGISTER / FORGOT PASSWORD)
-     ============================================================ -->
-<div id="authModal" class="modal-overlay" onclick="handleOverlayClick(event)">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()" title="Close">&times;</button>
-
-    <div class="modal-logo">
-      <div class="modal-logo-icon">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg>
-      </div>
-      <div>
-        <div class="modal-logo-name">ChildNutri <span>AI</span></div>
-        <div class="modal-logo-sub">Malnutrition Identification Platform</div>
-      </div>
-    </div>
-
-    <div class="auth-tabs">
-      <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Sign In</button>
-      <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Register</button>
-    </div>
-
-    <!-- LOGIN FORM -->
-    <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
-      <div class="form-group">
-        <label>Email Address</label>
-        <div class="input-wrap">
-          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
-          <input type="email" id="loginEmail" placeholder="Enter your email" required />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Password</label>
-        <div class="input-wrap">
-          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
-          <input type="password" id="loginPassword" placeholder="Enter your password" required />
-          <button type="button" class="eye-btn" onclick="togglePass('loginPassword', this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <label class="check-label"><input type="checkbox" /> Remember me</label>
-        <a href="#" class="forgot-link" onclick="openForgotPassword(event)">Forgot password?</a>
-      </div>
-
-      <button type="submit" class="btn-submit">Login to ChildNutri AI</button>
-      <p class="switch-text">Don&apos;t have an account? <button type="button" class="link-btn" onclick="switchTab('register')">Register here</button></p>
-    </form>
-
-    <!-- REGISTER FORM -->
-    <form id="registerForm" class="auth-form" style="display:none;" onsubmit="handleRegister(event)">
-      <div class="form-row2">
-        <div class="form-group">
-          <label>First Name</label>
-          <div class="input-wrap">
-            <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
-            <input type="text" id="regFirstName" placeholder="First name" required />
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Last Name</label>
-          <div class="input-wrap">
-            <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
-            <input type="text" id="regLastName" placeholder="Last name" required />
-          </div>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Email Address</label>
-        <div class="input-wrap">
-          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
-          <input type="email" id="regEmail" placeholder="Enter your email" required />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Phone Number</label>
-        <div class="input-wrap">
-          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
-          <input type="tel" id="regPhone" placeholder="Enter mobile number" />
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Role / Designation</label>
-        <div class="input-wrap">
-          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>
-          <select id="regRole" required>
-            <option value="" disabled selected>Select your role</option>
-            <option value="parent">Parent</option>
-            <option value="doctor">Doctor</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Password</label>
-        <div class="input-wrap">
-          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
-          <input type="password" id="regPassword" placeholder="Create a password" required />
-          <button type="button" class="eye-btn" onclick="togglePass('regPassword', this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label>Confirm Password</label>
-        <div class="input-wrap">
-          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg></span>
-          <input type="password" id="regConfirm" placeholder="Confirm your password" required />
-          <button type="button" class="eye-btn" onclick="togglePass('regConfirm', this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-        </div>
-      </div>
-
-      <button type="submit" class="btn-submit">Create Account</button>
-      <p class="switch-text">Already have an account? <button type="button" class="link-btn" onclick="switchTab('login')">Login here</button></p>
-    </form>
-
-    <!-- FORGOT PASSWORD FORM (2-STEP VERIFICATION & RESET) -->
-    <div id="forgotPasswordView" class="auth-form" style="display:none; flex-direction:column;">
-      <div style="margin-bottom:18px;">
-        <button type="button" class="link-btn" onclick="switchTab('login')" style="font-size:0.8rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px; color:var(--brand); margin-bottom:8px;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-          Back to Login
-        </button>
-        <div style="font-family:var(--font-heading); font-size:1.15rem; font-weight:800; color:var(--text); line-height:1.2;">Reset Password</div>
-        <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;">Recover access to your ChildNutri AI account</div>
-      </div>
-
-      <!-- Step 1: Verify Email -->
-      <form id="forgotStep1Form" onsubmit="submitForgotStep1(event)">
-        <div class="form-group">
-          <label>Registered Email Address</label>
-          <div class="input-wrap">
-            <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
-            <input type="email" id="forgotEmail" placeholder="Enter your registered email" required />
-          </div>
-        </div>
-
-        <div style="background:var(--brand-light); border:1px solid var(--border); border-radius:var(--radius-md); padding:10px 14px; margin-bottom:16px;">
-          <div style="font-size:0.75rem; color:var(--brand); line-height:1.45; font-weight:500;">
-            Enter the email registered with your health worker or parent profile to verify your record.
-          </div>
-        </div>
-
-        <button type="submit" class="btn-submit" id="btnForgotVerify">
-          Verify Account &rarr;
-        </button>
-      </form>
-
-      <!-- Step 2: Set New Password -->
-      <form id="forgotStep2Form" style="display:none;" onsubmit="submitResetStep2(event)">
-        <div style="background:var(--surface-muted); border:1px solid var(--border); border-radius:var(--radius-md); padding:12px 14px; margin-bottom:16px; display:flex; align-items:center; gap:12px;">
-          <div style="width:36px; height:36px; border-radius:50%; background:var(--brand); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem;" id="forgotAvatarInitial">&#10003;</div>
-          <div style="flex:1;">
-            <div style="font-size:0.68rem; font-weight:700; color:var(--brand); text-transform:uppercase; letter-spacing:0.04em;">Account Verified</div>
-            <div style="font-size:0.88rem; font-weight:700; color:var(--text);" id="forgotVerifiedName">Dr. Subha</div>
-            <div style="font-size:0.74rem; color:var(--text-muted);" id="forgotVerifiedEmail">d*****a@childnutri.org</div>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>New Password</label>
-          <div class="input-wrap">
-            <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
-            <input type="password" id="forgotNewPassword" placeholder="Enter new password (min. 6 chars)" minlength="6" required />
-            <button type="button" class="eye-btn" onclick="togglePass('forgotNewPassword', this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label>Confirm New Password</label>
-          <div class="input-wrap">
-            <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg></span>
-            <input type="password" id="forgotConfirmPassword" placeholder="Re-enter new password" minlength="6" required />
-            <button type="button" class="eye-btn" onclick="togglePass('forgotConfirmPassword', this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
-          </div>
-        </div>
-
-        <button type="submit" class="btn-submit" id="btnForgotReset">
-          Update Password &amp; Login &rarr;
-        </button>
-      </form>
-
-      <p class="switch-text" style="margin-top:12px;">Remember your credentials? <button type="button" class="link-btn" onclick="switchTab('login')">Return to login</button></p>
-    </div>
-
-    <!-- Toast Notification -->
-    <div id="authToast" class="auth-toast"></div>
-  </div>
-</div>
-
-<!-- ============================================================
-     AUTHENTICATION LOGIC SCRIPTS
-     ============================================================ -->
 <script>
-  const API_BASE = (window.location && window.location.origin && window.location.origin.startsWith("http")) 
-    ? (window.location.origin + "/api") 
-    : "http://127.0.0.1:8000/api";
-
-  function openModal(tab) {
-    document.getElementById('authModal').classList.add('open');
-    document.body.style.overflow = 'hidden';
-    switchTab(tab || 'login');
-    clearToast();
-  }
-
-  function closeModal() {
-    document.getElementById('authModal').classList.remove('open');
-    document.body.style.overflow = '';
-    clearToast();
-  }
-
-  function handleOverlayClick(e) {
-    if (e.target === document.getElementById('authModal')) closeModal();
-  }
-
-  function switchTab(tab) {
-    var isLogin = tab === 'login';
-    var tabsEl = document.querySelector('.auth-tabs');
-    if (tabsEl) tabsEl.style.display = 'flex';
-    var forgotEl = document.getElementById('forgotPasswordView');
-    if (forgotEl) forgotEl.style.display = 'none';
-
-    document.getElementById('loginForm').style.display    = isLogin ? 'flex'  : 'none';
-    document.getElementById('registerForm').style.display = isLogin ? 'none' : 'flex';
-    document.getElementById('tab-login').classList.toggle('active',    isLogin);
-    document.getElementById('tab-register').classList.toggle('active', !isLogin);
-    clearToast();
-  }
-
-  function openForgotPassword(e) {
-    if (e) e.preventDefault();
-    var tabsEl = document.querySelector('.auth-tabs');
-    if (tabsEl) tabsEl.style.display = 'none';
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('registerForm').style.display = 'none';
-
-    var forgotEl = document.getElementById('forgotPasswordView');
-    if (forgotEl) forgotEl.style.display = 'flex';
-
-    var s1 = document.getElementById('forgotStep1Form');
-    var s2 = document.getElementById('forgotStep2Form');
-    if (s1) s1.style.display = 'block';
-    if (s2) s2.style.display = 'none';
-
-    var loginEmailVal = document.getElementById('loginEmail') ? document.getElementById('loginEmail').value.trim() : '';
-    var forgotEmailInp = document.getElementById('forgotEmail');
-    if (forgotEmailInp && loginEmailVal) {
-      forgotEmailInp.value = loginEmailVal;
-    }
-    clearToast();
-  }
-
-  async function submitForgotStep1(e) {
-    e.preventDefault();
-    var emailInput = document.getElementById('forgotEmail');
-    var email = emailInput ? emailInput.value.trim() : '';
-    if (!email) {
-      showToast('Please enter your registered email address.', 'error');
-      return;
-    }
-
-    var btn = document.getElementById('btnForgotVerify');
-    var origText = btn ? btn.textContent : '';
-    if (btn) { btn.disabled = true; btn.textContent = 'Verifying...'; }
-
-    try {
-      var res = await fetch(`${API_BASE}/auth/forgot-password`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email })
-      });
-      var data = await res.json();
-
-      if (data.status === 'found') {
-        showToast('Account verified! Please set your new password.', 'success');
-        document.getElementById('forgotVerifiedName').textContent = data.full_name || 'Authorized User';
-        document.getElementById('forgotVerifiedEmail').textContent = data.masked_email || email;
-        var initial = (data.full_name || 'U').charAt(0).toUpperCase();
-        document.getElementById('forgotAvatarInitial').textContent = initial;
-
-        document.getElementById('forgotStep1Form').style.display = 'none';
-        document.getElementById('forgotStep2Form').style.display = 'block';
-        var np = document.getElementById('forgotNewPassword');
-        if (np) np.focus();
-      } else {
-        showToast(data.message || 'No account found with that email address.', 'error');
-      }
-    } catch (err) {
-      console.error(err);
-      showToast('Unable to connect to authentication server.', 'error');
-    } finally {
-      if (btn) { btn.disabled = false; btn.textContent = origText; }
-    }
-  }
-
-  async function submitResetStep2(e) {
-    e.preventDefault();
-    var email = document.getElementById('forgotEmail') ? document.getElementById('forgotEmail').value.trim() : '';
-    var newPassword = document.getElementById('forgotNewPassword') ? document.getElementById('forgotNewPassword').value : '';
-    var confirmPassword = document.getElementById('forgotConfirmPassword') ? document.getElementById('forgotConfirmPassword').value : '';
-
-    if (!newPassword || newPassword.length < 6) {
-      showToast('Password must be at least 6 characters long.', 'error');
-      return;
-    }
-    if (newPassword !== confirmPassword) {
-      showToast('Passwords do not match. Please re-enter.', 'error');
-      return;
-    }
-
-    var btn = document.getElementById('btnForgotReset');
-    var origText = btn ? btn.textContent : '';
-    if (btn) { btn.disabled = true; btn.textContent = 'Updating Password...'; }
-
-    try {
-      var res = await fetch(`${API_BASE}/auth/reset-password`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          email: email,
-          new_password: newPassword
-        })
-      });
-      var data = await res.json();
-
-      if (!res.ok) {
-        showToast(data.detail || 'Password reset failed. Please try again.', 'error');
-        return;
-      }
-
-      showToast(data.message || 'Password updated successfully! Returning to login...', 'success');
-
-      var loginEm = document.getElementById('loginEmail');
-      var loginPw = document.getElementById('loginPassword');
-      if (loginEm) loginEm.value = email;
-      if (loginPw) loginPw.value = newPassword;
-
-      setTimeout(function() {
-        switchTab('login');
-      }, 1400);
-    } catch (err) {
-      console.error(err);
-      showToast('Error connecting to backend server.', 'error');
-    } finally {
-      if (btn) { btn.disabled = false; btn.textContent = origText; }
-    }
-  }
-
-  function togglePass(id, btn) {
-    var inp = document.getElementById(id);
-    if (inp.type === 'password') { inp.type = 'text';     btn.style.opacity = '.5'; }
-    else                         { inp.type = 'password'; btn.style.opacity = '1'; }
-  }
-
-  function formatErrorMessage(detail) {
-    if (!detail) return 'An error occurred. Please try again.';
-    if (typeof detail === 'string') return detail;
-    if (Array.isArray(detail)) {
-      return detail.map(function(d) {
-        if (typeof d === 'string') return d;
-        var field = (d.loc && d.loc.length > 1) ? (d.loc[d.loc.length - 1].replace('_', ' ') + ': ') : '';
-        return field + (d.msg || d.detail || JSON.stringify(d));
-      }).join('; ');
-    }
-    if (typeof detail === 'object') {
-      if (detail.msg) return detail.msg;
-      if (detail.detail) return formatErrorMessage(detail.detail);
-      return JSON.stringify(detail);
-    }
-    return String(detail);
-  }
-
-  function showToast(msg, type) {
-    var t = document.getElementById('authToast');
-    if (!t) return;
-    t.textContent = formatErrorMessage(msg);
-    t.className = 'auth-toast ' + (type || 'info');
-    setTimeout(function(){ t.className = 'auth-toast'; }, 5000);
-  }
-
-  function clearToast() {
-    var t = document.getElementById('authToast');
-    if (t) t.className = 'auth-toast';
-  }
-
-  async function handleLogin(e) {
-    e.preventDefault();
-    const form = document.getElementById('loginForm') || e.target;
-    const emInput = document.getElementById('loginEmail') || form.querySelector('input[type="email"]');
-    const pwInput = document.getElementById('loginPassword') || form.querySelector('input[type="password"]');
-
-    const email = emInput ? emInput.value.trim() : '';
-    const password = pwInput ? pwInput.value : '';
-
-    if (!email || !password) {
-      showToast('Please enter both email and password.', 'error');
-      return;
-    }
-
-    showToast('Authenticating with ChildNutri AI...', 'info');
-
-    try {
-      const res = await fetch(`${API_BASE}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        showToast(data.detail || 'Login failed. Please check your credentials.', 'error');
-        return;
-      }
-
-      localStorage.setItem('childnutri_token', data.access_token);
-      localStorage.setItem('childnutri_user', JSON.stringify(data.user));
-
-      showToast(`Welcome, ${data.user.full_name}! Redirecting...`, 'success');
-
-      setTimeout(() => {
-        if (data.user.role === 'parent') {
-          window.location.href = 'parent_dashboard.html';
-        } else {
-          window.location.href = 'dashboard.html';
+// Particle field in hero card
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize(){canvas.width=canvas.offsetWidth;canvas.height=canvas.offsetHeight;}
+  resize();
+  const particles=[];
+  for(let i=0;i<55;i++) particles.push({x:Math.random(),y:Math.random(),r:Math.random()*1.6+0.4,vx:(Math.random()-.5)*0.0003,vy:(Math.random()-.5)*0.0003,a:Math.random()*0.6+0.2});
+  function frame(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p=>{
+      p.x=(p.x+p.vx+1)%1;p.y=(p.y+p.vy+1)%1;
+      ctx.beginPath();ctx.arc(p.x*canvas.width,p.y*canvas.height,p.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(52,211,153,'+p.a+')';ctx.fill();
+    });
+    // Lines
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const dx=(particles[i].x-particles[j].x)*canvas.width;
+        const dy=(particles[i].y-particles[j].y)*canvas.height;
+        const d=Math.sqrt(dx*dx+dy*dy);
+        if(d<80){
+          ctx.beginPath();
+          ctx.strokeStyle='rgba(52,211,153,'+(0.12*(1-d/80))+')';
+          ctx.lineWidth=0.5;
+          ctx.moveTo(particles[i].x*canvas.width,particles[i].y*canvas.height);
+          ctx.lineTo(particles[j].x*canvas.width,particles[j].y*canvas.height);
+          ctx.stroke();
         }
-      }, 1000);
-    } catch (err) {
-      console.error(err);
-      showToast('Could not connect to backend server. Make sure FastAPI is running on port 8000.', 'error');
+      }
     }
+    requestAnimationFrame(frame);
   }
-
-  async function handleRegister(e) {
-    e.preventDefault();
-    const form = document.getElementById('registerForm') || e.target;
-    const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('.btn-submit');
-    
-    const fnInput = document.getElementById('regFirstName');
-    const lnInput = document.getElementById('regLastName');
-    const emInput = document.getElementById('regEmail');
-    const phInput = document.getElementById('regPhone');
-    const roInput = document.getElementById('regRole');
-    const pwInput = document.getElementById('regPassword');
-    const cfInput = document.getElementById('regConfirm');
-
-    const firstName = fnInput ? fnInput.value.trim() : '';
-    const lastName = lnInput ? lnInput.value.trim() : '';
-    const email = emInput ? emInput.value.trim() : '';
-    const phone = phInput ? phInput.value.trim() : '';
-    const rawRole = (roInput && roInput.value) ? roInput.value : 'parent';
-    const role = (rawRole === 'doctor') ? 'health_worker' : rawRole;
-    const password = pwInput ? pwInput.value : '';
-    const confirm = cfInput ? cfInput.value : '';
-
-    const fullName = (firstName + ' ' + lastName).trim() || firstName || lastName || email.split('@')[0];
-
-    if (!email) {
-      showToast('Please enter a valid email address.', 'error');
-      return;
-    }
-
-    if (!password) {
-      showToast('Please create a password.', 'error');
-      return;
-    }
-
-    if (password !== confirm) {
-      showToast('Passwords do not match. Please re-enter.', 'error');
-      return;
-    }
-
-    if (password.length < 6) {
-      showToast('Password must be at least 6 characters.', 'error');
-      return;
-    }
-
-    // Disable button to prevent duplicate submissions
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Creating Account...';
-    }
-    showToast('Creating your account...', 'info');
-
-    try {
-      const res = await fetch(`${API_BASE}/auth/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          full_name: fullName,
-          name: fullName,
-          first_name: firstName,
-          last_name: lastName,
-          email: email,
-          phone: phone || null,
-          password: password,
-          role: role
-        })
-      });
-
-      const data = await res.json();
-      if (!res.ok) {
-        let errMsg = data.detail || 'Registration failed. Try again.';
-        if (Array.isArray(data.detail)) {
-          errMsg = data.detail.map(d => d.msg || d).join(', ');
-        }
-        showToast(errMsg, 'error');
-        return;
-      }
-
-      showToast(`Account created for ${data.full_name}! Logging in to set up child details...`, 'success');
-      
-      // Auto login newly registered parent and direct to child details intake
-      try {
-        const loginRes = await fetch(`${API_BASE}/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: email, password: password })
-        });
-        if (loginRes.ok) {
-          const loginData = await loginRes.json();
-          localStorage.setItem('childnutri_token', loginData.access_token);
-          localStorage.setItem('childnutri_user', JSON.stringify(loginData.user));
-          localStorage.setItem('childnutri_just_registered', 'true');
-          setTimeout(() => {
-            if (loginData.user.role === 'parent') {
-              window.location.href = 'parent_dashboard.html?new_account=true';
-            } else {
-              window.location.href = 'dashboard.html';
-            }
-          }, 600);
-          return;
-        }
-      } catch (loginErr) {
-        console.warn("Auto-login error:", loginErr);
-      }
-
-      // Pre-fill email in login form if auto-login did not redirect
-      const loginEmailInput = document.getElementById('loginEmail');
-      if (loginEmailInput) loginEmailInput.value = email;
-
-      setTimeout(() => { 
-        switchTab('login'); 
-      }, 1500);
-    } catch (err) {
-      console.error(err);
-      showToast('Error connecting to backend server. Ensure backend is running.', 'error');
-    } finally {
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Create Account';
+  frame();
+  window.addEventListener('resize',resize);
+})();
+</script>
+<script src="/js/api.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/hi.js"></script>
+<script src="/js/lang.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const user = await getUser();
+    if (user) {
+      const navLinks = document.querySelector('.nav-links');
+      if (navLinks) {
+        navLinks.innerHTML = `
+          <a href="/dashboard.html" data-i18n="dashboard">Dashboard</a>
+          <a href="/assess.html" class="btn primary" data-i18n="new_assessment">＋ New assessment</a>
+          <a href="/photo-scan.html" data-i18n="photo_ai">Photo AI</a>
+          <a href="/ocr.html" data-i18n="ocr_scan">OCR scan</a>
+          <a href="/resources.html" data-i18n="resources">Resources</a>
+          <button id="lang-toggle" onclick="toggleLanguage()" style="background:transparent;border:1.5px solid #00d4aa;color:#00d4aa;border-radius:20px;padding:4px 14px;font-size:13px;cursor:pointer;font-weight:600;margin-left:12px;transition:all 0.2s;" onmouseover="this.style.background='#00d4aa';this.style.color='#0d2818';" onmouseout="this.style.background='transparent';this.style.color='#00d4aa';">हिंदी</button>
+          <button id="logout-btn" data-i18n="log_out">Log out</button>
+        `;
+        if (typeof applyTranslations === 'function') applyTranslations(currentLang);
       }
     }
-  }
-
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeModal();
-  });
+  } catch(e) {}
+});
 </script>
 </body>
 </html>

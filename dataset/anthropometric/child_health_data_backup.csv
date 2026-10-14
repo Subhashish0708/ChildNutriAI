@@ -1,4 +1,0 @@
-child_id,age,height,weight,muac,gender,malnutrition_status,image_path
-001,2,82,10,12.5,Male,Normal,images/normal/child1.jpg
-002,3,78,8,10.5,Female,Moderate,images/moderate/child4.jpg
-003,4,75,7,9.2,Male,Severe,images/severe/child6.jpg
