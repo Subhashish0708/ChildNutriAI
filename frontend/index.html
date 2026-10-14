@@ -1,33 +1,53 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ChildNutri AI – Malnourishment Identification in Infant using AI</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ChildNutri AI — AI-Assisted Child Malnutrition Screening &amp; Nutrition Support System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;1,9..40,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+    
     :root {
-      --primary:   #1a7f5a;
-      --primary-light: #27a872;
-      --primary-dark:  #145f43;
-      --accent:    #f4a827;
-      --accent-light: #ffc85c;
-      --bg:        #f0faf5;
-      --white:     #ffffff;
-      --text:      #1a2e28;
-      --muted:     #5a7870;
-      --card-bg:   #ffffff;
-      --border:    #d4ede2;
+      --bg: #FAFAF8;
+      --bg-muted: #F3F1EE;
+      --surface: #FFFFFF;
+      --surface-muted: #F9F8F6;
+      --border: #E8E5E0;
+      --border-strong: #D6D2CC;
+      --text: #1C1917;
+      --text-secondary: #57534E;
+      --text-muted: #8C8680;
+      --brand: #3D6B52;
+      --brand-hover: #2D5040;
+      --brand-light: #EBF2EE;
+      --warning: #C2760C;
+      --warning-bg: #FEF6E7;
+      --danger: #B54444;
+      --danger-bg: #FDEAEA;
+      --font-heading: 'DM Sans', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 20px;
+      --radius-2xl: 28px;
+      --radius-full: 9999px;
+      --shadow-sm: 0 1px 3px rgba(28,25,23,0.06);
+      --shadow-md: 0 4px 12px rgba(28,25,23,0.07);
+      --shadow-lg: 0 10px 25px rgba(28,25,23,0.1);
     }
 
-    html { scroll-behavior: smooth; }
-
+    html { scroll-behavior: smooth; font-size: 16px; }
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: var(--font-body);
       background: var(--bg);
       color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
 
@@ -36,1112 +56,1273 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
-      background: rgba(255,255,255,0.92);
+      background: rgba(250, 250, 248, 0.92);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
+      height: 68px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 5%;
-      height: 68px;
     }
 
     .nav-logo {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
       text-decoration: none;
     }
 
-    .nav-logo .icon {
-      width: 38px; height: 38px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      border-radius: 10px;
+    .nav-logo-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-md);
+      background: var(--brand);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
     }
 
-    .nav-logo span {
-      font-family: 'Poppins', sans-serif;
-      font-weight: 700;
+    .nav-logo-text {
+      font-family: var(--font-heading);
+      font-weight: 800;
       font-size: 1.15rem;
-      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+      color: var(--text);
     }
 
-    .nav-logo span em {
-      color: var(--accent);
+    .nav-logo-text em {
+      color: var(--brand);
       font-style: normal;
     }
 
     .nav-links {
       display: flex;
+      align-items: center;
       gap: 28px;
       list-style: none;
     }
 
     .nav-links a {
-      text-decoration: none;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 500;
-      color: var(--muted);
-      transition: color .25s;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 150ms ease;
     }
 
-    .nav-links a:hover { color: var(--primary); }
-
-    .nav-cta {
-      background: var(--primary);
-      color: var(--white) !important;
-      padding: 8px 20px;
-      border-radius: 8px;
-      transition: background .25s !important;
+    .nav-links a:hover {
+      color: var(--text);
     }
 
-    .nav-cta:hover { background: var(--primary-dark) !important; }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-    /* HERO */
+    .btn-nav-ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .btn-nav-ghost:hover {
+      background: var(--bg-muted);
+      border-color: var(--border-strong);
+    }
+
+    .btn-nav-primary {
+      background: var(--brand);
+      border: none;
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .btn-nav-primary:hover {
+      background: var(--brand-hover);
+      transform: translateY(-1px);
+    }
+
+    /* HERO SECTION */
     .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      padding: 100px 5% 60px;
-      background:
-        radial-gradient(ellipse 60% 70% at 80% 50%, rgba(39,168,114,.12) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 50% at 10% 80%, rgba(244,168,39,.08) 0%, transparent 60%),
-        var(--bg);
-    }
-
-    .hero-inner {
-      display: flex;
-      align-items: center;
-      gap: 60px;
-      max-width: 1200px;
+      padding: 140px 5% 80px;
+      max-width: 1240px;
       margin: 0 auto;
-      width: 100%;
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      gap: 50px;
     }
 
-    .hero-content { max-width: 600px; z-index: 1; }
+    .hero-content {
+      flex: 1.2;
+    }
 
-    .badge {
+    .hero-eyebrow {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      background: rgba(39,168,114,.15);
-      color: var(--primary);
-      border: 1px solid rgba(39,168,114,.3);
-      padding: 6px 14px;
-      border-radius: 50px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: .4px;
-      margin-bottom: 24px;
+      gap: 8px;
+      padding: 4px 12px;
+      border-radius: var(--radius-full);
+      background: var(--brand-light);
+      color: var(--brand);
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
     }
 
-    .badge::before { content: 'dot'; font-size: .55rem; color: var(--primary); }
-
     .hero h1 {
-      font-family: 'Poppins', sans-serif;
-      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-family: var(--font-heading);
       font-weight: 800;
-      line-height: 1.15;
+      font-size: clamp(2.4rem, 4.8vw, 3.8rem);
+      letter-spacing: -0.035em;
+      line-height: 1.1;
       color: var(--text);
       margin-bottom: 20px;
     }
 
-    .hero h1 .highlight {
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    .hero h1 span {
+      color: var(--brand);
     }
-
-    .hero h1 .accent-word { color: var(--accent); }
 
     .hero p {
       font-size: 1.1rem;
-      color: var(--muted);
-      line-height: 1.75;
-      margin-bottom: 36px;
-      max-width: 520px;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      max-width: 540px;
+      margin-bottom: 32px;
     }
 
-    .hero-actions {
+    .hero-ctas {
       display: flex;
-      gap: 14px;
+      align-items: center;
+      gap: 16px;
       flex-wrap: wrap;
       margin-bottom: 48px;
     }
 
-    .btn {
+    .btn-hero-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--brand);
+      color: #FFFFFF;
+      padding: 14px 28px;
+      border-radius: var(--radius-full);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 180ms ease;
+    }
+
+    .btn-hero-primary:hover {
+      background: var(--brand-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(61,107,82,0.25);
+    }
+
+    .btn-hero-secondary {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 14px 28px;
-      border-radius: 10px;
-      font-weight: 600;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 14px 24px;
+      border-radius: var(--radius-full);
       font-size: 0.95rem;
+      font-weight: 600;
       text-decoration: none;
-      transition: all .25s;
-      border: 2px solid transparent;
+      transition: all 180ms ease;
     }
 
-    .btn-primary { background: var(--primary); color: var(--white); }
-    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(26,127,90,.3); }
+    .btn-hero-secondary:hover {
+      background: var(--bg-muted);
+      border-color: var(--border-strong);
+    }
 
-    .btn-outline { background: transparent; color: var(--primary); border-color: var(--primary); }
-    .btn-outline:hover { background: var(--primary); color: var(--white); transform: translateY(-2px); }
+    .hero-stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+    }
 
-    .hero-stats { display: flex; gap: 36px; flex-wrap: wrap; }
-
-    .stat { display: flex; flex-direction: column; }
-
-    .stat-value {
-      font-family: 'Poppins', sans-serif;
-      font-size: 1.8rem;
+    .hero-stat-val {
+      font-family: var(--font-heading);
       font-weight: 800;
-      color: var(--primary);
+      font-size: 1.5rem;
+      color: var(--text);
+      letter-spacing: -0.02em;
     }
 
-    .stat-label {
+    .hero-stat-lbl {
       font-size: 0.78rem;
-      color: var(--muted);
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: .5px;
+      color: var(--text-muted);
+      margin-top: 2px;
     }
 
-    /* Hero visual */
+    /* Abstract Healthcare Visual Composition */
     .hero-visual {
       flex: 1;
       display: flex;
-      align-items: center;
       justify-content: center;
+    }
+
+    .hero-dossier-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-2xl);
+      padding: 32px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: var(--shadow-lg);
       position: relative;
-      min-width: 340px;
     }
 
-    .visual-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      padding: 32px;
-      box-shadow: 0 20px 60px rgba(26,127,90,.12);
-      width: 320px;
-    }
-
-    .vc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
-
-    .vc-icon {
-      width: 44px; height: 44px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      border-radius: 12px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 22px;
-    }
-
-    .vc-title { font-weight: 700; font-size: 1rem; }
-    .vc-sub { font-size: .75rem; color: var(--muted); }
-
-    .progress-item { margin-bottom: 18px; }
-
-    .pi-label { display: flex; justify-content: space-between; font-size: .82rem; font-weight: 500; margin-bottom: 6px; }
-
-    .pi-bar { height: 8px; background: #e8f5ee; border-radius: 99px; overflow: hidden; }
-
-    .pi-fill { height: 100%; border-radius: 99px; background: linear-gradient(90deg, var(--primary), var(--primary-light)); }
-    .pi-fill.warn { background: linear-gradient(90deg, #e07a1c, var(--accent)); }
-    .pi-fill.danger { background: linear-gradient(90deg, #c0392b, #e74c3c); }
-
-    .status-row {
-      display: flex; align-items: center; gap: 8px;
-      background: #f0faf5; border-radius: 10px; padding: 10px 14px; margin-top: 20px;
-    }
-
-    .status-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; }
-    .status-text { font-size: .82rem; font-weight: 600; color: var(--primary); }
-
-    /* SECTIONS */
-    section { padding: 90px 5%; }
-
-    .section-label {
-      display: inline-block;
-      color: var(--primary);
-      font-size: .8rem;
+    .card-tag {
+      font-size: 0.7rem;
       font-weight: 700;
-      letter-spacing: 1.2px;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
-      margin-bottom: 10px;
+      color: var(--brand);
+      margin-bottom: 6px;
     }
 
-    .section-title {
-      font-family: 'Poppins', sans-serif;
-      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    .card-title {
+      font-family: var(--font-heading);
       font-weight: 800;
-      line-height: 1.2;
+      font-size: 1.25rem;
       color: var(--text);
-      margin-bottom: 16px;
-    }
-
-    .section-desc { font-size: 1.05rem; color: var(--muted); max-width: 560px; line-height: 1.75; }
-
-    /* FEATURES */
-    #features { background: var(--white); }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      margin-top: 52px;
-    }
-
-    .feature-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 32px;
-      transition: transform .25s, box-shadow .25s;
-    }
-
-    .feature-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(26,127,90,.1); }
-
-    .fc-icon {
-      width: 52px; height: 52px;
-      border-radius: 14px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 26px;
       margin-bottom: 20px;
     }
 
-    .fc-icon.green  { background: rgba(39,168,114,.15); }
-    .fc-icon.orange { background: rgba(244,168,39,.15); }
-    .fc-icon.blue   { background: rgba(52,152,219,.15); }
-    .fc-icon.red    { background: rgba(231,76,60,.1); }
-    .fc-icon.purple { background: rgba(155,89,182,.12); }
-    .fc-icon.teal   { background: rgba(26,188,156,.12); }
-
-    .fc-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 10px; }
-    .fc-desc  { font-size: .88rem; color: var(--muted); line-height: 1.7; }
-
-    /* HOW IT WORKS */
-    #how { background: var(--bg); }
-
-    .steps { display: flex; flex-direction: column; gap: 0; margin-top: 52px; max-width: 760px; margin-left: auto; margin-right: auto; }
-
-    .step { display: flex; gap: 28px; align-items: flex-start; position: relative; }
-
-    .step:not(:last-child) .step-line {
-      position: absolute;
-      left: 23px; top: 52px; bottom: -28px;
-      width: 2px;
-      background: linear-gradient(to bottom, var(--primary-light), var(--border));
+    .mock-who-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
     }
 
-    .step-num {
-      min-width: 48px; height: 48px;
-      border-radius: 50%;
-      background: var(--primary);
-      color: var(--white);
-      font-weight: 800; font-size: 1.1rem;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 14px rgba(26,127,90,.3);
-      z-index: 1;
+    .mock-who-box {
+      background: var(--surface-muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 10px;
+      text-align: center;
     }
 
-    .step-body { padding-bottom: 44px; }
-    .step-title { font-weight: 700; font-size: 1.05rem; margin-bottom: 6px; }
-    .step-desc  { font-size: .9rem; color: var(--muted); line-height: 1.7; }
+    .mock-who-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.15rem;
+      color: var(--brand);
+    }
+
+    .mock-who-label {
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .mock-triage-bar {
+      padding: 12px 14px;
+      background: var(--brand-light);
+      border-left: 3px solid var(--brand);
+      border-radius: var(--radius-sm);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--brand);
+      margin-bottom: 16px;
+    }
+
+    .mock-timeline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* SECTION STYLING */
+    section {
+      padding: 90px 5%;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--brand);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+      letter-spacing: -0.03em;
+      text-align: center;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .section-subtitle {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      text-align: center;
+      max-width: 580px;
+      margin: 0 auto 56px;
+      line-height: 1.6;
+    }
+
+    /* CAPABILITIES GRID */
+    .capabilities-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .capability-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 28px 24px;
+      transition: all 180ms ease;
+    }
+
+    .capability-item:hover {
+      border-color: var(--brand);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .capability-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-lg);
+      background: var(--brand-light);
+      color: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+
+    .capability-name {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .capability-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* WORKFLOW STEPS */
+    .workflow-strip {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 18px;
+      position: relative;
+    }
+
+    .workflow-node {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .workflow-num {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.75rem;
+      color: var(--brand);
+      margin-bottom: 14px;
+    }
+
+    .workflow-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .workflow-desc {
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
 
     /* TECH STACK */
-    #tech { background: var(--bg); }
-
-    .tech-grid { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 48px; }
-
-    .tech-pill {
-      display: flex; align-items: center; gap: 8px;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px 18px;
-      font-size: .88rem; font-weight: 600;
-      transition: all .25s;
+    .tech-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      max-width: 880px;
+      margin: 0 auto;
     }
 
-    .tech-pill:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); box-shadow: 0 4px 14px rgba(26,127,90,.1); }
-
-    /* TEAM */
-    #team { background: var(--white); }
-
-    .team-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 24px;
-      margin-top: 52px;
+    .tech-badge {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 9px 18px;
+      border-radius: var(--radius-full);
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text);
+      box-shadow: var(--shadow-sm);
     }
 
-    .team-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 28px 20px;
+    /* CTA BANNER */
+    .cta-banner-wrap {
+      padding: 0 5% 90px;
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    .cta-banner {
+      background: #141412;
+      border-radius: var(--radius-2xl);
+      padding: 64px 48px;
       text-align: center;
-      transition: transform .25s, box-shadow .25s;
+      color: #FFFFFF;
     }
 
-    .team-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(26,127,90,.1); }
-
-    .avatar {
-      width: 72px; height: 72px;
-      border-radius: 50%;
-      margin: 0 auto 16px;
-      font-size: 28px;
-      display: flex; align-items: center; justify-content: center;
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      color: white;
+    .cta-banner h2 {
+      font-family: var(--font-heading);
       font-weight: 800;
-      font-family: 'Poppins', sans-serif;
+      font-size: clamp(2rem, 3.5vw, 2.75rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
     }
 
-    .tm-name  { font-weight: 700; font-size: .95rem; margin-bottom: 4px; }
-    .tm-role  { font-size: .78rem; color: var(--muted); font-weight: 500; }
-    .tm-badge {
-      display: inline-block;
-      margin-top: 10px;
-      background: rgba(39,168,114,.12);
-      color: var(--primary);
-      font-size: .72rem; font-weight: 600;
-      padding: 3px 10px;
-      border-radius: 50px;
+    .cta-banner p {
+      font-size: 1rem;
+      color: #A8A29E;
+      max-width: 520px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
     }
-
-    /* CTA */
-    #cta {
-      background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 60%, var(--primary-light) 100%);
-      padding: 90px 5%;
-      text-align: center;
-      color: white;
-    }
-
-    #cta .section-title { color: white; }
-    #cta .section-desc  { color: rgba(255,255,255,.8); margin: 0 auto 36px; }
-    #cta .section-label { color: rgba(255,255,255,.7); }
-
-    .btn-white { background: white; color: var(--primary); border-color: white; }
-    .btn-white:hover { background: var(--bg); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.2); }
-
-    .btn-ghost { background: transparent; color: white; border-color: rgba(255,255,255,.5); }
-    .btn-ghost:hover { background: rgba(255,255,255,.15); border-color: white; transform: translateY(-2px); }
 
     /* FOOTER */
     footer {
-      background: var(--text);
-      color: rgba(255,255,255,.6);
-      text-align: center;
-      padding: 36px 5%;
-      font-size: .85rem;
+      background: #0D0D0B;
+      color: #78716C;
+      padding: 56px 5% 40px;
+      font-size: 0.84rem;
     }
 
-    footer strong { color: white; }
+    .footer-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      flex-wrap: wrap;
+    }
 
-    .container { max-width: 1200px; margin: 0 auto; }
+    .footer-logo-title {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      color: #FFFFFF;
+      font-size: 1.15rem;
+      margin-bottom: 6px;
+    }
+
+    .footer-disclaimer {
+      max-width: 1240px;
+      margin: 32px auto 0;
+      font-size: 0.75rem;
+      line-height: 1.6;
+      color: #57534E;
+    }
+
+    /* AUTH MODAL */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 999;
+      background: rgba(20, 20, 18, 0.55);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #FFFFFF;
+      border-radius: var(--radius-2xl);
+      padding: 36px 36px 32px;
+      width: 100%;
+      max-width: 440px;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      transition: all 140ms ease;
+    }
+
+    .modal-close:hover {
+      background: var(--bg-muted);
+      color: var(--text);
+    }
+
+    .modal-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .modal-logo-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-md);
+      background: var(--brand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-logo-name {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    .modal-logo-name span {
+      color: var(--brand);
+    }
+
+    .modal-logo-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .auth-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 24px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 10px;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      font-weight: 600;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 150ms ease;
+    }
+
+    .tab-btn.active {
+      color: var(--brand);
+      border-bottom-color: var(--brand);
+    }
+
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 12px;
+      color: var(--text-muted);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-wrap input, .input-wrap select {
+      width: 100%;
+      height: 42px;
+      padding: 0 40px 0 38px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      font-family: var(--font-body);
+      font-size: 0.875rem;
+      color: var(--text);
+      background: var(--surface);
+      outline: none;
+      transition: border-color 150ms ease;
+    }
+
+    .input-wrap input:focus, .input-wrap select:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px var(--brand-light);
+    }
+
+    .eye-btn {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      padding: 4px;
+    }
+
+    .form-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      font-size: 0.8125rem;
+    }
+
+    .form-row2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .check-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: var(--text-secondary);
+      font-size: 0.8125rem;
+    }
+
+    .forgot-link {
+      color: var(--brand);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.8125rem;
+    }
+
+    .forgot-link:hover {
+      text-decoration: underline;
+    }
+
+    .btn-submit {
+      width: 100%;
+      height: 44px;
+      border-radius: var(--radius-md);
+      background: var(--brand);
+      color: #FFFFFF;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.88rem;
+      border: none;
+      cursor: pointer;
+      transition: background 150ms ease;
+    }
+
+    .btn-submit:hover {
+      background: var(--brand-hover);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+    }
+
+    .switch-text {
+      text-align: center;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-top: 16px;
+    }
+
+    .link-btn {
+      background: none;
+      border: none;
+      color: var(--brand);
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .link-btn:hover {
+      text-decoration: underline;
+    }
+
+    .auth-toast {
+      padding: 10px 14px;
+      border-radius: var(--radius-md);
+      font-size: 0.8125rem;
+      margin-top: 14px;
+      display: none;
+    }
+
+    .auth-toast.success {
+      display: block;
+      background: var(--brand-light);
+      color: var(--brand);
+      border: 1px solid var(--border);
+    }
+
+    .auth-toast.error {
+      display: block;
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid #F2BCBC;
+    }
+
+    .auth-toast.info {
+      display: block;
+      background: #EDF1F8;
+      color: #4A6490;
+      border: 1px solid #C4D1E8;
+    }
 
     @media (max-width: 860px) {
-      .hero-inner { flex-direction: column; text-align: center; }
-      .hero p { margin-left: auto; margin-right: auto; }
-      .hero-actions { justify-content: center; }
-      .hero-stats { justify-content: center; }
-      .hero-visual { width: 100%; min-width: unset; }
-      .visual-card { width: 100%; max-width: 320px; margin: 0 auto; }
+      .hero { flex-direction: column; text-align: center; padding-top: 110px; }
+      .hero p { margin: 0 auto 32px; }
+      .hero-ctas { justify-content: center; }
+      .hero-stats-row { grid-template-columns: 1fr; }
+      .capabilities-grid { grid-template-columns: 1fr; }
+      .workflow-strip { grid-template-columns: 1fr; }
       .nav-links { display: none; }
     }
   </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- NAVIGATION -->
 <nav>
   <a href="#" class="nav-logo">
-    <div class="icon">&#127807;</div>
-    <span>ChildNutri <em>AI</em></span>
+    <div class="nav-logo-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg>
+    </div>
+    <div class="nav-logo-text">ChildNutri <em>AI</em></div>
   </a>
+
   <ul class="nav-links">
-    <li><a href="#features">Features</a></li>
-    <li><a href="#how">How It Works</a></li>
-    <li><a href="#tech">Tech Stack</a></li>
-    <li><a href="#team">Team</a></li>
-    <li><button class="nav-cta" onclick="openModal()">Get Started</button></li>
+    <li><a href="#features">Capabilities</a></li>
+    <li><a href="#how">Workflow</a></li>
+    <li><a href="#tech">Research Stack</a></li>
   </ul>
+
+  <div class="nav-actions">
+    <button class="btn-nav-ghost" onclick="openModal('login')">Sign In</button>
+    <button class="btn-nav-primary" onclick="openModal('register')">Get Started</button>
+  </div>
 </nav>
 
-<!-- HERO -->
+<!-- HERO SECTION -->
 <section class="hero">
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="badge">AI-Powered Healthcare</div>
-      <h1>
-        <span class="highlight">ChildNutri AI</span><br/>
-        Malnourishment<br/>Identification in<br/>
-        <span class="accent-word">Infants</span> using AI
-      </h1>
-      <p>
-        An intelligent system that detects and assesses malnourishment in infants
-        through AI-driven analysis &mdash; enabling early intervention and improving
-        child health outcomes across communities.
-      </p>
-      <div class="hero-actions">
-        <a href="#how" class="btn btn-primary">&#128640; Explore System</a>
-        <a href="#features" class="btn btn-outline">&#128203; View Features</a>
-      </div>
-      <div class="hero-stats">
-        <div class="stat">
-          <span class="stat-value">95%+</span>
-          <span class="stat-label">Detection Accuracy</span>
-        </div>
-        <div class="stat">
-          <span class="stat-value">3 Types</span>
-          <span class="stat-label">Malnutrition Classified</span>
-        </div>
-        <div class="stat">
-          <span class="stat-value">Real-Time</span>
-          <span class="stat-label">Assessment</span>
-        </div>
-      </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Clinical Decision Support System
     </div>
-
-    <div class="hero-visual">
-      <div class="visual-card">
-        <div class="vc-header">
-          <div class="vc-icon">&#127868;</div>
-          <div>
-            <div class="vc-title">AI Assessment Report</div>
-            <div class="vc-sub">Infant Nutritional Analysis</div>
-          </div>
-        </div>
-
-        <div class="progress-item">
-          <div class="pi-label"><span>Stunting Risk</span><span style="color:#c0392b;font-weight:700;">High &ndash; 82%</span></div>
-          <div class="pi-bar"><div class="pi-fill danger" style="width:82%"></div></div>
-        </div>
-        <div class="progress-item">
-          <div class="pi-label"><span>Wasting Risk</span><span style="color:#e07a1c;font-weight:700;">Medium &ndash; 55%</span></div>
-          <div class="pi-bar"><div class="pi-fill warn" style="width:55%"></div></div>
-        </div>
-        <div class="progress-item">
-          <div class="pi-label"><span>Underweight Risk</span><span style="color:var(--primary);font-weight:700;">Low &ndash; 28%</span></div>
-          <div class="pi-bar"><div class="pi-fill" style="width:28%"></div></div>
-        </div>
-
-        <div class="status-row">
-          <div class="status-dot"></div>
-          <div class="status-text">Recommendation Generated &#10003;</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section id="features">
-  <div class="container">
-    <div class="section-label">Core Capabilities</div>
-    <h2 class="section-title">Powered by Intelligence,<br/>Driven by Care</h2>
-    <p class="section-desc">Our AI model brings clinical-grade nutritional assessment to every healthcare worker's fingertips.</p>
-
-    <div class="features-grid">
-      <div class="feature-card">
-        <div class="fc-icon green">&#129302;</div>
-        <div class="fc-title">AI-Driven Diagnosis</div>
-        <div class="fc-desc">Deep learning models trained on WHO-standard datasets classify stunting, wasting, and underweight conditions with high precision.</div>
-      </div>
-      <div class="feature-card">
-        <div class="fc-icon orange">&#128247;</div>
-        <div class="fc-title">Image-Based Analysis</div>
-        <div class="fc-desc">Computer vision analyzes photos and anthropometric data to provide non-invasive, rapid assessment of infant nutritional status.</div>
-      </div>
-      <div class="feature-card">
-        <div class="fc-icon blue">&#128202;</div>
-        <div class="fc-title">WHO Growth Standards</div>
-        <div class="fc-desc">All assessments are benchmarked against international WHO growth charts for age-appropriate and gender-specific evaluation.</div>
-      </div>
-      <div class="feature-card">
-        <div class="fc-icon red">&#9888;</div>
-        <div class="fc-title">Early Alert System</div>
-        <div class="fc-desc">Proactive alerts notify healthcare workers when infants are at risk, enabling timely intervention before conditions worsen.</div>
-      </div>
-      <div class="feature-card">
-        <div class="fc-icon purple">&#128203;</div>
-        <div class="fc-title">Detailed Reports</div>
-        <div class="fc-desc">Generates comprehensive reports with visualizations, risk levels, and personalized dietary and medical recommendations.</div>
-      </div>
-      <div class="feature-card">
-        <div class="fc-icon teal">&#127758;</div>
-        <div class="fc-title">Community Integration</div>
-        <div class="fc-desc">Designed for rural and resource-limited settings, supporting Anganwadi workers, ANMs, and field health officers.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HOW IT WORKS -->
-<section id="how">
-  <div class="container">
-    <div class="section-label">Process Flow</div>
-    <h2 class="section-title">How ChildNutri AI Works</h2>
-    <p class="section-desc">A streamlined pipeline from data collection to actionable health insights.</p>
-
-    <div class="steps">
-      <div class="step">
-        <div class="step-line"></div>
-        <div class="step-num">1</div>
-        <div class="step-body">
-          <div class="step-title">&#128229; Data Collection</div>
-          <div class="step-desc">Healthcare worker enters infant details &mdash; age, weight, height, MUAC (Mid-Upper Arm Circumference) &mdash; or uploads a photo for visual analysis.</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-line"></div>
-        <div class="step-num">2</div>
-        <div class="step-body">
-          <div class="step-title">&#129504; AI Processing</div>
-          <div class="step-desc">The trained machine learning model processes the input data, compares it against WHO growth standards, and runs classification algorithms.</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-line"></div>
-        <div class="step-num">3</div>
-        <div class="step-body">
-          <div class="step-title">&#128269; Malnourishment Classification</div>
-          <div class="step-desc">The system classifies the infant's nutritional status into: Normal, Stunted, Wasted, Underweight, or Severely Acute Malnourished (SAM).</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-line"></div>
-        <div class="step-num">4</div>
-        <div class="step-body">
-          <div class="step-title">&#128196; Report Generation</div>
-          <div class="step-desc">A detailed report is generated with risk scores, visual charts, condition explanation, and tailored dietary and medical recommendations.</div>
-        </div>
-      </div>
-      <div class="step">
-        <div class="step-num">5</div>
-        <div class="step-body">
-          <div class="step-title">&#127973; Intervention &amp; Follow-Up</div>
-          <div class="step-desc">Healthcare providers receive alerts and scheduled follow-up reminders. Severe cases are escalated to doctors or nutritional programs automatically.</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TECH STACK -->
-<section id="tech">
-  <div class="container">
-    <div class="section-label">Technology Stack</div>
-    <h2 class="section-title">Built with Modern AI &amp; Web Technologies</h2>
-    <p class="section-desc">Leveraging the best frameworks and tools to deliver a robust, scalable, and accurate healthcare solution.</p>
-
-    <div class="tech-grid">
-      <div class="tech-pill">&#128013; Python</div>
-      <div class="tech-pill">&#129302; TensorFlow / Keras</div>
-      <div class="tech-pill">&#128300; scikit-learn</div>
-      <div class="tech-pill">&#128065; OpenCV</div>
-      <div class="tech-pill">&#128202; Pandas &amp; NumPy</div>
-      <div class="tech-pill">&#127760; Flask / FastAPI</div>
-      <div class="tech-pill">&#9883; React.js</div>
-      <div class="tech-pill">&#128451; MongoDB</div>
-      <div class="tech-pill">&#9729; Cloud Deployment</div>
-      <div class="tech-pill">&#128241; Mobile Responsive</div>
-      <div class="tech-pill">&#128200; Matplotlib / Seaborn</div>
-      <div class="tech-pill">&#128274; JWT Auth</div>
-    </div>
-  </div>
-</section>
-
-<!-- TEAM -->
-<section id="team">
-  <div class="container">
-    <div class="section-label">Our Team</div>
-    <h2 class="section-title">Meet the Developers</h2>
-    <p class="section-desc">A passionate team dedicated to leveraging AI for child healthcare and nutritional well-being.</p>
-
-    <div class="team-grid">
-      <div class="team-card">
-        <div class="avatar">S</div>
-        <div class="tm-name">Team Member 1</div>
-        <div class="tm-role">AI / ML Engineer</div>
-        <div class="tm-badge">Model Development</div>
-      </div>
-      <div class="team-card">
-        <div class="avatar" style="background: linear-gradient(135deg,#e07a1c,#f4a827);">T</div>
-        <div class="tm-name">Team Member 2</div>
-        <div class="tm-role">Backend Developer</div>
-        <div class="tm-badge">API &amp; Database</div>
-      </div>
-      <div class="team-card">
-        <div class="avatar" style="background: linear-gradient(135deg,#2980b9,#3498db);">T</div>
-        <div class="tm-name">Team Member 3</div>
-        <div class="tm-role">Frontend Developer</div>
-        <div class="tm-badge">UI / UX Design</div>
-      </div>
-      <div class="team-card">
-        <div class="avatar" style="background: linear-gradient(135deg,#8e44ad,#9b59b6);">T</div>
-        <div class="tm-name">Team Member 4</div>
-        <div class="tm-role">Data Scientist</div>
-        <div class="tm-badge">Research &amp; Analysis</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section id="cta">
-  <div class="container" style="position:relative;z-index:1;">
-    <div class="section-label">Get Involved</div>
-    <h2 class="section-title">Early Detection Saves Lives</h2>
-    <p class="section-desc">
-      Join us in making AI-powered nutritional screening accessible to every infant, everywhere.
-      Together, we can combat malnutrition one child at a time.
+    <h1>AI-assisted nutritional screening for <span>children.</span></h1>
+    <p>
+      Understand growth trajectories, identify acute and chronic malnutrition earlier, and support timely clinical escalation with WHO-validated growth indicators and explainable AI.
     </p>
-    <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
-      <button class="btn btn-white" onclick="openModal('login')">&#127807; Start Assessment</button>
-      <a href="#features" class="btn btn-ghost">&#128214; Learn More</a>
+
+    <div class="hero-ctas">
+      <button class="btn-hero-primary" onclick="openModal('login')">
+        Start Screening &rarr;
+      </button>
+      <a href="#how" class="btn-hero-secondary">
+        Explore Workflow
+      </a>
+    </div>
+
+    <div class="hero-stats-row">
+      <div>
+        <div class="hero-stat-val">WHO LMS</div>
+        <div class="hero-stat-lbl">Validated growth standards</div>
+      </div>
+      <div>
+        <div class="hero-stat-val">Multimodal</div>
+        <div class="hero-stat-lbl">Vision + anthropometrics</div>
+      </div>
+      <div>
+        <div class="hero-stat-val">SHAP &amp; Grad-CAM</div>
+        <div class="hero-stat-lbl">Explainable inference</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="hero-dossier-card">
+      <div class="card-tag">Diagnostic Dossier Snapshot</div>
+      <div class="card-title">Aarav Sharma &bull; 14 months</div>
+
+      <div class="mock-who-row">
+        <div class="mock-who-box">
+          <div class="mock-who-num">-0.42</div>
+          <div class="mock-who-label">HAZ SD</div>
+        </div>
+        <div class="mock-who-box">
+          <div class="mock-who-num">-0.65</div>
+          <div class="mock-who-label">WAZ SD</div>
+        </div>
+        <div class="mock-who-box">
+          <div class="mock-who-num">13.8</div>
+          <div class="mock-who-label">MUAC cm</div>
+        </div>
+      </div>
+
+      <div class="mock-triage-bar">
+        Clinical Status: Normal Growth Trajectory
+      </div>
+
+      <div style="font-size:0.75rem;color:var(--text-secondary);margin-bottom:12px;line-height:1.5;">
+        Vision tensors processed through EfficientNet-B0. Saliency heatmap focused on mid-arm and torso musculature.
+      </div>
+
+      <div class="mock-timeline">
+        <span>Evaluated by Dr. Subha</span>
+        <span style="font-weight:600;color:var(--brand);">Verified Active</span>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- CAPABILITIES SECTION -->
+<section id="features">
+  <div class="section-eyebrow">Capabilities</div>
+  <h2 class="section-title">Engineered for Pediatric Decision Support</h2>
+  <p class="section-subtitle">
+    Combining deep learning computer vision, WHO growth tables, and explainability to empower frontline health workers.
+  </p>
+
+  <div class="capabilities-grid">
+    <div class="capability-item">
+      <div class="capability-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><circle cx="12" cy="12" r="3"/></svg>
+      </div>
+      <div class="capability-name">Multimodal AI Screening</div>
+      <div class="capability-desc">Fuses convolutional visual embeddings from clinical photographs with precise physical measurements for deep phenotype screening.</div>
+    </div>
+
+    <div class="capability-item">
+      <div class="capability-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="capability-name">WHO Growth Standards</div>
+      <div class="capability-desc">Computes age- and sex-specific LMS Z-scores for Height-for-Age (HAZ), Weight-for-Age (WAZ), and Weight-for-Height (WHZ).</div>
+    </div>
+
+    <div class="capability-item">
+      <div class="capability-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      </div>
+      <div class="capability-name">Explainable AI (XAI)</div>
+      <div class="capability-desc">SHAP feature contribution bars explain tabular decisions; Grad-CAM visual heatmaps identify anatomical areas of AI attention.</div>
+    </div>
+
+    <div class="capability-item">
+      <div class="capability-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      </div>
+      <div class="capability-name">Longitudinal Tracking</div>
+      <div class="capability-desc">Continuous growth velocity monitoring across repeat visits with proactive early warning alerts for weight faltering.</div>
+    </div>
+
+    <div class="capability-item">
+      <div class="capability-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      </div>
+      <div class="capability-name">Future Risk Forecasting</div>
+      <div class="capability-desc">Predictive 30-, 60-, and 90-day trajectory modeling allowing frontline health officers to intervene before acute deterioration.</div>
+    </div>
+
+    <div class="capability-item">
+      <div class="capability-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </div>
+      <div class="capability-name">Automated Health Dossiers</div>
+      <div class="capability-desc">One-click generation of official clinical PDF reports with complete diagnostic traces, meal guidance, and referral notes.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORKFLOW SECTION -->
+<section id="how" style="background:var(--bg-muted);border-radius:var(--radius-2xl);">
+  <div class="section-eyebrow">Protocol</div>
+  <h2 class="section-title">The 5-Step Pediatric Assessment Protocol</h2>
+  <p class="section-subtitle">A streamlined clinical workflow engineered for field health workers, Anganwadis, and pediatric clinics.</p>
+
+  <div class="workflow-strip">
+    <div class="workflow-node">
+      <div>
+        <div class="workflow-num">01</div>
+        <div class="workflow-title">Patient Identification</div>
+      </div>
+      <div class="workflow-desc">Select infant from cohort registry or record demographic profile and birth history.</div>
+    </div>
+
+    <div class="workflow-node">
+      <div>
+        <div class="workflow-num">02</div>
+        <div class="workflow-title">Physical Anthropometrics</div>
+      </div>
+      <div class="workflow-desc">Record verified weight, recumbent length, and MUAC arm circumference measurements.</div>
+    </div>
+
+    <div class="workflow-node">
+      <div>
+        <div class="workflow-num">03</div>
+        <div class="workflow-title">Clinical Photo Ingestion</div>
+      </div>
+      <div class="workflow-desc">Upload patient image for EfficientNet-B0 visual tensor feature extraction.</div>
+    </div>
+
+    <div class="workflow-node">
+      <div>
+        <div class="workflow-num">04</div>
+        <div class="workflow-title">Live WHO Calculations</div>
+      </div>
+      <div class="workflow-desc">Instant mathematical benchmark against WHO international reference curves.</div>
+    </div>
+
+    <div class="workflow-node">
+      <div>
+        <div class="workflow-num">05</div>
+        <div class="workflow-title">Synthesis &amp; Dossier</div>
+      </div>
+      <div class="workflow-desc">Multimodal risk score, SHAP attributions, Grad-CAM attention map, and PDF export.</div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK SECTION -->
+<section id="tech">
+  <div class="section-eyebrow">Architecture</div>
+  <h2 class="section-title">Research-Grade Technology Stack</h2>
+  <p class="section-subtitle">Built upon open, verifiable clinical AI and modern high-performance web architecture.</p>
+
+  <div class="tech-pills-row">
+    <div class="tech-badge">Python 3.11</div>
+    <div class="tech-badge">FastAPI Asynchronous Backend</div>
+    <div class="tech-badge">TensorFlow / Keras</div>
+    <div class="tech-badge">EfficientNet-B0 Vision Tensor</div>
+    <div class="tech-badge">SHAP Explainable AI</div>
+    <div class="tech-badge">Grad-CAM Spatial Saliency</div>
+    <div class="tech-badge">WHO LMS Growth Tables</div>
+    <div class="tech-badge">SQLAlchemy ORM</div>
+    <div class="tech-badge">SQLite Clinical Database</div>
+    <div class="tech-badge">ReportLab PDF Engine</div>
+    <div class="tech-badge">JWT Authentication &amp; Bcrypt</div>
+  </div>
+</section>
+
+<!-- CTA SECTION -->
+<div class="cta-banner-wrap">
+  <div class="cta-banner">
+    <h2>Early detection protects potential.</h2>
+    <p>Empower your community health center or research project with validated pediatric nutritional screening.</p>
+    <button class="btn-hero-primary" onclick="openModal('login')">
+      Launch Screening Center &rarr;
+    </button>
+  </div>
+</div>
 
 <!-- FOOTER -->
 <footer>
-  <p>
-    &copy; 2025 <strong>ChildNutri AI</strong> &mdash; Malnourishment Identification in Infant using AI.<br/>
-    Developed with &#10084; for a healthier future. All rights reserved.
-  </p>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo-title">ChildNutri AI</div>
+      <div>AI-Assisted Child Malnutrition Screening &amp; Nutrition Support System</div>
+    </div>
+    <div>
+      <div>&copy; 2026 ChildNutri AI Research Initiative. All rights reserved.</div>
+    </div>
+  </div>
+  <div class="footer-disclaimer">
+    Medical Disclaimer: ChildNutri AI is an AI-assisted clinical decision-support research prototype designed to assist healthcare workers, pediatricians, and researchers in identifying malnutrition risk early. It is not an autonomous diagnostic device and should never replace certified medical evaluation, laboratory testing, or physician clinical judgment.
+  </div>
 </footer>
 
-
-<!-- ========== LOGIN / REGISTRATION MODAL ========== -->
+<!-- ============================================================
+     AUTH MODAL (LOGIN / REGISTER / FORGOT PASSWORD)
+     ============================================================ -->
 <div id="authModal" class="modal-overlay" onclick="handleOverlayClick(event)">
   <div class="modal-box">
-
-    <!-- Close -->
     <button class="modal-close" onclick="closeModal()" title="Close">&times;</button>
 
-    <!-- Logo -->
     <div class="modal-logo">
-      <div class="modal-logo-icon">&#127807;</div>
+      <div class="modal-logo-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M8 12h8M12 8v8"/></svg>
+      </div>
       <div>
         <div class="modal-logo-name">ChildNutri <span>AI</span></div>
-        <div class="modal-logo-sub">Malnourishment Identification System</div>
+        <div class="modal-logo-sub">Malnutrition Identification Platform</div>
       </div>
     </div>
 
-    <!-- Tabs -->
     <div class="auth-tabs">
-      <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Login</button>
+      <button class="tab-btn active" id="tab-login" onclick="switchTab('login')">Sign In</button>
       <button class="tab-btn" id="tab-register" onclick="switchTab('register')">Register</button>
     </div>
 
-    <!-- ── LOGIN FORM ── -->
+    <!-- LOGIN FORM -->
     <form id="loginForm" class="auth-form" onsubmit="handleLogin(event)">
       <div class="form-group">
         <label>Email Address</label>
         <div class="input-wrap">
-          <span class="input-icon">&#9993;</span>
+          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
           <input type="email" id="loginEmail" placeholder="Enter your email" required />
         </div>
       </div>
+
       <div class="form-group">
         <label>Password</label>
         <div class="input-wrap">
-          <span class="input-icon">&#128274;</span>
+          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
           <input type="password" id="loginPassword" placeholder="Enter your password" required />
-          <button type="button" class="eye-btn" onclick="togglePass('loginPassword', this)">&#128065;</button>
+          <button type="button" class="eye-btn" onclick="togglePass('loginPassword', this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         </div>
       </div>
+
       <div class="form-row">
         <label class="check-label"><input type="checkbox" /> Remember me</label>
-        <a href="#" class="forgot-link">Forgot password?</a>
+        <a href="#" class="forgot-link" onclick="openForgotPassword(event)">Forgot password?</a>
       </div>
+
       <button type="submit" class="btn-submit">Login to ChildNutri AI</button>
       <p class="switch-text">Don&apos;t have an account? <button type="button" class="link-btn" onclick="switchTab('register')">Register here</button></p>
     </form>
 
-    <!-- ── REGISTER FORM ── -->
+    <!-- REGISTER FORM -->
     <form id="registerForm" class="auth-form" style="display:none;" onsubmit="handleRegister(event)">
       <div class="form-row2">
         <div class="form-group">
           <label>First Name</label>
           <div class="input-wrap">
-            <span class="input-icon">&#128100;</span>
+            <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
             <input type="text" id="regFirstName" placeholder="First name" required />
           </div>
         </div>
         <div class="form-group">
           <label>Last Name</label>
           <div class="input-wrap">
-            <span class="input-icon">&#128100;</span>
+            <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
             <input type="text" id="regLastName" placeholder="Last name" required />
           </div>
         </div>
       </div>
+
       <div class="form-group">
         <label>Email Address</label>
         <div class="input-wrap">
-          <span class="input-icon">&#9993;</span>
+          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
           <input type="email" id="regEmail" placeholder="Enter your email" required />
         </div>
       </div>
+
       <div class="form-group">
         <label>Phone Number</label>
         <div class="input-wrap">
-          <span class="input-icon">&#128222;</span>
+          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span>
           <input type="tel" id="regPhone" placeholder="Enter mobile number" />
         </div>
       </div>
+
       <div class="form-group">
         <label>Role / Designation</label>
         <div class="input-wrap">
-          <span class="input-icon">&#127973;</span>
+          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span>
           <select id="regRole" required>
             <option value="" disabled selected>Select your role</option>
-            <option value="parent">Parent / Guardian</option>
-            <option value="health_worker">ANM / Health Worker</option>
-            <option value="health_worker">Doctor / Pediatrician</option>
-            <option value="health_worker">Anganwadi Worker</option>
-            <option value="health_worker">Nutritionist</option>
-            <option value="health_worker">Researcher</option>
+            <option value="parent">Parent</option>
+            <option value="doctor">Doctor</option>
           </select>
         </div>
       </div>
+
       <div class="form-group">
         <label>Password</label>
         <div class="input-wrap">
-          <span class="input-icon">&#128274;</span>
+          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
           <input type="password" id="regPassword" placeholder="Create a password" required />
-          <button type="button" class="eye-btn" onclick="togglePass('regPassword', this)">&#128065;</button>
+          <button type="button" class="eye-btn" onclick="togglePass('regPassword', this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         </div>
       </div>
+
       <div class="form-group">
         <label>Confirm Password</label>
         <div class="input-wrap">
-          <span class="input-icon">&#128275;</span>
+          <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg></span>
           <input type="password" id="regConfirm" placeholder="Confirm your password" required />
-          <button type="button" class="eye-btn" onclick="togglePass('regConfirm', this)">&#128065;</button>
+          <button type="button" class="eye-btn" onclick="togglePass('regConfirm', this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
         </div>
       </div>
-      <label class="check-label" style="margin-bottom:16px;">
-        <input type="checkbox" required /> I agree to the <a href="#" style="color:var(--primary);">Terms &amp; Privacy Policy</a>
-      </label>
+
       <button type="submit" class="btn-submit">Create Account</button>
       <p class="switch-text">Already have an account? <button type="button" class="link-btn" onclick="switchTab('login')">Login here</button></p>
     </form>
 
-    <!-- Toast -->
+    <!-- FORGOT PASSWORD FORM (2-STEP VERIFICATION & RESET) -->
+    <div id="forgotPasswordView" class="auth-form" style="display:none; flex-direction:column;">
+      <div style="margin-bottom:18px;">
+        <button type="button" class="link-btn" onclick="switchTab('login')" style="font-size:0.8rem; text-decoration:none; display:inline-flex; align-items:center; gap:6px; color:var(--brand); margin-bottom:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          Back to Login
+        </button>
+        <div style="font-family:var(--font-heading); font-size:1.15rem; font-weight:800; color:var(--text); line-height:1.2;">Reset Password</div>
+        <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:4px;">Recover access to your ChildNutri AI account</div>
+      </div>
+
+      <!-- Step 1: Verify Email -->
+      <form id="forgotStep1Form" onsubmit="submitForgotStep1(event)">
+        <div class="form-group">
+          <label>Registered Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></span>
+            <input type="email" id="forgotEmail" placeholder="Enter your registered email" required />
+          </div>
+        </div>
+
+        <div style="background:var(--brand-light); border:1px solid var(--border); border-radius:var(--radius-md); padding:10px 14px; margin-bottom:16px;">
+          <div style="font-size:0.75rem; color:var(--brand); line-height:1.45; font-weight:500;">
+            Enter the email registered with your health worker or parent profile to verify your record.
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnForgotVerify">
+          Verify Account &rarr;
+        </button>
+      </form>
+
+      <!-- Step 2: Set New Password -->
+      <form id="forgotStep2Form" style="display:none;" onsubmit="submitResetStep2(event)">
+        <div style="background:var(--surface-muted); border:1px solid var(--border); border-radius:var(--radius-md); padding:12px 14px; margin-bottom:16px; display:flex; align-items:center; gap:12px;">
+          <div style="width:36px; height:36px; border-radius:50%; background:var(--brand); color:#fff; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:0.85rem;" id="forgotAvatarInitial">&#10003;</div>
+          <div style="flex:1;">
+            <div style="font-size:0.68rem; font-weight:700; color:var(--brand); text-transform:uppercase; letter-spacing:0.04em;">Account Verified</div>
+            <div style="font-size:0.88rem; font-weight:700; color:var(--text);" id="forgotVerifiedName">Dr. Subha</div>
+            <div style="font-size:0.74rem; color:var(--text-muted);" id="forgotVerifiedEmail">d*****a@childnutri.org</div>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>New Password</label>
+          <div class="input-wrap">
+            <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <input type="password" id="forgotNewPassword" placeholder="Enter new password (min. 6 chars)" minlength="6" required />
+            <button type="button" class="eye-btn" onclick="togglePass('forgotNewPassword', this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Confirm New Password</label>
+          <div class="input-wrap">
+            <span class="input-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg></span>
+            <input type="password" id="forgotConfirmPassword" placeholder="Re-enter new password" minlength="6" required />
+            <button type="button" class="eye-btn" onclick="togglePass('forgotConfirmPassword', this)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn-submit" id="btnForgotReset">
+          Update Password &amp; Login &rarr;
+        </button>
+      </form>
+
+      <p class="switch-text" style="margin-top:12px;">Remember your credentials? <button type="button" class="link-btn" onclick="switchTab('login')">Return to login</button></p>
+    </div>
+
+    <!-- Toast Notification -->
     <div id="authToast" class="auth-toast"></div>
   </div>
 </div>
 
-<!-- ========== MODAL STYLES ========== -->
-<style>
-  /* Overlay */
-  .modal-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 999;
-    background: rgba(10,30,22,0.55);
-    backdrop-filter: blur(6px);
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    animation: fadeOverlay .25s ease;
-  }
-
-  .modal-overlay.open { display: flex; }
-
-  @keyframes fadeOverlay { from { opacity: 0; } to { opacity: 1; } }
-
-  /* Box */
-  .modal-box {
-    background: #fff;
-    border-radius: 24px;
-    padding: 40px 36px 32px;
-    width: 100%;
-    max-width: 460px;
-    max-height: 90vh;
-    overflow-y: auto;
-    position: relative;
-    box-shadow: 0 32px 80px rgba(10,30,22,.25);
-    animation: slideUp .3s cubic-bezier(.34,1.56,.64,1);
-  }
-
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(40px) scale(.96); }
-    to   { opacity: 1; transform: translateY(0) scale(1); }
-  }
-
-  /* Close */
-  .modal-close {
-    position: absolute;
-    top: 16px; right: 20px;
-    background: #f0faf5;
-    border: none;
-    font-size: 1.4rem;
-    color: #5a7870;
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background .2s, color .2s;
-  }
-
-  .modal-close:hover { background: #e74c3c; color: white; }
-
-  /* Modal logo */
-  .modal-logo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 28px;
-  }
-
-  .modal-logo-icon {
-    width: 48px; height: 48px;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #1a7f5a, #27a872);
-    font-size: 24px;
-    display: flex; align-items: center; justify-content: center;
-  }
-
-  .modal-logo-name {
-    font-family: 'Poppins', sans-serif;
-    font-weight: 800;
-    font-size: 1.15rem;
-    color: #1a2e28;
-  }
-
-  .modal-logo-name span { color: #f4a827; }
-  .modal-logo-sub { font-size: .72rem; color: #5a7870; font-weight: 500; }
-
-  /* Tabs */
-  .auth-tabs {
-    display: flex;
-    background: #f0faf5;
-    border-radius: 12px;
-    padding: 4px;
-    margin-bottom: 28px;
-    gap: 4px;
-  }
-
-  .tab-btn {
-    flex: 1;
-    border: none;
-    background: transparent;
-    padding: 10px;
-    border-radius: 9px;
-    font-weight: 600;
-    font-size: .9rem;
-    cursor: pointer;
-    color: #5a7870;
-    transition: all .25s;
-    font-family: 'Inter', sans-serif;
-  }
-
-  .tab-btn.active {
-    background: #fff;
-    color: #1a7f5a;
-    box-shadow: 0 2px 8px rgba(26,127,90,.15);
-  }
-
-  /* Form */
-  .auth-form { display: flex; flex-direction: column; gap: 0; }
-
-  .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    margin-bottom: 16px;
-  }
-
-  .form-group label {
-    font-size: .82rem;
-    font-weight: 600;
-    color: #1a2e28;
-  }
-
-  .input-wrap {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
-
-  .input-icon {
-    position: absolute;
-    left: 13px;
-    font-size: 15px;
-    color: #5a7870;
-    pointer-events: none;
-    z-index: 1;
-  }
-
-  .input-wrap input,
-  .input-wrap select {
-    width: 100%;
-    padding: 11px 40px 11px 38px;
-    border: 1.5px solid #d4ede2;
-    border-radius: 10px;
-    font-size: .9rem;
-    font-family: 'Inter', sans-serif;
-    color: #1a2e28;
-    background: #f8fefc;
-    outline: none;
-    transition: border .2s, box-shadow .2s;
-    -webkit-appearance: none;
-    appearance: none;
-  }
-
-  .input-wrap input:focus,
-  .input-wrap select:focus {
-    border-color: #1a7f5a;
-    box-shadow: 0 0 0 3px rgba(26,127,90,.12);
-    background: #fff;
-  }
-
-  .eye-btn {
-    position: absolute;
-    right: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 15px;
-    color: #5a7870;
-    padding: 2px 4px;
-  }
-
-  .eye-btn:hover { color: #1a7f5a; }
-
-  .form-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-
-  .form-row2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-  }
-
-  .check-label {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    font-size: .82rem;
-    color: #5a7870;
-    cursor: pointer;
-  }
-
-  .check-label input[type=checkbox] {
-    accent-color: #1a7f5a;
-    width: 15px; height: 15px;
-    cursor: pointer;
-  }
-
-  .forgot-link {
-    font-size: .82rem;
-    color: #1a7f5a;
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .forgot-link:hover { text-decoration: underline; }
-
-  /* Submit button */
-  .btn-submit {
-    width: 100%;
-    padding: 13px;
-    background: linear-gradient(135deg, #1a7f5a, #27a872);
-    color: white;
-    border: none;
-    border-radius: 11px;
-    font-size: .95rem;
-    font-weight: 700;
-    font-family: 'Inter', sans-serif;
-    cursor: pointer;
-    transition: all .25s;
-    margin-top: 4px;
-    margin-bottom: 18px;
-    letter-spacing: .3px;
-  }
-
-  .btn-submit:hover {
-    background: linear-gradient(135deg, #145f43, #1a7f5a);
-    box-shadow: 0 6px 20px rgba(26,127,90,.35);
-    transform: translateY(-1px);
-  }
-
-  .btn-submit:active { transform: translateY(0); }
-
-  /* Switch text */
-  .switch-text {
-    text-align: center;
-    font-size: .82rem;
-    color: #5a7870;
-  }
-
-  .link-btn {
-    background: none;
-    border: none;
-    color: #1a7f5a;
-    font-weight: 700;
-    font-size: .82rem;
-    cursor: pointer;
-    font-family: 'Inter', sans-serif;
-    padding: 0;
-    text-decoration: underline;
-  }
-
-  /* Toast */
-  .auth-toast {
-    display: none;
-    margin-top: 16px;
-    padding: 12px 16px;
-    border-radius: 10px;
-    font-size: .85rem;
-    font-weight: 600;
-    text-align: center;
-  }
-
-  .auth-toast.success { display: block; background: #e8f9f0; color: #1a7f5a; border: 1px solid #b0e8cc; }
-  .auth-toast.error   { display: block; background: #fdecea; color: #c0392b; border: 1px solid #f5c0bb; }
-
-  /* Scrollbar inside modal */
-  .modal-box::-webkit-scrollbar { width: 5px; }
-  .modal-box::-webkit-scrollbar-track { background: transparent; }
-  .modal-box::-webkit-scrollbar-thumb { background: #d4ede2; border-radius: 99px; }
-
-  /* nav button reset */
-  nav button.nav-cta {
-    font-family: 'Inter', sans-serif;
-    font-size: .9rem;
-    cursor: pointer;
-  }
-
-  @media (max-width: 500px) {
-    .modal-box { padding: 28px 20px 24px; }
-    .form-row2 { grid-template-columns: 1fr; }
-  }
-</style>
-
-<!-- ========== MODAL SCRIPTS ========== -->
+<!-- ============================================================
+     AUTHENTICATION LOGIC SCRIPTS
+     ============================================================ -->
 <script>
-  const API_BASE = "http://127.0.0.1:8000/api";
+  const API_BASE = (window.location && window.location.origin && window.location.origin.startsWith("http")) 
+    ? (window.location.origin + "/api") 
+    : "http://127.0.0.1:8000/api";
 
   function openModal(tab) {
     document.getElementById('authModal').classList.add('open');
     document.body.style.overflow = 'hidden';
-    if (tab) switchTab(tab);
+    switchTab(tab || 'login');
     clearToast();
   }
 
@@ -1157,11 +1338,135 @@
 
   function switchTab(tab) {
     var isLogin = tab === 'login';
+    var tabsEl = document.querySelector('.auth-tabs');
+    if (tabsEl) tabsEl.style.display = 'flex';
+    var forgotEl = document.getElementById('forgotPasswordView');
+    if (forgotEl) forgotEl.style.display = 'none';
+
     document.getElementById('loginForm').style.display    = isLogin ? 'flex'  : 'none';
     document.getElementById('registerForm').style.display = isLogin ? 'none' : 'flex';
     document.getElementById('tab-login').classList.toggle('active',    isLogin);
     document.getElementById('tab-register').classList.toggle('active', !isLogin);
     clearToast();
+  }
+
+  function openForgotPassword(e) {
+    if (e) e.preventDefault();
+    var tabsEl = document.querySelector('.auth-tabs');
+    if (tabsEl) tabsEl.style.display = 'none';
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'none';
+
+    var forgotEl = document.getElementById('forgotPasswordView');
+    if (forgotEl) forgotEl.style.display = 'flex';
+
+    var s1 = document.getElementById('forgotStep1Form');
+    var s2 = document.getElementById('forgotStep2Form');
+    if (s1) s1.style.display = 'block';
+    if (s2) s2.style.display = 'none';
+
+    var loginEmailVal = document.getElementById('loginEmail') ? document.getElementById('loginEmail').value.trim() : '';
+    var forgotEmailInp = document.getElementById('forgotEmail');
+    if (forgotEmailInp && loginEmailVal) {
+      forgotEmailInp.value = loginEmailVal;
+    }
+    clearToast();
+  }
+
+  async function submitForgotStep1(e) {
+    e.preventDefault();
+    var emailInput = document.getElementById('forgotEmail');
+    var email = emailInput ? emailInput.value.trim() : '';
+    if (!email) {
+      showToast('Please enter your registered email address.', 'error');
+      return;
+    }
+
+    var btn = document.getElementById('btnForgotVerify');
+    var origText = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Verifying...'; }
+
+    try {
+      var res = await fetch(`${API_BASE}/auth/forgot-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      });
+      var data = await res.json();
+
+      if (data.status === 'found') {
+        showToast('Account verified! Please set your new password.', 'success');
+        document.getElementById('forgotVerifiedName').textContent = data.full_name || 'Authorized User';
+        document.getElementById('forgotVerifiedEmail').textContent = data.masked_email || email;
+        var initial = (data.full_name || 'U').charAt(0).toUpperCase();
+        document.getElementById('forgotAvatarInitial').textContent = initial;
+
+        document.getElementById('forgotStep1Form').style.display = 'none';
+        document.getElementById('forgotStep2Form').style.display = 'block';
+        var np = document.getElementById('forgotNewPassword');
+        if (np) np.focus();
+      } else {
+        showToast(data.message || 'No account found with that email address.', 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast('Unable to connect to authentication server.', 'error');
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = origText; }
+    }
+  }
+
+  async function submitResetStep2(e) {
+    e.preventDefault();
+    var email = document.getElementById('forgotEmail') ? document.getElementById('forgotEmail').value.trim() : '';
+    var newPassword = document.getElementById('forgotNewPassword') ? document.getElementById('forgotNewPassword').value : '';
+    var confirmPassword = document.getElementById('forgotConfirmPassword') ? document.getElementById('forgotConfirmPassword').value : '';
+
+    if (!newPassword || newPassword.length < 6) {
+      showToast('Password must be at least 6 characters long.', 'error');
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      showToast('Passwords do not match. Please re-enter.', 'error');
+      return;
+    }
+
+    var btn = document.getElementById('btnForgotReset');
+    var origText = btn ? btn.textContent : '';
+    if (btn) { btn.disabled = true; btn.textContent = 'Updating Password...'; }
+
+    try {
+      var res = await fetch(`${API_BASE}/auth/reset-password`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: email,
+          new_password: newPassword
+        })
+      });
+      var data = await res.json();
+
+      if (!res.ok) {
+        showToast(data.detail || 'Password reset failed. Please try again.', 'error');
+        return;
+      }
+
+      showToast(data.message || 'Password updated successfully! Returning to login...', 'success');
+
+      var loginEm = document.getElementById('loginEmail');
+      var loginPw = document.getElementById('loginPassword');
+      if (loginEm) loginEm.value = email;
+      if (loginPw) loginPw.value = newPassword;
+
+      setTimeout(function() {
+        switchTab('login');
+      }, 1400);
+    } catch (err) {
+      console.error(err);
+      showToast('Error connecting to backend server.', 'error');
+    } finally {
+      if (btn) { btn.disabled = false; btn.textContent = origText; }
+    }
   }
 
   function togglePass(id, btn) {
@@ -1230,7 +1535,6 @@
         return;
       }
 
-      // Store JWT token and user info
       localStorage.setItem('childnutri_token', data.access_token);
       localStorage.setItem('childnutri_user', JSON.stringify(data.user));
 
@@ -1252,20 +1556,22 @@
   async function handleRegister(e) {
     e.preventDefault();
     const form = document.getElementById('registerForm') || e.target;
+    const submitBtn = form.querySelector('button[type="submit"]') || form.querySelector('.btn-submit');
     
-    const fnInput = document.getElementById('regFirstName') || form.querySelector('input[placeholder*="First"]') || form.querySelectorAll('input[type="text"]')[0];
-    const lnInput = document.getElementById('regLastName') || form.querySelector('input[placeholder*="Last"]') || form.querySelectorAll('input[type="text"]')[1];
-    const emInput = document.getElementById('regEmail') || form.querySelector('input[type="email"]');
-    const phInput = document.getElementById('regPhone') || form.querySelector('input[type="tel"]');
-    const roInput = document.getElementById('regRole') || form.querySelector('select');
-    const pwInput = document.getElementById('regPassword') || form.querySelectorAll('input[type="password"]')[0];
-    const cfInput = document.getElementById('regConfirm') || form.querySelectorAll('input[type="password"]')[1];
+    const fnInput = document.getElementById('regFirstName');
+    const lnInput = document.getElementById('regLastName');
+    const emInput = document.getElementById('regEmail');
+    const phInput = document.getElementById('regPhone');
+    const roInput = document.getElementById('regRole');
+    const pwInput = document.getElementById('regPassword');
+    const cfInput = document.getElementById('regConfirm');
 
     const firstName = fnInput ? fnInput.value.trim() : '';
     const lastName = lnInput ? lnInput.value.trim() : '';
     const email = emInput ? emInput.value.trim() : '';
     const phone = phInput ? phInput.value.trim() : '';
-    const role = (roInput && roInput.value) ? roInput.value : 'parent';
+    const rawRole = (roInput && roInput.value) ? roInput.value : 'parent';
+    const role = (rawRole === 'doctor') ? 'health_worker' : rawRole;
     const password = pwInput ? pwInput.value : '';
     const confirm = cfInput ? cfInput.value : '';
 
@@ -1291,6 +1597,11 @@
       return;
     }
 
+    // Disable button to prevent duplicate submissions
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Creating Account...';
+    }
     showToast('Creating your account...', 'info');
 
     try {
@@ -1311,19 +1622,59 @@
 
       const data = await res.json();
       if (!res.ok) {
-        showToast(data.detail || 'Registration failed. Try again.', 'error');
+        let errMsg = data.detail || 'Registration failed. Try again.';
+        if (Array.isArray(data.detail)) {
+          errMsg = data.detail.map(d => d.msg || d).join(', ');
+        }
+        showToast(errMsg, 'error');
         return;
       }
 
-      showToast('Account created successfully! Please log in.', 'success');
-      setTimeout(() => { switchTab('login'); }, 1500);
+      showToast(`Account created for ${data.full_name}! Logging in to set up child details...`, 'success');
+      
+      // Auto login newly registered parent and direct to child details intake
+      try {
+        const loginRes = await fetch(`${API_BASE}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: email, password: password })
+        });
+        if (loginRes.ok) {
+          const loginData = await loginRes.json();
+          localStorage.setItem('childnutri_token', loginData.access_token);
+          localStorage.setItem('childnutri_user', JSON.stringify(loginData.user));
+          localStorage.setItem('childnutri_just_registered', 'true');
+          setTimeout(() => {
+            if (loginData.user.role === 'parent') {
+              window.location.href = 'parent_dashboard.html?new_account=true';
+            } else {
+              window.location.href = 'dashboard.html';
+            }
+          }, 600);
+          return;
+        }
+      } catch (loginErr) {
+        console.warn("Auto-login error:", loginErr);
+      }
+
+      // Pre-fill email in login form if auto-login did not redirect
+      const loginEmailInput = document.getElementById('loginEmail');
+      if (loginEmailInput) loginEmailInput.value = email;
+
+      setTimeout(() => { 
+        switchTab('login'); 
+      }, 1500);
     } catch (err) {
       console.error(err);
       showToast('Error connecting to backend server. Ensure backend is running.', 'error');
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Create Account';
+      }
     }
   }
 
-  // Close modal with Escape key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeModal();
   });
